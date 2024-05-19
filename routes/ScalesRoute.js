@@ -6,7 +6,7 @@ const router = express.Router();
 
 /* router.get('/Scales4Kg',  getScales4Kg); */
 /* router.get('/Scales50Kg', getScales50Kg); */
-router.post('/controlLock', controlLock);
+//router.post('/controlLock', controlLock);
 
 
 export default router;

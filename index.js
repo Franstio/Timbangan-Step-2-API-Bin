@@ -1,5 +1,6 @@
 import express from "express";
 import ScalesRoute from "./routes/ScalesRoute.js";
+import LockDoorRoute from "./routes/LockDoorRoute.js"
 import cors from  "cors";
 import http from 'http';
 import { Server } from "socket.io";
@@ -27,6 +28,7 @@ const io = new Server(server, {
 export { Server, io };
 
 app.use(ScalesRoute);
+app.use(LockDoorRoute);
 
 
 client.connectRTU("/dev/ttyUSB0", { baudRate: 9600 })
