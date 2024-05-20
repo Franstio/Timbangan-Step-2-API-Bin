@@ -1,6 +1,6 @@
 import express from "express";
 /* import {getScales50Kg} from "../controllers/Scales.js" */
-import { controlLock } from "../controllers/TriggerLock.js";
+//import { controlLock } from "../controllers/TriggerLock.js";
 
 const router = express.Router();
 

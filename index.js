@@ -16,7 +16,7 @@ const port = 5000;
 
 app.use(cors({
   credentials: true,
-  origin: 'http://localhost:3000'
+  origin: '*'
 }));
 
 const io = new Server(server, {
@@ -31,7 +31,7 @@ app.use(ScalesRoute);
 app.use(LockDoorRoute);
 
 
-client.connectRTU("/dev/ttyUSB0", { baudRate: 9600 })
+/* client.connectRTU("/dev/ttyUSB0", { baudRate: 9600 })
   .then(() => {
     console.log("Connected to PLC via Modbus RTU over USB.");
     
@@ -39,7 +39,7 @@ client.connectRTU("/dev/ttyUSB0", { baudRate: 9600 })
   .catch((err) => {
     console.error("Error connecting to PLC:", err);
   });
-
+ */
 
 server.listen(port, () => {
   console.log(`Server up and running on port ${port}`);
