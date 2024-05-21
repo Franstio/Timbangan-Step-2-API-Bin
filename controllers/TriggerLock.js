@@ -16,6 +16,7 @@ export const lockTop = async (req, res) => {
                 console.log("modbus open");
            });
         }
+        console.log(idLockTop);
         const address = 20;
         const value = 1;
         const log = await client.writeRegister(address,value);
