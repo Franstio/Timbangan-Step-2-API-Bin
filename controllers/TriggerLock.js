@@ -8,6 +8,7 @@ import os from 'os';
 export const lockTop = async (req, res) => {
     try {
         const {idLockTop} = req.body;
+        console.log(idLockTop);
 	//console.log({id: idRollingDoor});
 
        client.setID(idLockTop);
@@ -16,7 +17,6 @@ export const lockTop = async (req, res) => {
                 console.log("modbus open");
            });
         }
-        console.log(idLockTop);
         const address = 20;
         const value = 1;
         const log = await client.writeRegister(address,value);

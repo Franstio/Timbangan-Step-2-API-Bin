@@ -5,6 +5,8 @@ import cors from  "cors";
 import http from 'http';
 import { Server } from "socket.io";
 import ModbusRTU from 'modbus-serial';
+import bodyParser from "body-parser";
+
 
 const client = new ModbusRTU();
 
@@ -15,7 +17,7 @@ const server = http.createServer(app);
 const port = 5000;
 
 app.use(cors({
-  credentials: true,
+  credentials: false,
   origin: '*'
 }));
 
@@ -26,7 +28,7 @@ const io = new Server(server, {
 });
 
 export { Server, io };
-
+app.use(bodyParser.json());
 app.use(ScalesRoute);
 app.use(LockDoorRoute);
 
