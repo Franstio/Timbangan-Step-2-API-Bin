@@ -17,7 +17,7 @@ export const lockTop = async (req, res) => {
                 console.log("modbus open");
            });
         }
-        const address = 20;
+        const address = 4;
         const value = 1;
         const log = await client.writeRegister(address,value);
 //        const data = await client.readHoldingRegisters(address, 8);
@@ -45,7 +45,7 @@ export const lockBottom = async (req, res) => {
                 console.log("modbus open");
            });
         }
-        const address = 20;
+        const address = 5;
         const value = 1;
         const log = await client.writeRegister(address,value);
 //        const data = await client.readHoldingRegisters(address, 8);
