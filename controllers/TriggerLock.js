@@ -3,6 +3,7 @@ const client = new ModbusRTU();
 client.connectRTU("/dev/ttyUSB0", { baudRate: 9600 });
 client.setTimeout(5000); 
 import os from 'os';
+export default client;
 
 
 export const lockTop = async (req, res) => {

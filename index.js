@@ -1,15 +1,12 @@
 import express from "express";
 import ScalesRoute from "./routes/ScalesRoute.js";
-import LockDoorRoute from "./routes/LockDoorRoute.js"
+import LockDoorRoute from "./routes/LockDoorRoute.js";
+import LampRoute from "./routes/LampRoute.js";
 import cors from  "cors";
 import http from 'http';
 import { Server } from "socket.io";
-import ModbusRTU from 'modbus-serial';
 import bodyParser from "body-parser";
-
-
-const client = new ModbusRTU();
-
+// import { getWeightBin } from "../New-Sealable-Api/controllers/Bin.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -21,28 +18,19 @@ app.use(cors({
   origin: '*'
 }));
 
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:3000"
-  }
-});
+// const io = new Server(server, {
+//   cors: {
+//     origin: "*"
+//   }
+// });
 
-export { Server, io };
 app.use(bodyParser.json());
 app.use(ScalesRoute);
 app.use(LockDoorRoute);
-
-
-/* client.connectRTU("/dev/ttyUSB0", { baudRate: 9600 })
-  .then(() => {
-    console.log("Connected to PLC via Modbus RTU over USB.");
-    
-  })
-  .catch((err) => {
-    console.error("Error connecting to PLC:", err);
-  });
- */
+app.use(LampRoute);
 
 server.listen(port, () => {
   console.log(`Server up and running on port ${port}`);
 });
+
+// export { Server, io };
