@@ -4,9 +4,8 @@ import LockDoorRoute from "./routes/LockDoorRoute.js";
 import LampRoute from "./routes/LampRoute.js";
 import cors from  "cors";
 import http from 'http';
-import { Server } from "socket.io";
 import bodyParser from "body-parser";
-// import { getWeightBin } from "../New-Sealable-Api/controllers/Bin.js";
+import { checkLampRed,checkLampYellow } from "./controllers/Bin.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -18,12 +17,6 @@ app.use(cors({
   origin: '*'
 }));
 
-// const io = new Server(server, {
-//   cors: {
-//     origin: "*"
-//   }
-// });
-
 app.use(bodyParser.json());
 app.use(ScalesRoute);
 app.use(LockDoorRoute);
@@ -32,5 +25,6 @@ app.use(LampRoute);
 server.listen(port, () => {
   console.log(`Server up and running on port ${port}`);
 });
+checkLampRed();
+checkLampYellow();
 
-// export { Server, io };

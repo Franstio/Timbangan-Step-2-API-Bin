@@ -1,4 +1,5 @@
 import client from '../controllers/TriggerLock.js';
+client.setTimeout(5000);
 
 export const REDLampOn = async (req, res) => {
     try {
@@ -156,7 +157,7 @@ export const GREENLampOff = async (req, res) => {
            });
         }
         const address = 8;
-        const value = 1;
+        const value = 0;
         const log = await client.writeRegister(address,value);
 //        const data = await client.readHoldingRegisters(address, 8);
 //        console.log({ log: log, data: data });
@@ -171,3 +172,20 @@ export const GREENLampOff = async (req, res) => {
         res.status(500).json({ msg: error });
     }
 };
+
+export const switchLamp = async (id, lampType, isAlive) => {
+    const dict = {
+        "RED": 6,
+        "GREEN": 8,
+        "YELLOW": 7
+    };
+    const address = dict[lampType];
+    client.setID(id);
+    try {
+        await client.writeRegister(address, isAlive ? 1 : 0);
+    }
+    catch (error) {
+        console.log([error, id, lampType, address, isAlive]);
+    }
+    await new Promise(resolve => setTimeout(function () { return resolve(); }, 2000));
+}
