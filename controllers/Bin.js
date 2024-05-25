@@ -4,9 +4,9 @@ import os from 'os';
 
 export const switchLamp = async (id, lampType, isAlive) => {
     const dict = {
-        "RED": 6,
+        "RED": 8,
         "YELLOW":7,
-        "GREEN": 8
+        "GREEN": 6
     };
     const address = dict[lampType];
     client.setID(id);
