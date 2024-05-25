@@ -17,6 +17,13 @@ app.use(cors({
   origin: '*'
 }));
 
+app.use(cors({
+  origin: '*', // Allow any origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific HTTP methods
+/*  allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers*/
+  credentials:false 
+}));
+
 app.use(bodyParser.json());
 app.use(ScalesRoute);
 app.use(LockDoorRoute);
