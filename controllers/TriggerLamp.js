@@ -119,9 +119,9 @@ export const YELLOWLampOff = async (req, res) => {
 
 export const GREENLampOn = async (req, res) => {
     try {
-        const {idLockTop} = req.body;
-        console.log(idLockTop);
-       client.setID(idLockTop);
+        const {idLampGreen} = req.body;
+        console.log(idLampGreen);
+       client.setID(idLampGreen);
         if (!client.isOpen) {
             client.open( () => {
                 console.log("modbus open");
@@ -146,11 +146,11 @@ export const GREENLampOn = async (req, res) => {
 
 export const GREENLampOff = async (req, res) => {
     try {
-        const {idLockTop} = req.body;
-        console.log(idLockTop);
+        const {idLampGreen} = req.body;
+        console.log(idLampGreen);
 	//console.log({id: idRollingDoor});
 
-       client.setID(idLockTop);
+       client.setID(idLampGreen);
         if (!client.isOpen) {
             client.open( () => {
                 console.log("modbus open");
