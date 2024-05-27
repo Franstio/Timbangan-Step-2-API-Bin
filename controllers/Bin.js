@@ -47,7 +47,7 @@ export const checkLampYellow = async () => {
             const bin = response.data;
             console.log({ binFromApi: bin });
             
-            if (parseFloat(bin.weight) >= parseFloat(bin.max_weight)) {
+            if (parseFloat(bin.weight) > parseFloat(bin.max_weight)) {
                 await switchLamp(bin.id, 'YELLOW', false);
             } else {
                 await switchLamp(bin.id, 'YELLOW', true);
