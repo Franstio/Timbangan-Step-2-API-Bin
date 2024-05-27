@@ -49,6 +49,8 @@ export const lockBottom = async (req, res) => {
         const address = 5;
         const value = 1;
         const log = await client.writeRegister(address,value);
+        
+        await new Promise(resolve => setTimeout(function () { return resolve(); }, 2000));
 //        const data = await client.readHoldingRegisters(address, 8);
 //        console.log({ log: log, data: data });
        /*  if (value === 1) {

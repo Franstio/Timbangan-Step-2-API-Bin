@@ -16,6 +16,7 @@ export const REDLampOn = async (req, res) => {
         const address = 6;
         const value = 1;
         const log = await client.writeRegister(address,value);
+        await new Promise(resolve => setTimeout(function () { return resolve(); }, 2000));
 //        const data = await client.readHoldingRegisters(address, 8);
 //        console.log({ log: log, data: data });
        /*  if (value === 1) {
@@ -45,6 +46,7 @@ export const REDLampOff = async (req, res) => {
         const address = 6;
         const value = 0;
         const log = await client.writeRegister(address,value);
+        await new Promise(resolve => setTimeout(function () { return resolve(); }, 2000));
 //        const data = await client.readHoldingRegisters(address, 8);
 //        console.log({ log: log, data: data });
        /*  if (value === 1) {
@@ -74,6 +76,7 @@ export const YELLOWLampOn = async (req, res) => {
         const address = 7;
         const value = 1;
         const log = await client.writeRegister(address,value);
+        await new Promise(resolve => setTimeout(function () { return resolve(); }, 2000));
 //        const data = await client.readHoldingRegisters(address, 8);
 //        console.log({ log: log, data: data });
        /*  if (value === 1) {
@@ -103,6 +106,7 @@ export const YELLOWLampOff = async (req, res) => {
         const address = 7;
         const value = 0;
         const log = await client.writeRegister(address,value);
+        await new Promise(resolve => setTimeout(function () { return resolve(); }, 2000));
 //        const data = await client.readHoldingRegisters(address, 8);
 //        console.log({ log: log, data: data });
        /*  if (value === 1) {
@@ -130,6 +134,7 @@ export const GREENLampOn = async (req, res) => {
         const address = 8;
         const value = 1;
         const log = await client.writeRegister(address,value);
+        await new Promise(resolve => setTimeout(function () { return resolve(); }, 2000));
 //        const data = await client.readHoldingRegisters(address, 8);
 //        console.log({ log: log, data: data });
        /*  if (value === 1) {
@@ -159,6 +164,7 @@ export const GREENLampOff = async (req, res) => {
         const address = 8;
         const value = 0;
         const log = await client.writeRegister(address,value);
+        await new Promise(resolve => setTimeout(function () { return resolve(); }, 2000));
 //        const data = await client.readHoldingRegisters(address, 8);
 //        console.log({ log: log, data: data });
        /*  if (value === 1) {
