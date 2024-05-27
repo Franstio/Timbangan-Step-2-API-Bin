@@ -9,7 +9,7 @@ export const switchLamp = async (id, lampType, isAlive) => {
         "GREEN": 6
     };
     const address = dict[lampType];
-    client.setID(id);
+    client.setID(1);
     try {
         await client.writeRegister(address, isAlive ? 1 : 0);
     }
@@ -17,7 +17,7 @@ export const switchLamp = async (id, lampType, isAlive) => {
         console.log([error, id, lampType, address, isAlive]);
     }
     await new Promise(resolve => setTimeout(function () { return resolve(); }, 2000));
-}
+};
 
 export const checkLampRed = async () => {
     while (true) {
@@ -38,7 +38,7 @@ export const checkLampRed = async () => {
         // Menambahkan delay untuk mencegah request yang berlebihan
         await new Promise(resolve => setTimeout(resolve, 5000));
     }
-}
+};
 
 export const checkLampYellow = async () => {
     while (true) {
@@ -59,4 +59,4 @@ export const checkLampYellow = async () => {
         // Menambahkan delay untuk mencegah request yang berlebihan
         await new Promise(resolve => setTimeout(resolve, 5000));
     }
-}
+};
