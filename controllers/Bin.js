@@ -36,7 +36,7 @@ export const checkLampRed = async () => {
         }
 
         // Menambahkan delay untuk mencegah request yang berlebihan
-        await new Promise(resolve => setTimeout(resolve, 5000));
+        await new Promise(resolve => setTimeout(resolve, 1000));
     }
 };
 
