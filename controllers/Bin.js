@@ -24,11 +24,13 @@ export const checkLampRed = async () => {
         try {
             const response = await axios.get(`http://pcs.local:5000/getbinData?hostname=${os.hostname()}`, { withCredentials: false });
             const bin = response.data;
-            console.log({ binFromApi: bin });
+            console.log({ weight :bin.weight,max:bin.max_weight });
             
             if (parseFloat(bin.weight) >= parseFloat(bin.max_weight)) {
+                console.log("Turn on Red");
                 await switchLamp(bin.id, 'RED', true);
             } else {
+                console.log("Turn off Red");
                 await switchLamp(bin.id, 'RED', false);
             }
         } catch (error) {
