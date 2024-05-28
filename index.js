@@ -7,6 +7,7 @@ import http from 'http';
 import bodyParser from "body-parser";
 import { checkLampRed,checkLampYellow } from "./controllers/Bin.js";
 import SensorRoute from "./routes/SensorRoute.js"
+import { Server } from "socket.io";
 
 const app = express();
 const server = http.createServer(app);
@@ -17,6 +18,11 @@ app.use(cors({
   credentials: false,
   origin: '*'
 }));
+const io = new Server(server, {
+  cors: {
+    origin: "*"
+  }
+});
 
 app.use(cors({
   origin: '*', // Allow any origin
@@ -37,3 +43,4 @@ server.listen(port, () => {
 checkLampRed();
 //checkLampYellow();
 
+export {io};

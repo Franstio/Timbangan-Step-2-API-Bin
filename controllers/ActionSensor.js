@@ -26,8 +26,10 @@ export const SensorTop = async (req,res) => {
 };
 
 export const SensorBottom = async (req,res) => {
+     const {SensorBottomId} = req.body;
+    console.log(SensorBottomId);
     try {
-        client.setID(1);
+        client.setID(SensorBottomId);
         if (!client.isOpen) {
             client.open(() => {
                 console.log("modbus open");

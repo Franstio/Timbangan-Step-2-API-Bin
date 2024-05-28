@@ -1,6 +1,7 @@
 import axios from 'axios';
 import client from '../controllers/TriggerLock.js';
 import os from 'os';
+import { io } from '../index.js';
 
 export const switchLamp = async (id, lampType, isAlive) => {
     const dict = {
@@ -65,3 +66,13 @@ export const checkLampYellow = async () => {
         await new Promise(resolve => setTimeout(resolve, 5000));
     }
 };
+
+
+
+
+export const receiveInstruksi = async (req,res) =>{
+    const {instruksi} = req.body ;
+
+    io.send('UpdateInstruksi', instruksi);
+    res.status(200).json({msg:'ok'});
+}
