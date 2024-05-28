@@ -73,6 +73,6 @@ export const checkLampYellow = async () => {
 export const receiveInstruksi = async (req,res) =>{
     const {instruksi} = req.body ;
     console.log({instruksi:instruksi});
-    io.send('UpdateInstruksi', instruksi);
+    io.emit('UpdateInstruksi', instruksi);
     res.status(200).json({msg:'ok'});
 }
