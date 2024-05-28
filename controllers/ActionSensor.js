@@ -4,6 +4,7 @@ client.setTimeout(5000);
 export const SensorTop = async (req,res) => {
     const {SensorTopId} = req.body;
     console.log(SensorTopId);
+    let receivedValue = null; 
     try {
         client.setID(SensorTopId);
         if (!client.isOpen) {
@@ -15,11 +16,12 @@ export const SensorTop = async (req,res) => {
         const address = 0; 
         
         const response = await client.readHoldingRegisters(address, 1); 
-        const receivedValue = response.data[0]; 
+        receivedValue = response.data[0]; 
         
-        res.status(200).json({ sensorTop: receivedValue }); 
+        res.status(200).json({ sensorTop: receivedValue });
     } catch (error) {
-        res.status(500).json({ msg: error.message });
+        console.log(error);
+        res.status(200).json({ sensorTop: receivedValue });
     }
 };
 
