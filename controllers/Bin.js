@@ -76,3 +76,10 @@ export const receiveInstruksi = async (req,res) =>{
     io.emit('UpdateInstruksi', instruksi);
     res.status(200).json({msg:'ok'});
 }
+
+export const receiveType = async (req,res) =>{
+    const {type} = req.body ;
+    console.log({type:type});
+    io.emit('GetType', instruksi);
+    res.status(200).json({msg:'ok'});
+}
