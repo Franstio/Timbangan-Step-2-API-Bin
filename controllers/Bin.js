@@ -26,12 +26,12 @@ export const checkLampRed = async () => {
             const bin = response.data.bin;
                 
             console.log({ weight :bin.weight,max:bin.max_weight });
-            
-            if (bin && parseFloat(bin.weight) >= parseFloat(bin.max_weight)) {
-                console.log("Turn on Red");
+            const limit = (parseFloat(bin.max_weight) /100) * 100;
+            if (bin && parseFloat(bin.weight) >= limit) {
+                //console.log("Turn on Red");
                 await switchLamp(bin.id, 'RED', true);
             } else {
-                console.log("Turn off Red");
+                //console.log("Turn off Red");
                 await switchLamp(bin.id, 'RED', false);
             }
         } catch (error) {
