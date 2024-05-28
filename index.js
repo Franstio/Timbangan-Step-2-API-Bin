@@ -6,6 +6,7 @@ import cors from  "cors";
 import http from 'http';
 import bodyParser from "body-parser";
 import { checkLampRed,checkLampYellow } from "./controllers/Bin.js";
+import SensorRoute from "./routes/SensorRoute.js"
 
 const app = express();
 const server = http.createServer(app);
@@ -28,6 +29,7 @@ app.use(bodyParser.json());
 app.use(ScalesRoute);
 app.use(LockDoorRoute);
 app.use(LampRoute);
+app.use(SensorRoute);
 
 server.listen(port, () => {
   console.log(`Server up and running on port ${port}`);
