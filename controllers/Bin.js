@@ -30,9 +30,11 @@ export const checkLampRed = async () => {
             if (bin && parseFloat(bin.weight) >= limit) {
                 //console.log("Turn on Red");
                 await switchLamp(bin.id, 'RED', true);
+                await switchLamp(bin.id, 'YELLOW', false);
             } else {
                 //console.log("Turn off Red");
                 await switchLamp(bin.id, 'RED', false);
+                await switchLamp(bin.id, 'YELLOW', true);
             }
         } catch (error) {
             console.error('Error fetching bin data:', error);
