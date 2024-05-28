@@ -41,7 +41,7 @@ export const SensorBottom = async (req,res) => {
         const response = await client.readHoldingRegisters(address, 1);
         const receivedValue = response.data[0]; 
         
-        res.status(200).json({ msg: `Sensor Bottom: ${receivedValue}` });
+        res.status(200).json({ sensorBottom: receivedValue });
     } catch (error) {
         res.status(500).json({ msg: error.message });
     }
