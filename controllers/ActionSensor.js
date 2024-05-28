@@ -1,7 +1,7 @@
 import client from '../controllers/TriggerLock.js';
 client.setTimeout(5000);
 
-export const SensorTop = async (res) => {
+export const SensorTop = async (req,res) => {
     const {SensorTopId} = req.body;
     console.log(SensorTopId);
     try {
@@ -23,7 +23,7 @@ export const SensorTop = async (res) => {
     }
 };
 
-export const SensorBottom = async (res) => {
+export const SensorBottom = async (req,res) => {
     try {
         client.setID(1);
         if (!client.isOpen) {
