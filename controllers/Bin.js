@@ -80,6 +80,6 @@ export const receiveInstruksi = async (req,res) =>{
 export const receiveType = async (req,res) =>{
     const {type} = req.body ;
     console.log({type:type});
-    io.emit('GetType', instruksi);
+    io.emit('GetType', type);
     res.status(200).json({msg:'ok'});
 }
