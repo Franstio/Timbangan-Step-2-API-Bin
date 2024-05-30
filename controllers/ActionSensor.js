@@ -182,15 +182,18 @@ export const observeSensor = async (_io)=>  {
         _io.emit("sensorUpdate",[topResValue,bottomResValue]);
         if (topSensor != null && topResValue == topSensor )
         {
+            const target = 'target-top-'+topSensor;
             topSensor= null;
 //            clearInterval(idInterval);
-            _io.emit('target-top-'+topSensor,true);
+            _io.emit(target,true);
             return;
         }
         if ( bottomSensor != null && bottomResValue == bottomSensor )
         {
+            const target = 'target-'+bottomSensor;
             bottomSensor = null;
-            _io.emit('target-'+bottomSensor,true);
+
+            _io.emit(target,true);
             return;
         }
     }
