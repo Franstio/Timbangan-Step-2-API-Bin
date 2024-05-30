@@ -160,6 +160,8 @@ export const observeTopSensorIndicator = async (req, res) => {
 
 
 export const observeSensor = async (_io)=>  {
+    while(true)
+    {
     try {
         client.setID(1);
         if (!client.isOpen) {
@@ -197,4 +199,5 @@ export const observeSensor = async (_io)=>  {
     {
         await new Promise((resolve)=> setTimeout(resolve,500) );
     }
+}
 };
