@@ -186,7 +186,6 @@ export const observeSensor = async (_io)=>  {
             topSensor= null;
 //            clearInterval(idInterval);
             _io.emit(target,true);
-            return;
         }
         if ( bottomSensor != null && bottomResValue == bottomSensor )
         {
@@ -194,7 +193,6 @@ export const observeSensor = async (_io)=>  {
             bottomSensor = null;
 
             _io.emit(target,true);
-            return;
         }
     }
     catch (err) {
