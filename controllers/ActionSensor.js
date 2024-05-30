@@ -176,10 +176,15 @@ export const observeSensor = async (_io)=>  {
         const topRes = await client.readHoldingRegisters(0, 1);
        // await new Promise((resolve)=> setTimeout(resolve,100) );
         const bottomRes = await client.readHoldingRegisters(1,1);
+        const redLamp = await client.readHoldingRegisters(6,1);
+        const yellowLamp = await client.readHoldingRegisters(7,1);
+        const greenLamp = await client.readHoldingRegisters(8,1);
+        const locktop = await client.readHoldingRegisters(4,1);
+        const lockbottom = await client.readHoldingRegisters(5,1);
         const topResValue = topRes.data[0];
         const bottomResValue = bottomRes.data[0];
         console.log("topres value: "+topResValue+" ,bottomres value: " + bottomResValue + ", target top:" + topSensor + " , target bottom: " + bottomSensor);
-        _io.emit("sensorUpdate",[topResValue,bottomResValue]);
+        _io.emit("sensorUpdate",[topResValue,bottomResValue,redLamp.data[0],yellowLamp.data[0],greenLamp.data[0],locktop.data[0],lockbottom.data[0]]);
         if (topSensor != null && topResValue == topSensor )
         {
             const target = 'target-top-'+topSensor;
