@@ -176,7 +176,7 @@ export const observeSensor = async (_io)=>  {
         const bottomRes = await client.readHoldingRegisters(bottom,1);
         const topResValue = topRes.data[0];
         const bottomResValue = bottomRes.data[0];
-        console.log("received value: "+receivedValue+", target: " + indicatorBottom);
+        console.log("topres value: "+topResValue+" ,bottomres value: " + bottomResValue + ", target top:" + topSensor + " , target bottom: " + bottomSensor);
         _io.emit("sensorUpdate",[topResValue,bottomResValue]);
         if (topSensor && topSensor != null && topResValue == topSensor )
         {
