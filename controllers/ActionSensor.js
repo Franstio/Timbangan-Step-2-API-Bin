@@ -170,10 +170,9 @@ export const observeSensor = async (_io)=>  {
             });
         }
         
-        const [top,bottom] = [0,1];
 
-        const topRes = await client.readHoldingRegisters(top, 1);
-        const bottomRes = await client.readHoldingRegisters(bottom,1);
+        const topRes = await client.readHoldingRegisters(0, 1);
+        const bottomRes = await client.readHoldingRegisters(1,1);
         const topResValue = topRes.data[0];
         const bottomResValue = bottomRes.data[0];
         console.log("topres value: "+topResValue+" ,bottomres value: " + bottomResValue + ", target top:" + topSensor + " , target bottom: " + bottomSensor);
