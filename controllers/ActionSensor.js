@@ -2,6 +2,8 @@ import client from '../controllers/TriggerLock.js';
 import { io } from '../index.js';
 client.setTimeout(5000);
 
+let bottomSensor=null;
+let topSensor=null;
 export const SensorTop = async (req, res) => {
     const { SensorTopId } = req.body;
     console.log(SensorTopId);
@@ -52,7 +54,8 @@ export const observeBottomSensor = async (req, res) => {
     if (idInterval != null)
         return;
     const { readTarget } = req.body;
-    client.setID(1);
+    bottomSensor = readTarget;
+/*    client.setID(1);
      idInterval = setInterval(async () => {
         try {
             if (!client.isOpen) {
@@ -77,7 +80,7 @@ export const observeBottomSensor = async (req, res) => {
         catch (err) {
             console.log(err);
         }
-    }, 100);
+    }, 100);*/
     res.status(200).json({msg:'ok'});
 }
 
@@ -85,7 +88,8 @@ export const observeTopSensor = async (req, res) => {
     if (idInterval != null)
         return;
     const { readTargetTop } = req.body;
-    client.setID(1);
+    topSensor = readTargetTop;
+/*    client.setID(1);
      idInterval = setInterval(async () => {
         try {
             if (!client.isOpen) {
@@ -110,12 +114,10 @@ export const observeTopSensor = async (req, res) => {
         catch (err) {
             console.log(err);
         }
-    }, 100);
+    }, 100);*/
     res.status(200).json({msg:'ok'});
 }
-let bottomSensor=null;
-let topSensor=null;
-
+/*
 export const observeBottomSensorIndicator = async (req, res) => {
     if (idInterval != null)
         return;
@@ -154,10 +156,10 @@ export const observeTopSensorIndicator = async (req, res) => {
         catch (err) {
             console.log(err);
         }
-    }, 100);*/
+    }, 100);
     res.status(200).json({msg:'ok'});
 }
-
+*/
 
 export const observeSensor = async (_io)=>  {
     while(true)
