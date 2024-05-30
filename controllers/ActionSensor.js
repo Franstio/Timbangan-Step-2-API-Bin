@@ -180,14 +180,14 @@ export const observeSensor = async (_io)=>  {
         const bottomResValue = bottomRes.data[0];
         console.log("topres value: "+topResValue+" ,bottomres value: " + bottomResValue + ", target top:" + topSensor + " , target bottom: " + bottomSensor);
         _io.emit("sensorUpdate",[topResValue,bottomResValue]);
-        if (topSensor && topSensor != null && topResValue == topSensor )
+        if (topSensor != null && topResValue == topSensor )
         {
             topSensor= null;
 //            clearInterval(idInterval);
             _io.emit('target-top-'+topSensor,true);
             return;
         }
-        if (bottomSensor && bottomSensor != null && bottomResValue == bottomSensor )
+        if ( bottomSensor != null && bottomResValue == bottomSensor )
         {
             bottomSensor = null;
             _io.emit('target-'+bottomSensor,true);
