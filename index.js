@@ -8,6 +8,7 @@ import bodyParser from "body-parser";
 import { checkLampRed,checkLampYellow } from "./controllers/Bin.js";
 import SensorRoute from "./routes/SensorRoute.js"
 import { Server } from "socket.io";
+import { observeSensor } from "./controllers/ActionSensor.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -46,6 +47,7 @@ server.listen(port, () => {
   console.log(`Server up and running on port ${port}`);
 });
 checkLampRed();
-//checkLampYellow();
 
+observeSensor(io);
+//checkLampYellow();
 export {io};
