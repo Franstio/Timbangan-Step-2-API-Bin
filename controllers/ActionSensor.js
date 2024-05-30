@@ -184,6 +184,7 @@ export const observeSensor = async (_io)=>  {
         const topResValue = topRes.data[0];
         const bottomResValue = bottomRes.data[0];
         console.log("topres value: "+topResValue+" ,bottomres value: " + bottomResValue + ", target top:" + topSensor + " , target bottom: " + bottomSensor);
+        console.log([topResValue,bottomResValue,redLamp.data[0],yellowLamp.data[0],greenLamp.data[0],locktop.data[0],lockbottom.data[0]]);
         _io.emit("sensorUpdate",[topResValue,bottomResValue,redLamp.data[0],yellowLamp.data[0],greenLamp.data[0],locktop.data[0],lockbottom.data[0]]);
         if (topSensor != null && topResValue == topSensor )
         {
