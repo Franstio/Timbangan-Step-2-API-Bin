@@ -23,7 +23,7 @@ export const switchLamp = async (id, lampType, isAlive) => {
 export const checkLampRed = async () => {
     while (true) {
         try {
-            const response = await axios.get(`http://pcs.local:5000/getbinData?hostname=${os.hostname()}`, { withCredentials: false });
+            const response = await axios.get(`http://2-PCL.local:5000/getbinData?hostname=${os.hostname()}`, { withCredentials: false });
             const bin = response.data.bin;
                 
             console.log({ weight :bin.weight,max:bin.max_weight });
@@ -49,7 +49,7 @@ export const checkLampRed = async () => {
 export const checkLampYellow = async () => {
     while (true) {
         try {
-            const response = await axios.get(`http://pcs.local:5000/getbinData?hostname=${os.hostname()}`, { withCredentials: false });
+            const response = await axios.get(`http://2-PCL.local:5000/getbinData?hostname=${os.hostname()}`, { withCredentials: false });
             const bin = response.data;
             console.log({ binFromApi: bin });
             
