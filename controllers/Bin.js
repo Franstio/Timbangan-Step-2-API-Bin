@@ -17,7 +17,7 @@ export const switchLamp = async (id, lampType, isAlive) => {
     catch (error) {
         console.log([error, id, lampType, address, isAlive]);
     }
-    await new Promise(resolve => setTimeout(function () { return resolve(); }, 2000));
+    await new Promise(resolve => setTimeout(function () { return resolve(); }, 5000));
 };
 
 export const checkLampRed = async () => {
