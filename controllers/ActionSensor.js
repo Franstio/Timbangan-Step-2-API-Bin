@@ -55,7 +55,7 @@ export const observeBottomSensor = async (req, res) => {
         return;
     const { readTarget } = req.body;
     bottomSensor = readTarget;
-/*    client.setID(1);
+    client.setID(1);
      idInterval = setInterval(async () => {
         try {
             if (!client.isOpen) {
@@ -80,7 +80,7 @@ export const observeBottomSensor = async (req, res) => {
         catch (err) {
             console.log(err);
         }
-    }, 100);*/
+    }, 100);
     res.status(200).json({msg:'ok'});
 }
 
@@ -89,50 +89,8 @@ export const observeTopSensor = async (req, res) => {
         return;
     const { readTargetTop } = req.body;
     topSensor = readTargetTop;
-/*    client.setID(1);
+    client.setID(1);
      idInterval = setInterval(async () => {
-        try {
-            if (!client.isOpen) {
-                client.open(() => {
-                    console.log("modbus open");
-                });
-            }
-            
-            const address = 0;
-
-            const response = await client.readHoldingRegisters(address, 1);
-            const receivedValue = response.data[0];
-            console.log("received value: "+receivedValue+", target: " + readTargetTop);
-            if (receivedValue == readTargetTop)
-            {
-                io.emit('target-top-'+readTargetTop,true);
-                clearInterval(idInterval);
-                idInterval  = null;
-                return;
-            }
-        }
-        catch (err) {
-            console.log(err);
-        }
-    }, 100);*/
-    res.status(200).json({msg:'ok'});
-}
-/*
-export const observeBottomSensorIndicator = async (req, res) => {
-    if (idInterval != null)
-        return;
-    const { indicatorBottom } = req.body;
-    bottomSensor=indicatorBottom;
-    res.status(200).json({msg:'ok'});
-}
-
-export const observeTopSensorIndicator = async (req, res) => {
-    if (idInterval != null)
-        return;
-    const { readTargetTop } = req.body;
-    topSensor = readTargetTop;
-    //client.setID(1);
-     /*idInterval = setInterval(async () => {
         try {
             if (!client.isOpen) {
                 client.open(() => {
@@ -159,7 +117,49 @@ export const observeTopSensorIndicator = async (req, res) => {
     }, 100);
     res.status(200).json({msg:'ok'});
 }
-*/
+
+export const observeBottomSensorIndicator = async (req, res) => {
+    if (idInterval != null)
+        return;
+    const { indicatorBottom } = req.body;
+    bottomSensor=indicatorBottom;
+    res.status(200).json({msg:'ok'});
+}
+
+export const observeTopSensorIndicator = async (req, res) => {
+    if (idInterval != null)
+        return;
+    const { readTargetTop } = req.body;
+    topSensor = readTargetTop;
+    client.setID(1);
+     idInterval = setInterval(async () => {
+        try {
+            if (!client.isOpen) {
+                client.open(() => {
+                    console.log("modbus open");
+                });
+            }
+            
+            const address = 0;
+
+            const response = await client.readHoldingRegisters(address, 1);
+            const receivedValue = response.data[0];
+            console.log("received value: "+receivedValue+", target: " + readTargetTop);
+            if (receivedValue == readTargetTop)
+            {
+                io.emit('target-top-'+readTargetTop,true);
+                clearInterval(idInterval);
+                idInterval  = null;
+                return;
+            }
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }, 100);
+    res.status(200).json({msg:'ok'});
+}
+
 
 export const observeSensor = async (_io)=>  {
     while(true)
@@ -174,7 +174,7 @@ export const observeSensor = async (_io)=>  {
         
 
         const topRes = await client.readHoldingRegisters(0, 1);
-       // await new Promise((resolve)=> setTimeout(resolve,100) );
+       // await new Promise((resolve)=> setTimeout(resolve,100));
         const bottomRes = await client.readHoldingRegisters(1,1);
         const redLamp = await client.readHoldingRegisters(6,1);
         const yellowLamp = await client.readHoldingRegisters(7,1);
