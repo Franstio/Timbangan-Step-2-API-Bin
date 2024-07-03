@@ -54,7 +54,7 @@ export const observeBottomSensor = async (req, res) => {
     if (idInterval != null)
         return res.status(200).json({msg: "Target Already Started"});
     const { readTarget } = req.body;
-    if (!readTarget)
+    if (readTarget == undefined)
         return res.status(200).json({msg: "Target not found"});
     bottomSensor = readTarget;
     client.setID(1);
@@ -90,7 +90,7 @@ export const observeTopSensor = async (req, res) => {
     if (idInterval != null)
         return res.status(200).json({msg: "Target Already Started"});
     const { readTargetTop } = req.body;
-    if (!readTargetTop)
+    if (readTargetTop == undefined)
         return res.status(200).json({msg: "Target not found"});
     topSensor = readTargetTop;
     client.setID(1);
