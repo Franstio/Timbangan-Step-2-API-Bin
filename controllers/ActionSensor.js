@@ -114,7 +114,7 @@ export const observeTopSensor = async (req, res) => {
         catch (err) {
             console.log(err);
         }
-    }, 100);
+    }, 3500);
     res.status(200).json({msg:'ok'});
 }
 
