@@ -52,10 +52,10 @@ export const SensorBottom = async (req, res) => {
 let idInterval= null;
 export const observeBottomSensor = async (req, res) => {
     if (idInterval != null)
-        return;
+        return res.status(200).json({msg: "Target Already Started"});
     const { readTarget } = req.body;
     if (!readTarget)
-        return;
+        return res.status(200).json({msg: "Target not found"});
     bottomSensor = readTarget;
     client.setID(1);
      idInterval = setInterval(async () => {
@@ -88,10 +88,10 @@ export const observeBottomSensor = async (req, res) => {
 
 export const observeTopSensor = async (req, res) => {
     if (idInterval != null)
-        return;
+        return res.status(200).json({msg: "Target Already Started"});
     const { readTargetTop } = req.body;
     if (!readTargetTop)
-        return;
+        return res.status(200).json({msg: "Target not found"});
     topSensor = readTargetTop;
     client.setID(1);
      idInterval = setInterval(async () => {
