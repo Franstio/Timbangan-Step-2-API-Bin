@@ -54,6 +54,8 @@ export const observeBottomSensor = async (req, res) => {
     if (idInterval != null)
         return;
     const { readTarget } = req.body;
+    if (!readTarget)
+        return;
     bottomSensor = readTarget;
     client.setID(1);
      idInterval = setInterval(async () => {
@@ -88,6 +90,8 @@ export const observeTopSensor = async (req, res) => {
     if (idInterval != null)
         return;
     const { readTargetTop } = req.body;
+    if (!readTargetTop)
+        return;
     topSensor = readTargetTop;
     client.setID(1);
      idInterval = setInterval(async () => {
