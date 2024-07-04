@@ -85,7 +85,7 @@ export const observeBottomSensor = async (req, res) => {
         catch (err) {
             console.log(err);
         }
-    }, 100);
+    }, 1000);
     res.status(200).json({msg:'ok'});
 }
 
@@ -122,7 +122,7 @@ export const observeTopSensor = async (req, res) => {
         catch (err) {
             console.log(err);
         }
-    }, 3500);
+    }, 1000);
     res.status(200).json({msg:'ok'});
 }
 
