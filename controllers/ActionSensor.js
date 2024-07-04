@@ -58,7 +58,7 @@ export const observeBottomSensor = async (req, res) => {
     if (readTarget == undefined || readTarget==null)
         return res.status(200).json({msg: "Target not found"});
     bottomSensor = readTarget;
-    client.setID(1);
+    /*client.setID(1);
      bottomIdInterval = setInterval(async () => {
         try {
             if (!client.isOpen) {
@@ -85,7 +85,7 @@ export const observeBottomSensor = async (req, res) => {
         catch (err) {
             console.log(err);
         }
-    }, 1000);
+    }, 1000);*/
     res.status(200).json({msg:'ok'});
 }
 
@@ -96,7 +96,7 @@ export const observeTopSensor = async (req, res) => {
     if (readTargetTop == undefined || readTargetTop==null)
         return res.status(200).json({msg: "Target not found"});
     topSensor = readTargetTop;
-    client.setID(1);
+    /*client.setID(1);
      topIdInterval = setInterval(async () => {
         try {
             if (!client.isOpen) {
@@ -122,7 +122,7 @@ export const observeTopSensor = async (req, res) => {
         catch (err) {
             console.log(err);
         }
-    }, 1000);
+    }, 1000);*/
     res.status(200).json({msg:'ok'});
 }
 
