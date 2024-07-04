@@ -74,9 +74,9 @@ export const observeBottomSensor = async (req, res) => {
             console.log("received value: "+receivedValue+", target: " + readTarget);
             if (receivedValue == readTarget)
             {
-                io.emit('target-'+readTarget,true);
                 clearInterval(bottomIdInterval);
                 bottomIdInterval  = null;
+                io.emit('target-'+readTarget,true);
                 return;
             }
         }
@@ -110,9 +110,9 @@ export const observeTopSensor = async (req, res) => {
             console.log("received value: "+receivedValue+", target: " + readTargetTop);
             if (receivedValue == readTargetTop)
             {
-                io.emit('target-top-'+readTargetTop,true);
                 clearInterval(topIdInterval);
                 topIdInterval  = null;
+                io.emit('target-top-'+readTargetTop,true);
                 return;
             }
         }
