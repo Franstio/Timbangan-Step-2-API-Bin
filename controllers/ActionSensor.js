@@ -52,11 +52,11 @@ export const SensorBottom = async (req, res) => {
 let topIdInterval= null;
 let bottomIdInterval =null;
 export const observeBottomSensor = async (req, res) => {
-    if (bottomIdInterval != null)
-        return res.status(200).json({msg: "Target Already Started"});
+/*    if (bottomIdInterval != null)
+        return res.status(200).json({msg: "Target Already Started"});*/
     const { readTarget } = req.body;
-    if (readTarget == undefined || readTarget==null)
-        return res.status(200).json({msg: "Target not found"});
+/*    if (readTarget == undefined || readTarget==null)
+        return res.status(200).json({msg: "Target not found"});*/
     bottomSensor = readTarget;
     /*client.setID(1);
      bottomIdInterval = setInterval(async () => {
@@ -90,11 +90,11 @@ export const observeBottomSensor = async (req, res) => {
 }
 
 export const observeTopSensor = async (req, res) => {
-    if (topIdInterval != null)
-        return res.status(200).json({msg: "Target Already Started"});
+/*    if (topIdInterval != null)
+        return res.status(200).json({msg: "Target Already Started"});*/
     const { readTargetTop } = req.body;
-    if (readTargetTop == undefined || readTargetTop==null)
-        return res.status(200).json({msg: "Target not found"});
+/*    if (readTargetTop == undefined || readTargetTop==null)
+        return res.status(200).json({msg: "Target not found"});*/
     topSensor = readTargetTop;
     /*client.setID(1);
      topIdInterval = setInterval(async () => {
