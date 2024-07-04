@@ -76,6 +76,8 @@ export const observeBottomSensor = async (req, res) => {
             {
                 clearInterval(bottomIdInterval);
                 bottomIdInterval  = null;
+                
+                await new Promise((resolve)=> setTimeout(resolve,500) );
                 io.emit('target-'+readTarget,true);
                 return;
             }
@@ -112,6 +114,7 @@ export const observeTopSensor = async (req, res) => {
             {
                 clearInterval(topIdInterval);
                 topIdInterval  = null;
+                await new Promise((resolve)=> setTimeout(resolve,500) );
                 io.emit('target-top-'+readTargetTop,true);
                 return;
             }
