@@ -1,4 +1,4 @@
-import client from "./plcClient";
+import client from "./plcClient.js";
 client.setTimeout(5000);
 
 export const REDLampOn = async (req, res) => {
