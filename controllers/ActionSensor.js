@@ -214,7 +214,7 @@ export const observeSensor = async (_io)=>  {
     }
     finally
     {
-        await new Promise((resolve)=> setTimeout(resolve,500) );
+        await new Promise((resolve)=> setTimeout(resolve,10) );
     }
 }
 };
