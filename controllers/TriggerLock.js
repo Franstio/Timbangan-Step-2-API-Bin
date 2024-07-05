@@ -22,8 +22,8 @@ export const lockTop = async (req, res) => {
         const value = 1;
 //        const log = await client.writeRegister(address,value);
 
-        pushPayloadData({id:1,address:address,value:value});
-        await new Promise(resolve => setTimeout(function () { return resolve(); }, 100));
+        pushPayloadData({id:idLockTop,address:address,value:value});
+//        await new Promise(resolve => setTimeout(function () { return resolve(); }, 100));
 //        const data = await client.readHoldingRegisters(address, 8);
 //        console.log({ log: log, data: data });
        /*  if (value === 1) {
@@ -61,8 +61,8 @@ export const lockBottom = async (req, res) => {
         const address = 5;
         const value = 1;
         //const log = await client.writeRegister(address,value);
-        PayloadData.push({id:1,address:address,value:value});
-        await new Promise(resolve => setTimeout(function () { return resolve(); }, 100));
+        PayloadData.push({id:idLockBottom,address:address,value:value});
+//        await new Promise(resolve => setTimeout(function () { return resolve(); }, 100));
 //        const data = await client.readHoldingRegisters(address, 8);
 //        console.log({ log: log, data: data });
        /*  if (value === 1) {

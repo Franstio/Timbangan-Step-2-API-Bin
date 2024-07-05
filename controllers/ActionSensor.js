@@ -173,6 +173,17 @@ let PayloadData =[];
 export const pushPayloadData =(data)=>{
     PayloadData.push(data);
 }
+const executePayload = async ()=>{
+    
+    const s = [...PayloadData];
+    for (let i= 0;i<s.length;i++)
+    {
+        await client.setID(s[i].id);
+        await client.writeRegister(s[i].address,s[i].value);
+//            await new Promise((resolve)=>setTimeout(resolve,1));
+    }
+    PayloadData = [];
+}
 export const observeSensor = async (_io)=>  {
     while(true)
     {
@@ -183,16 +194,9 @@ export const observeSensor = async (_io)=>  {
                 console.log("modbus open");
             });
         }
-        
-        const s = [...PayloadData];
-        for (let i= 0;i<s.length;i++)
-        {
-            await client.setID(s[i].id);
-            await client.writeRegister(s[i].address,s[i].value);
-//            await new Promise((resolve)=>setTimeout(resolve,1));
-        }
-        PayloadData = [];
+        await executePayload();
         await checkLampRed();
+        await executePayload();
         const topRes = await client.readHoldingRegisters(0, 1);
        // await new Promise((resolve)=> setTimeout(resolve,100));
         const bottomRes = await client.readHoldingRegisters(1,1);
@@ -203,6 +207,7 @@ export const observeSensor = async (_io)=>  {
         const lockbottom = await client.readHoldingRegisters(5,1);
         const topResValue = topRes.data[0];
         const bottomResValue = bottomRes.data[0];
+        await executePayload();
         console.log("topres value: "+topResValue+" ,bottomres value: " + bottomResValue + ", target top:" + topSensor + " , target bottom: " + bottomSensor);
         console.log([topResValue,bottomResValue,redLamp.data[0],yellowLamp.data[0],greenLamp.data[0],locktop.data[0],lockbottom.data[0]]);
         _io.emit("sensorUpdate",[topResValue,bottomResValue,redLamp.data[0],yellowLamp.data[0],greenLamp.data[0],locktop.data[0],lockbottom.data[0]]);
@@ -226,6 +231,7 @@ export const observeSensor = async (_io)=>  {
     }
     finally
     {
+        await executePayload();
         await new Promise((resolve)=> setTimeout(resolve,10) );
     }
 }
