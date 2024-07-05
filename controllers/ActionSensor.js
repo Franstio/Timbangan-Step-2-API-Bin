@@ -188,9 +188,9 @@ const executePayload = async ()=>{
 const dataSensor = [0,0,0,0,0,0,0];
 const updateSensor = async (index,newData,_io) =>
 {
+    await executePayload();
     if (index < 0 || index > dataSensor-1)
         return;
-    client.setID(1);
     dataSensor[index] = newData;
     _io.emit("sensorUpdate",dataSensor);    const topResValue = dataSensor[0];
     const bottomResValue = dataSensor[1];
@@ -208,7 +208,6 @@ const updateSensor = async (index,newData,_io) =>
 
         _io.emit(target,true);
     }
-    await executePayload();
 }
 export const observeSensor = async (_io)=>  {
     while(true)
