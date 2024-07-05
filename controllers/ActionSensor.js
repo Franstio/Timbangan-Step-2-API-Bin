@@ -189,6 +189,7 @@ const updateSensor = async (index,newData,_io) =>
 {
     if (index < 0 || index > dataSensor-1)
         return;
+    client.setID(1);
     dataSensor[index] = newData;
     _io.emit("sensorUpdate",dataSensor);    const topResValue = dataSensor[0];
     const bottomResValue = dataSensor[1];
@@ -212,13 +213,14 @@ export const observeSensor = async (_io)=>  {
     while(true)
     {
     try {
+        await executePayload();
+        
         client.setID(1);
         if (!client.isOpen) {
             client.open(() => {
                 console.log("modbus open");
             });
         }
-        await executePayload();
         await checkLampRed();
         const topRes = await client.readHoldingRegisters(0, 1);
         await updateSensor(0, topRes.data[0],_io);
