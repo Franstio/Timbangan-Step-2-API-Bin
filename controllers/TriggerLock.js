@@ -1,11 +1,7 @@
-import ModbusRTU from 'modbus-serial';
-const client = new ModbusRTU();
-client.connectRTU("/dev/ttyUSB0", { baudRate: 9600 });
-client.setTimeout(5000); 
+
 import os from 'os';
 import { pushPayloadData } from './ActionSensor.js';
-export default client;
-
+import client from './plcClient.js';
 
 export const lockTop = async (req, res) => {
     let c = 0;

@@ -1,4 +1,4 @@
-import client from '../controllers/TriggerLock.js';
+import client from './plcClient.js';
 import { io } from '../index.js';
 import { checkLampRed } from './Bin.js';
 client.setTimeout(5000);
