@@ -17,11 +17,10 @@ export const switchLamp = async (id, lampType, isAlive) => {
     catch (error) {
         console.log([error, id, lampType, address, isAlive]);
     }
-    await new Promise(resolve => setTimeout(function () { return resolve(); }, 100));
+    await new Promise(resolve => setTimeout(function () { return resolve(); }, 10));
 };
 
 export const checkLampRed = async () => {
-    while (true) {
         try {
             const response = await axios.get(`http://2-PCL.local:5000/getbinData?hostname=${os.hostname()}`, { withCredentials: false });
             const bin = response.data.bin;
@@ -42,8 +41,8 @@ export const checkLampRed = async () => {
         }
 
         // Menambahkan delay untuk mencegah request yang berlebihan
-        await new Promise(resolve => setTimeout(resolve, 1000));
-    }
+//        await new Promise(resolve => setTimeout(resolve, 1000));
+    
 };
 
 export const checkLampYellow = async () => {
