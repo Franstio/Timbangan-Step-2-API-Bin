@@ -42,7 +42,7 @@ export const checkLampRed = async () => {
         }
 
         // Menambahkan delay untuk mencegah request yang berlebihan
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise(resolve => setTimeout(resolve, 1000));
     }
 };
 
@@ -63,7 +63,7 @@ export const checkLampYellow = async () => {
         }
 
         // Menambahkan delay untuk mencegah request yang berlebihan
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise(resolve => setTimeout(resolve, 1000));
     }
 };
 
