@@ -22,7 +22,7 @@ export const switchLamp = async (id, lampType, isAlive) => {
 
 export const checkLampRed = async () => {
         try {
-            const response = await axios.get(`http://2-PCL.local:5000/getbinData?hostname=${os.hostname()}`, { withCredentials: false,timeout: 100 });
+            const response = await axios.get(`http://2-PCL.local:5000/getbinData?hostname=${os.hostname()}`, { withCredentials: false,timeout: 1000 });
             const bin = response.data.bin;
                 
             console.log({ weight :bin.weight,max:bin.max_weight });
