@@ -182,6 +182,7 @@ const executePayload = async ()=>{
         await client.writeRegister(s[i].address,s[i].value);
 //            await new Promise((resolve)=>setTimeout(resolve,1));
     }
+    client.setID(1);
     PayloadData = [];
 }
 const dataSensor = [0,0,0,0,0,0,0];
@@ -222,6 +223,7 @@ export const observeSensor = async (_io)=>  {
             });
         }
         await checkLampRed();
+        
         const topRes = await client.readHoldingRegisters(0, 1);
         await updateSensor(0, topRes.data[0],_io);
        // await new Promise((resolve)=> setTimeout(resolve,100));
