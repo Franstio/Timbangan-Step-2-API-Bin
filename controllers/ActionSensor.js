@@ -181,7 +181,7 @@ export const observeSensor = async (_io)=>  {
             });
         }
         
-        checkLampRed();
+        await checkLampRed();
         const topRes = await client.readHoldingRegisters(0, 1);
        // await new Promise((resolve)=> setTimeout(resolve,100));
         const bottomRes = await client.readHoldingRegisters(1,1);
