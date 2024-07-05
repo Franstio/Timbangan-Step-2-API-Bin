@@ -169,8 +169,10 @@ export const observeTopSensorIndicator = async (req, res) => {
     res.status(200).json({msg:'ok'});
 }
 */
-export let PayloadData =[];
-
+let PayloadData =[];
+export const pushPayloadData =(data)=>{
+    PayloadData.push(data);
+}
 export const observeSensor = async (_io)=>  {
     while(true)
     {
