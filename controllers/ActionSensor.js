@@ -184,6 +184,30 @@ const executePayload = async ()=>{
     }
     PayloadData = [];
 }
+const dataSensor = [0,0,0,0,0,0,0];
+const updateSensor = async (index,newData,_io) =>
+{
+    if (index < 0 || index > dataSensor-1)
+        return;
+    dataSensor[index] = newData;
+    _io.emit("sensorUpdate",dataSensor);    const topResValue = dataSensor[0];
+    const bottomResValue = dataSensor[1];
+    if (topSensor != null && topResValue == topSensor )
+    {
+        const target = 'target-top-'+topSensor;
+        topSensor= null;
+//            clearInterval(idInterval);
+        _io.emit(target,true);
+    }
+    if ( bottomSensor != null && bottomResValue == bottomSensor )
+    {
+        const target = 'target-'+bottomSensor;
+        bottomSensor = null;
+
+        _io.emit(target,true);
+    }
+    await executePayload();
+}
 export const observeSensor = async (_io)=>  {
     while(true)
     {
@@ -196,41 +220,30 @@ export const observeSensor = async (_io)=>  {
         }
         await executePayload();
         await checkLampRed();
-        await executePayload();
         const topRes = await client.readHoldingRegisters(0, 1);
+        await updateSensor(topRes.data[0]);
        // await new Promise((resolve)=> setTimeout(resolve,100));
         const bottomRes = await client.readHoldingRegisters(1,1);
+        await updateSensor(bottomRes.data[0]);
         const redLamp = await client.readHoldingRegisters(6,1);
+        await updateSensor(redLamp.data[0]);
         const yellowLamp = await client.readHoldingRegisters(7,1);
+        await updateSensor(yellowLamp.data[0]);
         const greenLamp = await client.readHoldingRegisters(8,1);
-        const locktop = await client.readHoldingRegisters(4,1);
+        await updateSensor(greenLamp.data[0]);
         const lockbottom = await client.readHoldingRegisters(5,1);
-        const topResValue = topRes.data[0];
+        await updateSensor(lockbottom.data[0]);
+/*        const topResValue = topRes.data[0];
         const bottomResValue = bottomRes.data[0];
         console.log("topres value: "+topResValue+" ,bottomres value: " + bottomResValue + ", target top:" + topSensor + " , target bottom: " + bottomSensor);
         console.log([topResValue,bottomResValue,redLamp.data[0],yellowLamp.data[0],greenLamp.data[0],locktop.data[0],lockbottom.data[0]]);
-        _io.emit("sensorUpdate",[topResValue,bottomResValue,redLamp.data[0],yellowLamp.data[0],greenLamp.data[0],locktop.data[0],lockbottom.data[0]]);
-        if (topSensor != null && topResValue == topSensor )
-        {
-            const target = 'target-top-'+topSensor;
-            topSensor= null;
-//            clearInterval(idInterval);
-            _io.emit(target,true);
-        }
-        if ( bottomSensor != null && bottomResValue == bottomSensor )
-        {
-            const target = 'target-'+bottomSensor;
-            bottomSensor = null;
-
-            _io.emit(target,true);
-        }
+        _io.emit("sensorUpdate",[topResValue,bottomResValue,redLamp.data[0],yellowLamp.data[0],greenLamp.data[0],locktop.data[0],lockbottom.data[0]]);*/
     }
     catch (err) {
         console.log(err);
     }
     finally
     {
-        await executePayload();
         await new Promise((resolve)=> setTimeout(resolve,10) );
     }
 }
