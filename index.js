@@ -46,8 +46,5 @@ app.use(SensorRoute);
 server.listen(port, () => {
   console.log(`Server up and running on port ${port}`);
 });
-checkLampRed();
-//checkLampYellow();
 observeSensor(io);
-//checkLampYellow();
 export {io};

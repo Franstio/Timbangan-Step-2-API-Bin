@@ -173,13 +173,25 @@ let PayloadData =[];
 export const pushPayloadData =(data)=>{
     PayloadData.push(data);
 }
+const writeCmd = async (data) => {
+    try
+    {
+        client.setID(data.id);
+        await client.writeRegister(data.address,data.value);
+        return;
+    }
+    catch(err)
+    {
+        await new Promise((resolve) => setTimeout(resolve,10));
+        await writeCmd(data);
+    }
+}
 const executePayload = async ()=>{
     
     const s = [...PayloadData];
     for (let i= 0;i<s.length;i++)
     {
-        client.setID(s[i].id);
-        await client.writeRegister(s[i].address,s[i].value);
+        await writeCmd(s[i]);
 //            await new Promise((resolve)=>setTimeout(resolve,1));
     }
     client.setID(1);
@@ -210,34 +222,49 @@ const updateSensor = async (index,newData,_io) =>
         _io.emit(target,true);
     }
 }
+const readCmd =  async (address,val) =>
+{
+    let _res=0;
+    try
+    {
+        _res = await client.readHoldingRegisters(address, val);
+        return _res;
+    }
+    catch
+    {
+        await new Promise((resolve) => setTimeout(resolve,10));
+        return await readCmd(address,val);
+    }
+}
 export const observeSensor = async (_io)=>  {
+    if (!client.isOpen) {
+        client.open(() => {
+            console.log("modbus open");
+        });
+    }
     while(true)
     {
     try {
         await executePayload();
         
         client.setID(1);
-        if (!client.isOpen) {
-            client.open(() => {
-                console.log("modbus open");
-            });
-        }
+        
         await checkLampRed();
         
-        const topRes = await client.readHoldingRegisters(0, 1);
+        const topRes = await readCmd(0, 1);
         await updateSensor(0, topRes.data[0],_io);
        // await new Promise((resolve)=> setTimeout(resolve,100));
-        const bottomRes = await client.readHoldingRegisters(1,1);
+        const bottomRes = await readCmd(1,1);
         await updateSensor(1,bottomRes.data[0],_io);
-        const redLamp = await client.readHoldingRegisters(6,1);
+        const redLamp = await readCmd(6,1);
         await updateSensor(2,redLamp.data[0],_io);
-        const yellowLamp = await client.readHoldingRegisters(7,1);
+        const yellowLamp = await readCmd(7,1);
         await updateSensor(3,yellowLamp.data[0],_io);
-        const greenLamp = await client.readHoldingRegisters(8,1);
+        const greenLamp = await readCmd(8,1);
         await updateSensor(4,greenLamp.data[0],_io);
-        const locktop = await client.readHoldingRegisters(4,1);
+        const locktop = await readCmd(4,1);
         await updateSensor(5,locktop.data[0],_io);
-        const lockbottom = await client.readHoldingRegisters(5,1);
+        const lockbottom = await readCmd(5,1);
         await updateSensor(6,lockbottom.data[0],_io);
 
 /*        const topResValue = topRes.data[0];
