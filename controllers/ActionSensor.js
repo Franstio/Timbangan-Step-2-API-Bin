@@ -216,6 +216,7 @@ export const observeSensor = async (_io)=>  {
             await client.writeRegister(s[i].address,s[i].value);
             await new Promise((resolve)=>setTimeout(resolve,1));
         }
+        PayloadData = [];
     }
     catch (err) {
         console.log(err);
