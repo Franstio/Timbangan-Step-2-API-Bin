@@ -3,6 +3,7 @@ const client = new ModbusRTU();
 client.connectRTU("/dev/ttyUSB0", { baudRate: 9600 });
 client.setTimeout(5000); 
 import os from 'os';
+import { PayloadData } from './ActionSensor';
 export default client;
 
 
@@ -23,7 +24,9 @@ export const lockTop = async (req, res) => {
         }
         const address = 4;
         const value = 1;
-        const log = await client.writeRegister(address,value);
+//        const log = await client.writeRegister(address,value);
+
+        PayloadData.push({id:1,address:address,value:value});
         await new Promise(resolve => setTimeout(function () { return resolve(); }, 100));
 //        const data = await client.readHoldingRegisters(address, 8);
 //        console.log({ log: log, data: data });
@@ -61,8 +64,8 @@ export const lockBottom = async (req, res) => {
         }
         const address = 5;
         const value = 1;
-        const log = await client.writeRegister(address,value);
-        
+        //const log = await client.writeRegister(address,value);
+        PayloadData.push({id:1,address:address,value:value});
         await new Promise(resolve => setTimeout(function () { return resolve(); }, 100));
 //        const data = await client.readHoldingRegisters(address, 8);
 //        console.log({ log: log, data: data });

@@ -169,6 +169,7 @@ export const observeTopSensorIndicator = async (req, res) => {
     res.status(200).json({msg:'ok'});
 }
 */
+export let PayloadData =[];
 
 export const observeSensor = async (_io)=>  {
     while(true)
@@ -180,7 +181,6 @@ export const observeSensor = async (_io)=>  {
                 console.log("modbus open");
             });
         }
-        
         await checkLampRed();
         const topRes = await client.readHoldingRegisters(0, 1);
        // await new Promise((resolve)=> setTimeout(resolve,100));
@@ -208,6 +208,13 @@ export const observeSensor = async (_io)=>  {
             bottomSensor = null;
 
             _io.emit(target,true);
+        }
+        const s = [...PayloadData];
+        for (let i= 0;i<s.length;i++)
+        {
+            await client.setID(s[i].id);
+            await client.writeRegister(s[i].address,s[i].value);
+            await new Promise((resolve)=>setTimeout(resolve,1));
         }
     }
     catch (err) {
