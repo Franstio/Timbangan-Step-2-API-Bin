@@ -1,3 +1,4 @@
+import { pushPayloadData } from "./ActionSensor.js";
 import client from "./plcClient.js";
 client.setTimeout(5000);
 
@@ -7,16 +8,17 @@ export const REDLampOn = async (req, res) => {
         console.log(idLockTop);
         //console.log({id: idRollingDoor});
 
-        client.setID(idLockTop);
-        if (!client.isOpen) {
+   //     client.setID(idLockTop);
+     /*   if (!client.isOpen) {
             client.open(() => {
                 console.log("modbus open");
             });
-        }
+        }*/
         const address = 6;
         const value = 1;
-        const log = await client.writeRegister(address, value);
-        await new Promise(resolve => setTimeout(function () { return resolve(); }, 10));
+        pushPayloadData({id:idLockTop,address:address,value:value});
+//        const log = await client.writeRegister(address, value);
+       // await new Promise(resolve => setTimeout(function () { return resolve(); }, 10));
         //        const data = await client.readHoldingRegisters(address, 8);
         //        console.log({ log: log, data: data });
         /*  if (value === 1) {
@@ -34,19 +36,19 @@ export const REDLampOn = async (req, res) => {
 export const REDLampOff = async (req, res) => {
     try {
         const { idLockTop } = req.body;
-        console.log(idLockTop);
+        /*console.log(idLockTop);
         //console.log({id: idRollingDoor});
 
-        client.setID(idLockTop);
+  //      client.setID(idLockTop);
         if (!client.isOpen) {
             client.open(() => {
                 console.log("modbus open");
             });
-        }
+        }*/
         const address = 6;
         const value = 0;
-        const log = await client.writeRegister(address, value);
-        await new Promise(resolve => setTimeout(function () { return resolve(); }, 10));
+        pushPayloadData({id:idLockTop,address:address,value:value});
+//        await new Promise(resolve => setTimeout(function () { return resolve(); }, 10));
         //        const data = await client.readHoldingRegisters(address, 8);
         //        console.log({ log: log, data: data });
         /*  if (value === 1) {
@@ -64,7 +66,7 @@ export const REDLampOff = async (req, res) => {
 export const YELLOWLampOn = async (req, res) => {
     try {
         const { idLampYellow } = req.body;
-        console.log(idLampYellow);
+        /*console.log(idLampYellow);
         //console.log({id: idRollingDoor});
 
         client.setID(idLampYellow);
@@ -72,11 +74,13 @@ export const YELLOWLampOn = async (req, res) => {
             client.open(() => {
                 console.log("modbus open");
             });
-        }
+        }*/
         const address = 7;
         const value = 1;
-        const log = await client.writeRegister(address, value);
-        await new Promise(resolve => setTimeout(function () { return resolve(); }, 10));
+        
+        pushPayloadData({id:idLampYellow,address:address,value:value});
+//        const log = await client.writeRegister(address, value);
+//        await new Promise(resolve => setTimeout(function () { return resolve(); }, 10));
         //        const data = await client.readHoldingRegisters(address, 8);
         //        console.log({ log: log, data: data });
         /*  if (value === 1) {
@@ -94,7 +98,7 @@ export const YELLOWLampOn = async (req, res) => {
 export const YELLOWLampOff = async (req, res) => {
     try {
         const { idLampYellow } = req.body;
-        console.log(idLampYellow);
+        /*console.log(idLampYellow);
         //console.log({id: idRollingDoor});
 
         client.setID(idLampYellow);
@@ -102,11 +106,12 @@ export const YELLOWLampOff = async (req, res) => {
             client.open(() => {
                 console.log("modbus open");
             });
-        }
+        }*/
         const address = 7;
         const value = 0;
-        const log = await client.writeRegister(address, value);
-        await new Promise(resolve => setTimeout(function () { return resolve(); }, 10));
+        pushPayloadData({id:idLampYellow,address:address,value:value});
+//        const log = await client.writeRegister(address, value);
+//        await new Promise(resolve => setTimeout(function () { return resolve(); }, 10));
         //        const data = await client.readHoldingRegisters(address, 8);
         //        console.log({ log: log, data: data });
         /*  if (value === 1) {
@@ -130,19 +135,21 @@ export const GREENLampOn = async (req, res) => {
     try {
 
         const { idLampGreen } = req.body;
-        console.log(idLampGreen);
+        /*console.log(idLampGreen);
         client.setID(idLampGreen);
         if (!client.isOpen) {
             client.open(() => {
                 console.log("modbus open");
             });
-        }
+        }*/
         const address = 8;
         const value = 1;
-        const log = await client.writeRegister(address, value);
+        //const log = await client.writeRegister(address, value);
+        
+        pushPayloadData({id:idLampGreen,address:address,value:value});
         err = undefined;
         _continue = false;
-        await new Promise(resolve => setTimeout(function () { return resolve(); }, 10));
+        //await new Promise(resolve => setTimeout(function () { return resolve(); }, 10));
         //        const data = await client.readHoldingRegisters(address, 8);
         //        console.log({ log: log, data: data });
         /*  if (value === 1) {
@@ -172,19 +179,20 @@ export const GREENLampOff = async (req, res) => {
     try {
 
         const { idLampGreen } = req.body;
-        console.log(idLampGreen);
+/*        console.log(idLampGreen);
         client.setID(idLampGreen);
         if (!client.isOpen) {
             client.open(() => {
                 console.log("modbus open");
             });
-        }
+        }*/
         const address = 8;
         const value = 0;
-        const log = await client.writeRegister(address, value);
+        pushPayloadData({id:idLampGreen,address:address,value:value});
+//        const log = await client.writeRegister(address, value);
         err = undefined;
         _continue = false;
-        await new Promise(resolve => setTimeout(function () { return resolve(); }, 10));
+        //await new Promise(resolve => setTimeout(function () { return resolve(); }, 10));
         //        const data = await client.readHoldingRegisters(address, 8);
         //        console.log({ log: log, data: data });
         /*  if (value === 1) {
@@ -212,12 +220,13 @@ export const switchLamp = async (id, lampType, isAlive) => {
         "YELLOW": 7
     };
     const address = dict[lampType];
-    client.setID(id);
+//    client.setID(id);
     try {
-        await client.writeRegister(address, isAlive ? 1 : 0);
+        pushPayloadData({id:id,address:address,value: isAlive ? 1 : 0});
+//        await client.writeRegister(address, isAlive ? 1 : 0);
     }
     catch (error) {
         console.log([error, id, lampType, address, isAlive]);
     }
-    await new Promise(resolve => setTimeout(function () { return resolve(); }, 10));
+//    await new Promise(resolve => setTimeout(function () { return resolve(); }, 10));
 }

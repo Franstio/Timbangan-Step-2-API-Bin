@@ -178,7 +178,7 @@ const executePayload = async ()=>{
     const s = [...PayloadData];
     for (let i= 0;i<s.length;i++)
     {
-        await client.setID(s[i].id);
+        client.setID(s[i].id);
         await client.writeRegister(s[i].address,s[i].value);
 //            await new Promise((resolve)=>setTimeout(resolve,1));
     }
@@ -192,7 +192,8 @@ const updateSensor = async (index,newData,_io) =>
     if (index < 0 || index > dataSensor-1)
         return;
     dataSensor[index] = newData;
-    _io.emit("sensorUpdate",dataSensor);    const topResValue = dataSensor[0];
+    _io.emit("sensorUpdate",dataSensor);    
+    const topResValue = dataSensor[0];
     const bottomResValue = dataSensor[1];
     if (topSensor != null && topResValue == topSensor )
     {
