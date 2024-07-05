@@ -17,7 +17,7 @@ export const switchLamp = async (id, lampType, isAlive) => {
     catch (error) {
         console.log([error, id, lampType, address, isAlive]);
     }
-    await new Promise(resolve => setTimeout(function () { return resolve(); }, 5000));
+    await new Promise(resolve => setTimeout(function () { return resolve(); }, 100));
 };
 
 export const checkLampRed = async () => {
@@ -42,7 +42,7 @@ export const checkLampRed = async () => {
         }
 
         // Menambahkan delay untuk mencegah request yang berlebihan
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise(resolve => setTimeout(resolve, 100));
     }
 };
 
@@ -63,7 +63,7 @@ export const checkLampYellow = async () => {
         }
 
         // Menambahkan delay untuk mencegah request yang berlebihan
-        await new Promise(resolve => setTimeout(resolve, 5000));
+        await new Promise(resolve => setTimeout(resolve, 100));
     }
 };
 
