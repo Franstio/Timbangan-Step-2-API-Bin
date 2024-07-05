@@ -1,7 +1,7 @@
 
 import os from 'os';
 import { pushPayloadData } from './ActionSensor.js';
-import client from './plcClient';
+import client from './plcClient.js';
 
 export const lockTop = async (req, res) => {
     let c = 0;

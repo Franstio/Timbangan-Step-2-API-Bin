@@ -1,5 +1,5 @@
 import axios from 'axios';
-import client from './plcClient';
+import client from './plcClient.js';
 import os from 'os';
 import { io } from '../index.js';
 
