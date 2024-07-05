@@ -200,7 +200,6 @@ const executePayload = async ()=>{
 const dataSensor = [0,0,0,0,0,0,0];
 const updateSensor = async (index,newData,_io) =>
 {
-    await executePayload();
     if (index < 0 || index > dataSensor-1)
         return;
     dataSensor[index] = newData;
@@ -221,6 +220,7 @@ const updateSensor = async (index,newData,_io) =>
 
         _io.emit(target,true);
     }
+    await executePayload();
 }
 const readCmd =  async (address,val) =>
 {
