@@ -12,12 +12,12 @@ export const lockTop = async (req, res) => {
         console.log(idLockTop);
 	//console.log({id: idRollingDoor});
 
-       client.setID(idLockTop);
+       /*client.setID(idLockTop);
         if (!client.isOpen) {
             client.open( () => {
                 console.log("modbus open");
            });
-        }
+        }*/
         const address = 4;
         const value = 1;
 //        const log = await client.writeRegister(address,value);
@@ -52,12 +52,12 @@ export const lockBottom = async (req, res) => {
         const {idLockBottom} = req.body;
 	//console.log({id: idRollingDoor});
 
-       client.setID(idLockBottom);
+      /* client.setID(idLockBottom);
         if (!client.isOpen) {
             client.open( () => {
                 console.log("modbus open");
            });
-        }
+        }*/
         const address = 5;
         const value = 1;
         //const log = await client.writeRegister(address,value);
