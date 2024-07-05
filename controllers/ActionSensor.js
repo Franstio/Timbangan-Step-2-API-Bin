@@ -1,7 +1,7 @@
 import client from './plcClient.js';
 import { io } from '../index.js';
 import { checkLampRed } from './Bin.js';
-client.setTimeout(5000);
+client.setTimeout(3000);
 
 let bottomSensor=null;
 let topSensor=null;
@@ -19,7 +19,7 @@ export const SensorTop = async (req, res) => {
 
         const address = 0;
 
-        const response = await client.readHoldingRegisters(address, 1);
+        const response = await readCmd(address, 1);
         receivedValue = response.data[0];
 
         res.status(200).json({ sensorTop: receivedValue });
@@ -42,7 +42,7 @@ export const SensorBottom = async (req, res) => {
 
         const address = 1;
 
-        const response = await client.readHoldingRegisters(address, 1);
+        const response = await readCmd(address, 1);
         const receivedValue = response.data[0];
 
         res.status(200).json({ sensorBottom: receivedValue });
