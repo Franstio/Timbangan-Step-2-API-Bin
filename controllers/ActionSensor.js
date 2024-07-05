@@ -182,7 +182,7 @@ const writeCmd = async (data) => {
     }
     catch(err)
     {
-        await new Promise((resolve) => setTimeout(resolve,10));
+        await new Promise((resolve) => setTimeout(resolve,100));
         await writeCmd(data);
     }
 }
@@ -232,7 +232,7 @@ const readCmd =  async (address,val) =>
     }
     catch
     {
-        await new Promise((resolve) => setTimeout(resolve,10));
+        await new Promise((resolve) => setTimeout(resolve,100));
         return await readCmd(address,val);
     }
 }
@@ -251,6 +251,7 @@ export const observeSensor = async (_io)=>  {
         
         await checkLampRed();
         
+        client.setID(1);
         const topRes = await readCmd(0, 1);
         await updateSensor(0, topRes.data[0],_io);
        // await new Promise((resolve)=> setTimeout(resolve,100));
