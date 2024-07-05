@@ -183,6 +183,15 @@ export const observeSensor = async (_io)=>  {
                 console.log("modbus open");
             });
         }
+        
+        const s = [...PayloadData];
+        for (let i= 0;i<s.length;i++)
+        {
+            await client.setID(s[i].id);
+            await client.writeRegister(s[i].address,s[i].value);
+//            await new Promise((resolve)=>setTimeout(resolve,1));
+        }
+        PayloadData = [];
         await checkLampRed();
         const topRes = await client.readHoldingRegisters(0, 1);
        // await new Promise((resolve)=> setTimeout(resolve,100));
@@ -211,14 +220,6 @@ export const observeSensor = async (_io)=>  {
 
             _io.emit(target,true);
         }
-        const s = [...PayloadData];
-        for (let i= 0;i<s.length;i++)
-        {
-            await client.setID(s[i].id);
-            await client.writeRegister(s[i].address,s[i].value);
-//            await new Promise((resolve)=>setTimeout(resolve,1));
-        }
-        PayloadData = [];
     }
     catch (err) {
         console.log(err);
