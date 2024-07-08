@@ -9,7 +9,8 @@ import { checkLampRed,checkLampYellow } from "./controllers/Bin.js";
 import SensorRoute from "./routes/SensorRoute.js"
 import { Server } from "socket.io";
 import { observeSensor } from "./controllers/ActionSensor.js";
-
+import { config } from "dotenv";
+config()
 const app = express();
 const server = http.createServer(app);
 
