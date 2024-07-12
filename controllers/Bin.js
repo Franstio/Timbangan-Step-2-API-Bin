@@ -53,8 +53,10 @@ export const checkLampRed = async () => {
                 
             console.log({ weight :bin.weight,max:bin.max_weight });
             const limit = (parseFloat(bin.max_weight) /100) * 90;
+            const greenStatus = await ReadCmd(8,1);
+
             const overLimit = parseFloat(bin.weight) >= parseFloat(bin.max_weight); 
-            await switchLamp(bin.id, 'YELLOW', !overLimit  );
+            await switchLamp(bin.id, 'YELLOW', (greenStatus.data[0] == 0 &&  !overLimit)  );
             await switchLamp(bin.id,'RED',parseFloat(bin.weight) >= limit);
         } catch (error) {
             console.error('Error fetching bin data:', error);
