@@ -189,13 +189,13 @@ const writeCmd = async (data) => {
 const executePayload = async ()=>{
     
     const s = [...PayloadData];
+    PayloadData = [];
     for (let i= 0;i<s.length;i++)
     {
         await writeCmd(s[i]);
 //            await new Promise((resolve)=>setTimeout(resolve,1));
     }
     client.setID(1);
-    PayloadData = [];
 }
 const dataSensor = [0,0,0,0,0,0,0];
 const updateSensor = async (index,newData,_io) =>

@@ -10,16 +10,42 @@ export const switchLamp = async (id, lampType, isAlive) => {
         "GREEN": 8
     };
     const address = dict[lampType];
-    client.setID(1);
+//    client.setID(1);
     try {
-        await client.writeRegister(address, isAlive ? 1 : 0);
+        await WriteCmd({id:1,address:address,value: isAlive ? 1 : 0});
     }
     catch (error) {
         console.log([error, id, lampType, address, isAlive]);
     }
 //    await new Promise(resolve => setTimeout(function () { return resolve(); }, 10));
 };
-
+const ReadCmd =  async (address,val) =>
+{
+    let _res=0;
+    try
+    {
+        _res = await client.readHoldingRegisters(address, val);
+        return _res;
+    }
+    catch
+    {
+        await new Promise((resolve) => setTimeout(resolve,100));
+        return await ReadCmd(address,val);
+    }
+}
+const WriteCmd = async (data) => {
+    try
+    {
+        client.setID(data.id);
+        await client.writeRegister(data.address,data.value);
+        return;
+    }
+    catch(err)
+    {
+        await new Promise((resolve) => setTimeout(resolve,100));
+        await WriteCmd(data);
+    }
+}
 export const checkLampRed = async () => {
         try {
             const response = await axios.get(`http://${process.env.TIMBANGAN}/getbinData?hostname=${os.hostname()}`, { withCredentials: false,timeout: 2500 });
@@ -27,15 +53,9 @@ export const checkLampRed = async () => {
                 
             console.log({ weight :bin.weight,max:bin.max_weight });
             const limit = (parseFloat(bin.max_weight) /100) * 90;
-            if (bin && parseFloat(bin.weight) >= limit) {
-                //console.log("Turn on Red");
-                await switchLamp(bin.id, 'RED', true);
-                await switchLamp(bin.id, 'YELLOW', false);
-            } else {
-                //console.log("Turn off Red");
-                await switchLamp(bin.id, 'RED', false);
-                await switchLamp(bin.id, 'YELLOW', true);
-            }
+            const overLimit = parseFloat(bin.weight) >= parseFloat(bin.max_weight); 
+            await switchLamp(bin.id, 'YELLOW', !overLimit  );
+            await switchLamp(bin.id,'RED',parseFloat(bin.weight) >= limit);
         } catch (error) {
             console.error('Error fetching bin data:', error);
         }
