@@ -204,7 +204,6 @@ const updateSensor = async (index,newData,_io) =>
     if (index < 0 || index > dataSensor-1)
         return;
     dataSensor[index] = newData;
-    console.log({sensor:dataSensor});
     _io.emit("sensorUpdate",dataSensor);    
     const topResValue = dataSensor[0];
     const bottomResValue = dataSensor[1];
