@@ -9,13 +9,10 @@ export const lockTop = async (req, res) => {
     do{
     try {
         const {idLockTop} = req.body;
-        console.log(idLockTop);
-	//console.log({id: idRollingDoor});
 
        /*client.setID(idLockTop);
         if (!client.isOpen) {
             client.open( () => {
-                console.log("modbus open");
            });
         }*/
         const address = 4;
@@ -25,7 +22,6 @@ export const lockTop = async (req, res) => {
         pushPayloadData({id:idLockTop,address:address,value:value});
 //        await new Promise(resolve => setTimeout(function () { return resolve(); }, 100));
 //        const data = await client.readHoldingRegisters(address, 8);
-//        console.log({ log: log, data: data });
        /*  if (value === 1) {
             res.status(200).json({ msg: `Top Lock diBuka` });
         } else {
@@ -50,12 +46,10 @@ export const lockBottom = async (req, res) => {
     {
     try {
         const {idLockBottom} = req.body;
-	//console.log({id: idRollingDoor});
 
       /* client.setID(idLockBottom);
         if (!client.isOpen) {
             client.open( () => {
-                console.log("modbus open");
            });
         }*/
         const address = 5;
@@ -64,7 +58,6 @@ export const lockBottom = async (req, res) => {
         pushPayloadData({id:idLockBottom,address:address,value:value});
 //        await new Promise(resolve => setTimeout(function () { return resolve(); }, 100
 //        const data = await client.readHoldingRegisters(address, 8);
-//        console.log({ log: log, data: data });
        /*  if (value === 1) {
             res.status(200).json({ msg: `Top Lock diBuka` });
         } else {

@@ -7,13 +7,11 @@ let bottomSensor=null;
 let topSensor=null;
 export const SensorTop = async (req, res) => {
     const { SensorTopId } = req.body;
-    console.log(SensorTopId);
     let receivedValue = null;
     try {
         client.setID(SensorTopId);
         if (!client.isOpen) {
             client.open(() => {
-                console.log("modbus open");
             });
         }
 
@@ -24,19 +22,16 @@ export const SensorTop = async (req, res) => {
 
         res.status(200).json({ sensorTop: receivedValue });
     } catch (error) {
-        console.log(error);
         res.status(200).json({ sensorTop: receivedValue });
     }
 };
 
 export const SensorBottom = async (req, res) => {
     const { SensorBottomId } = req.body;
-    console.log(SensorBottomId);
     try {
         client.setID(SensorBottomId);
         if (!client.isOpen) {
             client.open(() => {
-                console.log("modbus open");
             });
         }
 
@@ -64,7 +59,6 @@ export const observeBottomSensor = async (req, res) => {
         try {
             if (!client.isOpen) {
                 client.open(() => {
-                    console.log("modbus open");
                 });
             }
             
@@ -72,7 +66,6 @@ export const observeBottomSensor = async (req, res) => {
 
             const response = await client.readHoldingRegisters(address, 1);
             const receivedValue = response.data[0];
-            console.log("received value: "+receivedValue+", target: " + readTarget);
             if (receivedValue == readTarget)
             {
                 clearInterval(bottomIdInterval);
@@ -84,7 +77,6 @@ export const observeBottomSensor = async (req, res) => {
             }
         }
         catch (err) {
-            console.log(err);
         }
     }, 1000);*/
     res.status(200).json({msg:'ok'});
@@ -102,7 +94,6 @@ export const observeTopSensor = async (req, res) => {
         try {
             if (!client.isOpen) {
                 client.open(() => {
-                    console.log("modbus open");
                 });
             }
             
@@ -110,7 +101,6 @@ export const observeTopSensor = async (req, res) => {
 
             const response = await client.readHoldingRegisters(address, 1);
             const receivedValue = response.data[0];
-            console.log("received value: "+receivedValue+", target: " + readTargetTop);
             if (receivedValue == readTargetTop)
             {
                 clearInterval(topIdInterval);
@@ -121,7 +111,6 @@ export const observeTopSensor = async (req, res) => {
             }
         }
         catch (err) {
-            console.log(err);
         }
     }, 1000);*/
     res.status(200).json({msg:'ok'});
@@ -145,7 +134,6 @@ export const observeTopSensorIndicator = async (req, res) => {
         try {
             if (!client.isOpen) {
                 client.open(() => {
-                    console.log("modbus open");
                 });
             }
             
@@ -153,7 +141,6 @@ export const observeTopSensorIndicator = async (req, res) => {
 
             const response = await client.readHoldingRegisters(address, 1);
             const receivedValue = response.data[0];
-            console.log("received value: "+receivedValue+", target: " + readTargetTop);
             if (receivedValue == readTargetTop)
             {
                 io.emit('target-top-'+readTargetTop,true);
@@ -163,7 +150,6 @@ export const observeTopSensorIndicator = async (req, res) => {
             }
         }
         catch (err) {
-            console.log(err);
         }
     }, 100);
     res.status(200).json({msg:'ok'});
@@ -239,7 +225,6 @@ const readCmd =  async (address,val) =>
 export const observeSensor = async (_io)=>  {
     if (!client.isOpen) {
         client.open(() => {
-            console.log("modbus open");
         });
     }
     while(true)
@@ -270,12 +255,9 @@ export const observeSensor = async (_io)=>  {
 
 /*        const topResValue = topRes.data[0];
         const bottomResValue = bottomRes.data[0];
-        console.log("topres value: "+topResValue+" ,bottomres value: " + bottomResValue + ", target top:" + topSensor + " , target bottom: " + bottomSensor);
-        console.log([topResValue,bottomResValue,redLamp.data[0],yellowLamp.data[0],greenLamp.data[0],locktop.data[0],lockbottom.data[0]]);
         _io.emit("sensorUpdate",[topResValue,bottomResValue,redLamp.data[0],yellowLamp.data[0],greenLamp.data[0],locktop.data[0],lockbottom.data[0]]);*/
     }
     catch (err) {
-        console.log(err);
     }
     finally
     {
