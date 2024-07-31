@@ -164,6 +164,7 @@ const writeCmd = async (data) => {
         client.setTimeout(500);
         client.setID(data.id);
         await client.writeRegister(data.address,data.value);
+        console.log(data);
         return;
     }
     catch(err)

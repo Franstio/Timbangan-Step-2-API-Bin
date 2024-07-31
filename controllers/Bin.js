@@ -53,7 +53,6 @@ export const checkLampRed = async () => {
             const limit = (parseFloat(bin.max_weight) /100) * 90;
             const greenStatus = await ReadCmd(8,1);
             const overLimit = parseFloat(bin.weight) >= parseFloat(bin.max_weight); 
-            console.log({bin:bin.weight,limit:limit});
             switchLamp(bin.id, 'YELLOW', (greenStatus.data[0] == 0 &&  !overLimit)  );
             switchLamp(bin.id,'RED',parseFloat(bin.weight) >= limit);
         } catch (error) {
