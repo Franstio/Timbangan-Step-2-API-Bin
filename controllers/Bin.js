@@ -48,7 +48,7 @@ const WriteCmd = async (data) => {
 }
 export const checkLampRed = async () => {
         try {
-            const response = await axios.get(`http://${process.env.TIMBANGAN}/getbinData?hostname=${os.hostname()}`, { withCredentials: false,timeout: 1000 });
+            const response = await axios.get(`http://${process.env.TIMBANGAN}/getbinData?hostname=${os.hostname()}`, { withCredentials: false,timeout: 3000 });
             const bin = response.data.bin;
                 
             const limit = (parseFloat(bin.max_weight) /100) * 90;
