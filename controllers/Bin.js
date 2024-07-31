@@ -13,7 +13,7 @@ export const switchLamp = async (id, lampType, isAlive) => {
     const address = dict[lampType];
 //    client.setID(1);
     try {
-        await pushPayloadData({id:1,address:address,value: isAlive ? 1 : 0});
+        pushPayloadData({id:1,address:address,value: isAlive ? 1 : 0});
     }
     catch (error) {
     }
@@ -48,13 +48,12 @@ const WriteCmd = async (data) => {
 }
 export const checkLampRed = async () => {
         try {
-            const response = await axios.get(`http://${process.env.TIMBANGAN}/getbinData?hostname=${os.hostname()}`, { withCredentials: false,timeout: 3000 });
+            const response = await axios.get(`http://${process.env.TIMBANGAN}/getbinData?hostname=${os.hostname()}`, { withCredentials: false,timeout: 1000 });
             const bin = response.data.bin;
-                
             const limit = (parseFloat(bin.max_weight) /100) * 90;
             const greenStatus = await ReadCmd(8,1);
-
             const overLimit = parseFloat(bin.weight) >= parseFloat(bin.max_weight); 
+            console.log({bin:bin.weight,limit:limit});
             await switchLamp(bin.id, 'YELLOW', (greenStatus.data[0] == 0 &&  !overLimit)  );
             await switchLamp(bin.id,'RED',parseFloat(bin.weight) >= limit);
         } catch (error) {
