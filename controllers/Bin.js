@@ -2,6 +2,7 @@ import axios from 'axios';
 import client from './plcClient.js';
 import os from 'os';
 import { io } from '../index.js';
+import { pushPayloadData } from './ActionSensor.js';
 
 export const switchLamp = async (id, lampType, isAlive) => {
     const dict = {
@@ -12,7 +13,7 @@ export const switchLamp = async (id, lampType, isAlive) => {
     const address = dict[lampType];
 //    client.setID(1);
     try {
-        await WriteCmd({id:1,address:address,value: isAlive ? 1 : 0});
+        await pushPayloadData({id:1,address:address,value: isAlive ? 1 : 0});
     }
     catch (error) {
     }
@@ -47,7 +48,7 @@ const WriteCmd = async (data) => {
 }
 export const checkLampRed = async () => {
         try {
-            const response = await axios.get(`http://${process.env.TIMBANGAN}/getbinData?hostname=${os.hostname()}`, { withCredentials: false,timeout: 5000, });
+            const response = await axios.get(`http://${process.env.TIMBANGAN}/getbinData?hostname=${os.hostname()}`, { withCredentials: false,timeout: 100 });
             const bin = response.data.bin;
                 
             const limit = (parseFloat(bin.max_weight) /100) * 90;
@@ -57,7 +58,7 @@ export const checkLampRed = async () => {
             await switchLamp(bin.id, 'YELLOW', (greenStatus.data[0] == 0 &&  !overLimit)  );
             await switchLamp(bin.id,'RED',parseFloat(bin.weight) >= limit);
         } catch (error) {
-            console.error('Error fetching bin data:', error);
+            console.error('Error fetching bin data');
         }
 
         // Menambahkan delay untuk mencegah request yang berlebihan

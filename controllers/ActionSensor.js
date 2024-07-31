@@ -1,6 +1,5 @@
 import client from './plcClient.js';
 import { io } from '../index.js';
-import { checkLampRed } from './Bin.js';
 client.setTimeout(3000);
 
 let bottomSensor=null;
@@ -232,9 +231,7 @@ export const observeSensor = async (_io)=>  {
     try {
         await executePayload();
         
-        client.setID(1);
         
-        await checkLampRed();
         
         client.setID(1);
         const topRes = await readCmd(0, 1);
