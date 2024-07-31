@@ -4,7 +4,7 @@ import os from 'os';
 import { io } from '../index.js';
 import { pushPayloadData } from './ActionSensor.js';
 
-export const switchLamp = async (id, lampType, isAlive) => {
+export const switchLamp =  (id, lampType, isAlive) => {
     const dict = {
         "RED": 6,
         "YELLOW":7,
@@ -54,8 +54,8 @@ export const checkLampRed = async () => {
             const greenStatus = await ReadCmd(8,1);
             const overLimit = parseFloat(bin.weight) >= parseFloat(bin.max_weight); 
             console.log({bin:bin.weight,limit:limit});
-            await switchLamp(bin.id, 'YELLOW', (greenStatus.data[0] == 0 &&  !overLimit)  );
-            await switchLamp(bin.id,'RED',parseFloat(bin.weight) >= limit);
+            switchLamp(bin.id, 'YELLOW', (greenStatus.data[0] == 0 &&  !overLimit)  );
+            switchLamp(bin.id,'RED',parseFloat(bin.weight) >= limit);
         } catch (error) {
             console.error('Error fetching bin data');
         }

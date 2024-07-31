@@ -161,6 +161,7 @@ export const pushPayloadData =(data)=>{
 const writeCmd = async (data) => {
     try
     {
+        client.setTimeout(500);
         client.setID(data.id);
         await client.writeRegister(data.address,data.value);
         return;
@@ -206,6 +207,7 @@ const updateSensor = async (index,newData,_io) =>
 
         _io.emit(target,true);
     }
+    client.setID(1);
 }
 const readCmd =  async (address,val) =>
 {
