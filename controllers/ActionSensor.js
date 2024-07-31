@@ -1,5 +1,6 @@
 import client from './plcClient.js';
 import { io } from '../index.js';
+import { checkLampRed } from './Bin.js';
 client.setTimeout(3000);
 
 let bottomSensor=null;
@@ -187,6 +188,7 @@ const executePayload = async ()=>{
 const dataSensor = [0,0,0,0,0,0,0];
 const updateSensor = async (index,newData,_io) =>
 {
+    await checkLampRed();
     await executePayload();
     if (index < 0 || index > dataSensor-1)
         return;

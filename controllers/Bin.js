@@ -13,8 +13,7 @@ export const switchLamp =  (id, lampType, isAlive) => {
     const address = dict[lampType];
 //    client.setID(1);
     try {
-        console.log({pushData:{id:1,address:address,value: isAlive ? 1 : 0} });
-        pushPayloadData({id:1,address:address,value: isAlive ? 1 : 0});
+        WriteCmd({id:1,address:address,value: isAlive ? 1 : 0} );
     }
     catch (error) {
     }
@@ -37,6 +36,7 @@ const ReadCmd =  async (address,val) =>
 const WriteCmd = async (data) => {
     try
     {
+        client.timeout(500);
         client.setID(data.id);
         await client.writeRegister(data.address,data.value);
         return;
