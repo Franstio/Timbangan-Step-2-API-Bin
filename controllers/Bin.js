@@ -36,7 +36,7 @@ const ReadCmd =  async (address,val) =>
 const WriteCmd = async (data) => {
     try
     {
-        client.timeout(500);
+        client.setTimeout(3000);
         client.setID(data.id);
         await client.writeRegister(data.address,data.value);
         return;
