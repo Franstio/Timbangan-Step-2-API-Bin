@@ -189,7 +189,6 @@ const executePayload = async ()=>{
 const dataSensor = [0,0,0,0,0,0,0];
 const updateSensor = async (index,newData,_io) =>
 {
-    await checkLampRed();
     await executePayload();
     if (index < 0 || index > dataSensor-1)
         return;
@@ -201,6 +200,7 @@ const updateSensor = async (index,newData,_io) =>
     {
         const target = 'target-top-'+topSensor;
         topSensor= null;
+        console.log(newData);
 //            clearInterval(idInterval);
         _io.emit(target,true);
     }
@@ -208,7 +208,7 @@ const updateSensor = async (index,newData,_io) =>
     {
         const target = 'target-'+bottomSensor;
         bottomSensor = null;
-
+        console.log(newData);
         _io.emit(target,true);
     }
     client.setID(1);
@@ -223,18 +223,20 @@ const readCmd =  async (address,val) =>
     }
     catch
     {
-        await new Promise((resolve) => setTimeout(resolve,100));
+        await new Promise((resolve) => setTimeout(resolve,1));
         return await readCmd(address,val);
     }
 }
 export const observeSensor = async (_io)=>  {
-    if (!client.isOpen) {
-        client.open(() => {
-        });
-    }
+
     while(true)
     {
     try {
+        if (!client.isOpen) {
+            client.open(() => {
+            });
+        }
+        await checkLampRed();
         await executePayload();
         
         

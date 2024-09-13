@@ -58,7 +58,7 @@ export const checkLampRed = async () => {
             await switchLamp(bin.id, 'YELLOW', (greenStatus.data[0] == 0 &&  !overLimit)  );
             await switchLamp(bin.id,'RED',parseFloat(bin.weight) >= limit);
         } catch (error) {
-            console.error('Error fetching bin data');
+            console.log('Error fetching bin data');
         }
 
         // Menambahkan delay untuk mencegah request yang berlebihan
@@ -78,7 +78,7 @@ export const checkLampYellow = async () => {
                 await switchLamp(bin.id, 'YELLOW', true);
             }
         } catch (error) {
-            console.error('Error fetching bin data:', error);
+            console.log('Error fetching bin data:', error);
         }
 
         // Menambahkan delay untuk mencegah request yang berlebihan
