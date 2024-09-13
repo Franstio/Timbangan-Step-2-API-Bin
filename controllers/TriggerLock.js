@@ -20,6 +20,7 @@ export const lockTop = async (req, res) => {
 //        const log = await client.writeRegister(address,value);
 
         pushPayloadData({id:idLockTop,address:address,value:value});
+        console.log("Top Lock Dibuka - " + new Date().toLocaleString());
 //        await new Promise(resolve => setTimeout(function () { return resolve(); }, 100));
 //        const data = await client.readHoldingRegisters(address, 8);
        /*  if (value === 1) {

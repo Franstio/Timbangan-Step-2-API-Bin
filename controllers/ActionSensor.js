@@ -198,7 +198,7 @@ const updateSensor = async (index,newData,_io) =>
     {
         const target = 'target-top-'+topSensor;
         topSensor= null;
-        console.log(newData);
+        console.log("Top Lock Ditutup - " + new Date().toLocaleString());
 //            clearInterval(idInterval);
         _io.emit(target,true);
     }
