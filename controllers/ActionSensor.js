@@ -1,5 +1,5 @@
 import client from './plcClient.js';
-import { io } from '../index.js';
+import { io, runningTransaction } from '../index.js';
 import { checkLampRed } from './Bin.js';
 client.setTimeout(3000);
 
@@ -198,6 +198,8 @@ const updateSensor = async (index,newData,_io) =>
     {
         const target = 'target-top-'+topSensor;
         topSensor= null;
+        if (topSensor=="1" || topSensor==1)
+            runningTransaction.isRunning  = false;
         console.log("Top Lock Ditutup - " + new Date().toLocaleString());
 //            clearInterval(idInterval);
         _io.emit(target,true);
