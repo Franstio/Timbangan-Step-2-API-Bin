@@ -102,5 +102,8 @@ export const getIp = (req,res)=>{
             }
         }
     }
-    return res.status(200).json(results);
+    let result = results;
+    if (process.env.ETH_INTERFACE)
+        result = results[process.env.ETH_INTERFACE];
+    return res.status(200).json(result);
 }
