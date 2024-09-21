@@ -199,8 +199,10 @@ const updateSensor = async (index,newData,_io) =>
         console.log([topResValue,topSensor]);
         const target = 'target-top-'+topSensor;
         if (topSensor=="1" || topSensor==1)
+        {
             runningTransaction.isRunning  = false;
-        console.log("Top Lock Ditutup - " + new Date().toLocaleString());
+            console.log("Top Lock Ditutup - " + new Date().toLocaleString());
+        }
         topSensor= null;
 //            clearInterval(idInterval);
         _io.emit(target,true);
