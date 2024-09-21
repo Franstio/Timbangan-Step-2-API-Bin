@@ -1,7 +1,7 @@
 import client from './plcClient.js';
 import { io, runningTransaction } from '../index.js';
 import { checkLampRed } from './Bin.js';
-client.setTimeout(3000);
+client.setTimeout(1000);
 
 let bottomSensor=null;
 let topSensor=null;
@@ -266,6 +266,7 @@ export const observeSensor = async (_io)=>  {
         _io.emit("sensorUpdate",[topResValue,bottomResValue,redLamp.data[0],yellowLamp.data[0],greenLamp.data[0],locktop.data[0],lockbottom.data[0]]);*/
     }
     catch (err) {
+        console.log(err);
     }
     finally
     {
