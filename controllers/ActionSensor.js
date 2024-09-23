@@ -194,7 +194,6 @@ const updateSensor = async (index,newData,_io) =>
     _io.emit("sensorUpdate",dataSensor);    
     let topResValue = dataSensor[0];
     let bottomResValue = dataSensor[1];
-    console.log([[topResValue,topSensor],[bottomResValue,bottomSensor]])
     if (topSensor != null && topResValue == topSensor )
     {
         console.log([topResValue,topSensor]);
