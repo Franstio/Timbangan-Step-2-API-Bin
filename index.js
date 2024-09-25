@@ -23,7 +23,13 @@ app.use(cors({
 const io = new Server(server, {
   cors: {
     origin: "*"
-  }
+  },
+  connectionStateRecovery: {
+    skipMiddlewares:false,
+    maxDisconnectionDuration:5000
+  },
+  connectTimeout: 6000,
+  pingTimeout: 3000
 });
 
 io.on('connection',(socket)=>{
