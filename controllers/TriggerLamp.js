@@ -13,7 +13,7 @@ export const REDLampOn = async (req, res) => {
         res.status(200).json({ msg: `Lampu Merah Menyala` });
 
     } catch (error) {
-        res.status(500).json({ msg: error });
+        res.status(500).json({ msg: JSON.stringify(error) });
     }
 };
 
@@ -21,17 +21,13 @@ export const REDLampOff = async (req, res) => {
     try {
         const { idLockTop } = req.body;
 
-        if (!client.isOpen) {
-            client.open(() => {
-            });
-        }
         const address = 6;
         const value = 0;
         pushPayloadData({id:idLockTop,address:address,value:value});
         res.status(200).json({ msg: `Lampu Merah Mati` });
 
     } catch (error) {
-        res.status(500).json({ msg: error });
+        res.status(500).json({ msg: JSON.stringify(error) });
     }
 };
 
@@ -51,7 +47,7 @@ export const YELLOWLampOn = async (req, res) => {
         res.status(200).json({ msg: `Lampu Kuning Menyala` });
 
     } catch (error) {
-        res.status(500).json({ msg: error });
+        res.status(500).json({ msg: JSON.stringify(error) });
     }
 };
 
@@ -115,11 +111,7 @@ export const GREENLampOff = async (req, res) => {
     try {
 
         const { idLampGreen } = req.body;
-        client.setID(idLampGreen);
-        if (!client.isOpen) {
-            client.open(() => {
-            });
-        }
+
         const address = 8;
         const value = 0;
         pushPayloadData({id:idLampGreen,address:address,value:value});
