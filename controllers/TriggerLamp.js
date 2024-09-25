@@ -39,11 +39,11 @@ export const YELLOWLampOn = async (req, res) => {
     try {
         const { idLampYellow } = req.body;
 
-        client.setID(idLampYellow);
+        /*client.setID(idLampYellow);
         if (!client.isOpen) {
             client.open(() => {
             });
-        }
+        }*/
         const address = 7;
         const value = 1;
         
@@ -59,11 +59,11 @@ export const YELLOWLampOff = async (req, res) => {
     try {
         const { idLampYellow } = req.body;
 
-        client.setID(idLampYellow);
+        /*client.setID(idLampYellow);
         if (!client.isOpen) {
             client.open(() => {
             });
-        }
+        }*/
         const address = 7;
         const value = 0;
         pushPayloadData({id:idLampYellow,address:address,value:value});
@@ -83,12 +83,12 @@ export const GREENLampOn = async (req, res) => {
     {
     try {
 
-        const { idLampGreen } = req.body;
+        /*const { idLampGreen } = req.body;
         client.setID(idLampGreen);
         if (!client.isOpen) {
             client.open(() => {
             });
-        }
+        }*/
         const address = 8;
         const value = 1;
         
