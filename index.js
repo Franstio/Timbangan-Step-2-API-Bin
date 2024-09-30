@@ -23,7 +23,8 @@ app.use(cors({
 const io = new Server(server, {
   cors: {
     origin: "*"
-  }
+  },
+  
 });
 
 io.on('connection',(socket)=>{
