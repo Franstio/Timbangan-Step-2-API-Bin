@@ -239,7 +239,7 @@ export const observeSensor = async (_io)=>  {
             client.open(() => {
             });
         }
-        await checkLampRed();
+        await checkLampRed(io);
         await executePayload();
         
         

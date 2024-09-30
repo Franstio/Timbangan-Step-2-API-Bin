@@ -47,7 +47,7 @@ const WriteCmd = async (data) => {
         await WriteCmd(data);
     }
 }
-export const checkLampRed = async () => {
+export const checkLampRed = async (io) => {
         try {
             const response = await axios.get(`http://${process.env.TIMBANGAN}/getbinData?hostname=${os.hostname()}`, { withCredentials: false,timeout: 1000 });
             const bin = response.data.bin;
@@ -59,6 +59,7 @@ export const checkLampRed = async () => {
             await switchLamp(bin.id,'RED',parseFloat(bin.weight) >= limit);
         } catch (error) {
             console.log('Error fetching bin data');
+            io.emit('refresh',true);
         }
 
         // Menambahkan delay untuk mencegah request yang berlebihan
