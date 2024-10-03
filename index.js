@@ -7,6 +7,7 @@ import http from 'http';
 import bodyParser from "body-parser";
 import { checkLampRed,checkLampYellow } from "./controllers/Bin.js";
 import SensorRoute from "./routes/SensorRoute.js"
+import APIRoute from './routes/APIRoute.js';
 import { Server } from "socket.io";
 import { observeSensor } from "./controllers/ActionSensor.js";
 import { config } from "dotenv";
@@ -44,7 +45,7 @@ app.use(ScalesRoute);
 app.use(LockDoorRoute);
 app.use(LampRoute);
 app.use(SensorRoute);
-
+app.use()
 server.listen(port, () => {
   console.log(`Server up and running on port ${port}`);
 });

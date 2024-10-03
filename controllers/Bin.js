@@ -1,7 +1,7 @@
 import axios from 'axios';
 import client from './plcClient.js';
 import os from 'os';
-import { io } from '../index.js';
+import { io, runningTransaction } from '../index.js';
 import { pushPayloadData } from './ActionSensor.js';
 
 export const switchLamp = async (id, lampType, isAlive) => {
@@ -87,8 +87,31 @@ export const checkLampYellow = async () => {
     }
 };
 
-
-
+export const startTransaction = async (req,res)=>{
+    const {bin } = req.body;
+    await switchLamp(bin.id,"YELLOW",false);
+    await switchLamp(bin.id,"GREEN",true);
+    const isCollection = bin.type == 'Collection';
+    const lockId =  isCollection? 5: 4;
+    const message =  isCollection ? "Buka Penutup Bawah" : "Buka Penutup Atas";
+    pushPayloadData({id:1,address:lockId,value:1});
+    runningTransaction.isRunning = true;
+    io.emit('UpdateInstruksi',message);
+    io.emit('GetType',bin.type);
+}
+export const endTransaction = async (req,res)=>{
+    const {bin} = req.body;
+    await switchLamp(bin.id,"YELLOW",true);
+    await switchLamp(bin.id,"GREEN",false);
+    runningTransaction.isRunning = false;
+    if (req.type == "Dispose")
+    {
+        io.emit("UpdateInstruksi", "DATA TELAH MASUK");
+        setTimeout(()=>{
+            io.emit('UpdateTransaksi','');
+        });
+    }
+}
 
 export const receiveInstruksi = async (req,res) =>{
     const {instruksi} = req.body ;
