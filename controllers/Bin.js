@@ -109,7 +109,7 @@ export const endTransaction = async (req,res)=>{
     {
         io.emit("UpdateInstruksi", "DATA TELAH MASUK");
         setTimeout(()=>{
-            io.emit('UpdateTransaksi','');
+            io.emit('UpdateInstruksi','');
         },2000); 
     }
     return res.json({msg:"ok"});
