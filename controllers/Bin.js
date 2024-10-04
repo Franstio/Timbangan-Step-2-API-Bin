@@ -106,6 +106,7 @@ export const endTransaction = async (req,res)=>{
     await switchLamp(bin.id,"YELLOW",true);
     await switchLamp(bin.id,"GREEN",false);
     runningTransaction.isRunning = false;
+    io.emit('Bin',bin);
     if (bin.type == "Dispose")
     {
         io.emit("UpdateInstruksi", "DATA TELAH MASUK");
