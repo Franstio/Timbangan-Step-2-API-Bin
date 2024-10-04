@@ -45,7 +45,7 @@ app.use(ScalesRoute);
 app.use(LockDoorRoute);
 app.use(LampRoute);
 app.use(SensorRoute);
-app.use()
+app.use(APIRoute);
 server.listen(port, () => {
   console.log(`Server up and running on port ${port}`);
 });
