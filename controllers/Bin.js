@@ -98,6 +98,7 @@ export const startTransaction = async (req,res)=>{
     runningTransaction.isRunning = true;
     io.emit('UpdateInstruksi',message);
     io.emit('GetType',bin.type);
+    io.emit('Bin',bin);
     return res.json({msg:"ok"});
 }
 export const endTransaction = async (req,res)=>{
