@@ -98,6 +98,7 @@ export const startTransaction = async (req,res)=>{
     runningTransaction.isRunning = true;
     io.emit('UpdateInstruksi',message);
     io.emit('GetType',bin.type);
+    return res.json({msg:"ok"});
 }
 export const endTransaction = async (req,res)=>{
     const {bin} = req.body;
@@ -111,6 +112,7 @@ export const endTransaction = async (req,res)=>{
             io.emit('UpdateTransaksi','');
         });
     }
+    return res.json({msg:"ok"});
 }
 
 export const receiveInstruksi = async (req,res) =>{
