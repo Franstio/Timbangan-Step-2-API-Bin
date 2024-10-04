@@ -105,12 +105,12 @@ export const endTransaction = async (req,res)=>{
     await switchLamp(bin.id,"YELLOW",true);
     await switchLamp(bin.id,"GREEN",false);
     runningTransaction.isRunning = false;
-    if (req.type == "Dispose")
+    if (bin.type == "Dispose")
     {
         io.emit("UpdateInstruksi", "DATA TELAH MASUK");
         setTimeout(()=>{
             io.emit('UpdateTransaksi','');
-        });
+        },2000); 
     }
     return res.json({msg:"ok"});
 }
