@@ -31,6 +31,7 @@ const io = new Server(server, {
 io.on('connection',(socket)=>{
     console.log("listening socket.io");
     io.on('TriggerWeight',async (bin)=>{
+      console.log(bin);
       await triggerLampRed(bin);
     })
   
