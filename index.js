@@ -5,7 +5,7 @@ import LampRoute from "./routes/LampRoute.js";
 import cors from  "cors";
 import http from 'http';
 import bodyParser from "body-parser";
-import { checkLampRed,checkLampYellow } from "./controllers/Bin.js";
+import { checkLampRed,checkLampYellow, triggerLampRed } from "./controllers/Bin.js";
 import SensorRoute from "./routes/SensorRoute.js"
 import APIRoute from './routes/APIRoute.js';
 import { Server } from "socket.io";
@@ -30,7 +30,9 @@ const io = new Server(server, {
 
 io.on('connection',(socket)=>{
     console.log("listening socket.io");
-
+    io.on('TriggerWeight',async (bin)=>{
+      await triggerLampRed(bin);
+    })
   
 });
 app.use(cors({

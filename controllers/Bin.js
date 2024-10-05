@@ -47,16 +47,19 @@ const WriteCmd = async (data) => {
         await WriteCmd(data);
     }
 }
+export const triggerLampRed = async (bin)=>{
+    const limit = (parseFloat(bin.max_weight) /100) * 90;
+    const greenStatus = await ReadCmd(8,1);
+    const overLimit = parseFloat(bin.weight) >= parseFloat(bin.max_weight); 
+//            console.log({weight:bin.weight,limit:limit,status: parseFloat(bin.weight) >= limit});
+    await switchLamp(bin.id, 'YELLOW', (greenStatus.data[0] == 0 &&  !overLimit)  );
+    await switchLamp(bin.id,'RED',parseFloat(bin.weight) >= limit);
+}
 export const checkLampRed = async (io) => {
         try {
             const response = await axios.get(`http://${process.env.TIMBANGAN}/getbinData?hostname=${os.hostname()}`, { withCredentials: false,timeout: 1000 });
             const bin = response.data.bin;
-            const limit = (parseFloat(bin.max_weight) /100) * 90;
-            const greenStatus = await ReadCmd(8,1);
-            const overLimit = parseFloat(bin.weight) >= parseFloat(bin.max_weight); 
-//            console.log({weight:bin.weight,limit:limit,status: parseFloat(bin.weight) >= limit});
-            await switchLamp(bin.id, 'YELLOW', (greenStatus.data[0] == 0 &&  !overLimit)  );
-            await switchLamp(bin.id,'RED',parseFloat(bin.weight) >= limit);
+            await triggerLampRed(bin);
         } catch (error) {
             console.log('Error fetching bin data');
             io.emit('refresh',true);
