@@ -117,6 +117,10 @@ export const endTransaction = async (req,res)=>{
             io.emit('UpdateInstruksi','');
         },2000); 
     }
+    else if (bin.type=='Collection')
+    {
+        WriteCmd({id:1,address:5,value:1});
+    }
     return res.json({msg:"ok"});
 }
 
