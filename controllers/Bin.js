@@ -97,7 +97,7 @@ export const startTransaction = async (req,res)=>{
     const isCollection = bin.type == 'Collection';
     const lockId =  isCollection? 5: 4;
     const message =  isCollection ? "Buka Penutup Bawah" : "Buka Penutup Atas";
-    pushPayloadData({id:1,address:lockId,value:1});
+    WriteCmd({id:1,address:lockId,value:1});
     runningTransaction.isRunning = true;
     io.emit('UpdateInstruksi',message);
     io.emit('GetType',bin.type);
