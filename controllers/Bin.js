@@ -92,12 +92,12 @@ export const checkLampYellow = async () => {
 
 export const startTransaction = async (req,res)=>{
     const {bin } = req.body;
-    switchLamp(bin.id,"YELLOW",false);
-    switchLamp(bin.id,"GREEN",true);
+    await switchLamp(bin.id,"YELLOW",false);
+    await switchLamp(bin.id,"GREEN",true);
     const isCollection = bin.type == 'Collection';
     const lockId =  isCollection? 5: 4;
     const message =  isCollection ? "Buka Penutup Bawah" : "Buka Penutup Atas";
-    WriteCmd({id:1,address:lockId,value:1});
+    await WriteCmd({id:1,address:lockId,value:1});
     runningTransaction.isRunning = true;
     io.emit('UpdateInstruksi',message);
     io.emit('GetType',bin.type);
@@ -106,8 +106,8 @@ export const startTransaction = async (req,res)=>{
 }
 export const endTransaction = async (req,res)=>{
     const {bin} = req.body;
-     switchLamp(bin.id,"YELLOW",true);
-     switchLamp(bin.id,"GREEN",false);
+     await switchLamp(bin.id,"YELLOW",true);
+     await switchLamp(bin.id,"GREEN",false);
     runningTransaction.isRunning = false;
     io.emit('Bin',bin);
     if (bin.type == "Dispose")
@@ -119,7 +119,7 @@ export const endTransaction = async (req,res)=>{
     }
     else if (bin.type=='Collection')
     {
-        pushPayloadData({id:1,address:5,value:1});
+        await WriteCmd({id:1,address:5,value:1});
     }
     return res.json({msg:"ok"});
 }
