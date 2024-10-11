@@ -36,7 +36,7 @@ const ReadCmd =  async (address,val) =>
 const WriteCmd = async (data) => {
     try
     {
-        client.setTimeout(500);
+        client.setTimeout(1000);
         client.setID(data.id);
         await client.writeRegister(data.address,data.value);
         return;
@@ -97,7 +97,7 @@ export const startTransaction = async (req,res)=>{
     const isCollection = bin.type == 'Collection';
     const lockId =  isCollection? 5: 4;
     const message =  isCollection ? "Buka Penutup Bawah" : "Buka Penutup Atas";
-    WriteCmd({id:1,address:lockId,value:1});
+    await WriteCmd({id:1,address:lockId,value:1});
     runningTransaction.isRunning = true;
     io.emit('UpdateInstruksi',message);
     io.emit('GetType',bin.type);
@@ -115,11 +115,11 @@ export const endTransaction = async (req,res)=>{
         io.emit("UpdateInstruksi", "DATA TELAH MASUK");
         setTimeout(()=>{
             io.emit('UpdateInstruksi','');
-        },2000); 
+        },1000); 
     }
     else if (bin.type=='Collection')
     {
-        WriteCmd({id:1,address:5,value:1});
+        await WriteCmd({id:1,address:5,value:1});
     }
     return res.json({msg:"ok"});
 }
