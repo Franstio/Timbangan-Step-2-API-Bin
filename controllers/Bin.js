@@ -36,14 +36,14 @@ const ReadCmd =  async (address,val) =>
 const WriteCmd = async (data) => {
     try
     {
-        client.setTimeout(3000);
+        client.setTimeout(500);
         client.setID(data.id);
         await client.writeRegister(data.address,data.value);
         return;
     }
     catch(err)
     {
-        await new Promise((resolve) => setTimeout(resolve,100));
+        await new Promise((resolve) => setTimeout(resolve,10));
         await WriteCmd(data);
     }
 }
