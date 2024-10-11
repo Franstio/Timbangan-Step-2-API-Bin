@@ -169,8 +169,11 @@ const writeCmd = async (data) => {
     }
     catch(err)
     {
-        await new Promise((resolve) => setTimeout(resolve,100));
-        await writeCmd(data);
+        if (err.name)
+        {
+            await new Promise((resolve) => setTimeout(resolve,100));
+            await writeCmd(data);
+        }
     }
 }
 const executePayload = async ()=>{

@@ -44,8 +44,11 @@ const WriteCmd = async (data) => {
     catch(err)
     {
         console.log(JSON.stringify(err));
-        await new Promise((resolve) => setTimeout(resolve,10));
-        await WriteCmd(data);
+        if (err.name)
+        {
+            await new Promise((resolve) => setTimeout(resolve,10));
+            await WriteCmd(data);
+        }
     }
 }
 export const triggerLampRed = async (bin)=>{
