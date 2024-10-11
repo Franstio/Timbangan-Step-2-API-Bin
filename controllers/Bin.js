@@ -43,7 +43,7 @@ const WriteCmd = async (data) => {
     }
     catch(err)
     {
-        console.log(err);
+        console.log(JSON.stringify(err));
         await new Promise((resolve) => setTimeout(resolve,10));
         await WriteCmd(data);
     }
