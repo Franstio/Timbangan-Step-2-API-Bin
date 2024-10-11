@@ -36,7 +36,7 @@ const ReadCmd =  async (address,val) =>
 const WriteCmd = async (data) => {
     try
     {
-        client.setTimeout(3000);
+        client.setTimeout(100);
         client.setID(data.id);
         await client.writeRegister(data.address,data.value);
         return;
@@ -92,8 +92,11 @@ export const checkLampYellow = async () => {
 
 export const startTransaction = async (req,res)=>{
     const {bin } = req.body;
+    console.log('1-'+ new Date());
     await switchLamp(bin.id,"YELLOW",false);
     await switchLamp(bin.id,"GREEN",true);
+    
+    console.log('2-'+ new Date());
     const isCollection = bin.type == 'Collection';
     const lockId =  isCollection? 5: 4;
     const message =  isCollection ? "Buka Penutup Bawah" : "Buka Penutup Atas";
@@ -102,14 +105,20 @@ export const startTransaction = async (req,res)=>{
     io.emit('UpdateInstruksi',message);
     io.emit('GetType',bin.type);
     io.emit('Bin',bin);
+    
+    console.log('3-'+ new Date());
     return res.json({msg:"ok"});
 }
 export const endTransaction = async (req,res)=>{
     const {bin} = req.body;
+    
+    console.log('1-'+ new Date());
      await switchLamp(bin.id,"YELLOW",true);
      await switchLamp(bin.id,"GREEN",false);
     runningTransaction.isRunning = false;
     io.emit('Bin',bin);
+    
+    console.log('2-'+ new Date());
     if (bin.type == "Dispose")
     {
         io.emit("UpdateInstruksi", "DATA TELAH MASUK");
@@ -119,8 +128,10 @@ export const endTransaction = async (req,res)=>{
     }
     else if (bin.type=='Collection')
     {
-//        await WriteCmd({id:1,address:5,value:1});
+        await WriteCmd({id:1,address:5,value:1});
     }
+    
+    console.log('3-'+ new Date());
     return res.json({msg:"ok"});
 }
 
