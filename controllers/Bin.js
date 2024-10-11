@@ -119,7 +119,7 @@ export const endTransaction = async (req,res)=>{
     }
     else if (bin.type=='Collection')
     {
-        WriteCmd({id:1,address:5,value:1});
+        pushPayloadData({id:1,address:5,value:1});
     }
     return res.json({msg:"ok"});
 }
