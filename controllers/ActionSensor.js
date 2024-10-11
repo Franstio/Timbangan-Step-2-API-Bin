@@ -162,7 +162,7 @@ export const pushPayloadData =(data)=>{
 const writeCmd = async (data) => {
     try
     {
-        client.setTimeout(100);
+        client.setTimeout(1000);
         client.setID(data.id);
         await client.writeRegister(data.address,data.value);
         return;
