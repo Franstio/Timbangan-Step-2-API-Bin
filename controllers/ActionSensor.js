@@ -180,6 +180,8 @@ const executePayload = async ()=>{
     
     const s = [...PayloadData];
     PayloadData = [];
+    if (PayloadData.length > 1)
+        console.log(PayloadData);
     for (let i= 0;i<s.length;i++)
     {
         await writeCmd(s[i]);
