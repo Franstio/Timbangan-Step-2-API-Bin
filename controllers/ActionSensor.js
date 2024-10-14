@@ -231,6 +231,7 @@ const readCmd =  async (address,val) =>
     let _res=0;
     try
     {
+        client.setTimeout(100);
         _res = await client.readHoldingRegisters(address, val);
         return _res;
     }
@@ -238,11 +239,8 @@ const readCmd =  async (address,val) =>
     {
         const check =err.message || err;
         console.log(err.message || err);
-        if (check== 'Timed out' || check == 'CRC error')
-        {
-            await new Promise((resolve) => setTimeout(resolve,50));
-            return await readCmd(address,val);;
-        }
+        await new Promise((resolve) => setTimeout(resolve,50));
+        return await readCmd(address,val);
     }
 }
 export const observeSensor = async (_io)=>  {
