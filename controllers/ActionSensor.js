@@ -162,18 +162,24 @@ export const pushPayloadData =(data)=>{
 const writeCmd = async (data) => {
     try
     {
-        client.setTimeout(3000);
+        client.setTimeout(1000);
         client.setID(data.id);
         await client.writeRegister(data.address,data.value);
         return;
     }
     catch(err)
     {
-        if (err.name)
+        const check =err.message || err;
+        console.log(err.message || err);
+        if (check== 'Timed out' || check == 'CRC error')
         {
-            await new Promise((resolve) => setTimeout(resolve,10));
-            await writeCmd(data);
+            await new Promise((resolve) => setTimeout(resolve,100));
+            await WriteCmd(data);
         }
+    }
+    
+    finally {
+        await new Promise((resolve)=>setTimeout(resolve,100));
     }
 }
 const executePayload = async ()=>{
