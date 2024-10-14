@@ -181,7 +181,7 @@ const executePayload = async ()=>{
     const s = [...PayloadData];
     PayloadData = [];
     if (s.length > 0)
-        console.log(PayloadData);
+        console.log(s);
     for (let i= 0;i<s.length;i++)
     {
         await writeCmd(s[i]);
