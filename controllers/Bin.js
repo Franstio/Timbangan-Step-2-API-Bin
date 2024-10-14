@@ -45,11 +45,14 @@ const WriteCmd = async (data) => {
     {
         const check =err.message || err;
         console.log(err.message || err);
-        if (check== 'Timed out')
+        if (check== 'Timed out' || check == 'CRC error')
         {
-            await new Promise((resolve) => setTimeout(resolve,10));
+            await new Promise((resolve) => setTimeout(resolve,100));
             await WriteCmd(data);
         }
+    }
+    finally {
+        await new Promise((resolve)=>setTimeout(resolve,100));
     }
 }
 export const triggerLampRed = async (bin)=>{
