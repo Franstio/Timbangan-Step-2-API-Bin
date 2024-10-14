@@ -43,8 +43,9 @@ const WriteCmd = async (data) => {
     }
     catch(err)
     {
+        const check =err.message || err;
         console.log(err.message || err);
-        if (err.name)
+        if (check== 'Timed out')
         {
             await new Promise((resolve) => setTimeout(resolve,10));
             await WriteCmd(data);
