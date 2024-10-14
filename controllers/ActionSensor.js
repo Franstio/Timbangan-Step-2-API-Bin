@@ -165,7 +165,6 @@ const writeCmd = async (data) => {
         client.setTimeout(300);
         client.setID(data.id);
         await client.writeRegister(data.address,data.value);
-        return;
     }
     catch(err)
     {
@@ -179,7 +178,7 @@ const writeCmd = async (data) => {
     }
     
     finally {
-        await new Promise((resolve)=>setTimeout(resolve,100));
+        await new Promise((resolve)=>setTimeout(resolve,10));
     }
 }
 const executePayload = async ()=>{
