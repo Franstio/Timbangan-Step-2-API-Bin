@@ -97,14 +97,14 @@ export const checkLampYellow = async () => {
 export const startTransaction = async (req,res)=>{
     const {bin } = req.body;
     console.log('start-1-'+ new Date());
-    pushPayloadData({id:bin.id,address:7,value: 0});
+    await WriteCmd({id:bin.id,address:7,value: 0});
 
-    pushPayloadData({id:bin.id,address:8,value: 1});    
+    await WriteCmd({id:bin.id,address:8,value: 1});    
     console.log('start-2-'+ new Date());
     const isCollection = bin.type == 'Collection';
     const lockId =  isCollection? 5: 4;
     const message =  isCollection ? "Buka Penutup Bawah" : "Buka Penutup Atas";
-    pushPayloadData({id:1,address:lockId,value:1});
+    await WriteCmd({id:1,address:lockId,value:1});
     runningTransaction.isRunning = true;
     io.emit('UpdateInstruksi',message);
     io.emit('GetType',bin.type);
@@ -117,9 +117,9 @@ export const endTransaction = async (req,res)=>{
     const {bin} = req.body;
     
     console.log('end-1-'+ new Date());
-    pushPayloadData({id:bin.id,address:7,value: 1});
+    await WriteCmd({id:bin.id,address:7,value: 1});
 
-    pushPayloadData({id:bin.id,address:8,value: 0});    
+    await WriteCmd({id:bin.id,address:8,value: 0});    
     runningTransaction.isRunning = false;
     io.emit('Bin',bin);
     
@@ -133,7 +133,7 @@ export const endTransaction = async (req,res)=>{
     }
     else if (bin.type=='Collection')
     {
-        pushPayloadData({id:1,address:5,value:1});
+        await WriteCmd({id:1,address:5,value:1});
     }
     
     console.log('end-1-'+ new Date());

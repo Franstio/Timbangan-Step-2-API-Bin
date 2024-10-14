@@ -171,7 +171,7 @@ const writeCmd = async (data) => {
     {
         if (err.name)
         {
-            await new Promise((resolve) => setTimeout(resolve,100));
+            await new Promise((resolve) => setTimeout(resolve,10));
             await writeCmd(data);
         }
     }
