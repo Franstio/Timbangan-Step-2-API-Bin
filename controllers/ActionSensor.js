@@ -211,6 +211,7 @@ const updateSensor = async (index,newData,_io) =>
         if (topSensor=="1" || topSensor==1)
         {
             runningTransaction.isRunning  = false;
+            runningTransaction.type = null;
             console.log("Top Lock Ditutup - " + new Date().toLocaleString());
         }
         topSensor= null;
@@ -273,7 +274,7 @@ export const observeSensor = async (_io)=>  {
         await updateSensor(5,locktop.data[0],_io);
         const lockbottom = await readCmd(5,1);
         await updateSensor(6,lockbottom.data[0],_io);
-
+        await observeLock(_io,dataSensor);
 /*        const topResValue = topRes.data[0];
         const bottomResValue = bottomRes.data[0];
         _io.emit("sensorUpdate",[topResValue,bottomResValue,redLamp.data[0],yellowLamp.data[0],greenLamp.data[0],locktop.data[0],lockbottom.data[0]]);*/
@@ -287,3 +288,18 @@ export const observeSensor = async (_io)=>  {
     }
 }
 };
+
+
+export const observeLock = async (_io,data)=>{
+    if (runningTransaction.isRunning)
+    {
+        const [lockAddress,sensorAddress,triggerLockAddress]  = runningTransaction.type == 'Collection'? [6,1,5]  : [5,0,4];
+        console.log([lockAddress,sensorAddress,triggerLockAddress] )
+        if (data[lockAddress] == 1 && data[sensorAddress] == 1)
+        {
+            _io.emit('reopen', {reopen:true});
+            return;
+        }      
+    }
+    _io.emit('reopen',{ reopen:false})
+}

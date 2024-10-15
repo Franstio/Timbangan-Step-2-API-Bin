@@ -19,7 +19,6 @@ export const lockTop = async (req, res) => {
         const address = 4;
         const value = 1;
 //        const log = await client.writeRegister(address,value);
-        runningTransaction.isRunning = true;
         pushPayloadData({id:idLockTop,address:address,value:value});
         console.log("Top Lock Dibuka - " + new Date().toLocaleString());
 //        await new Promise(resolve => setTimeout(function () { return resolve(); }, 100));
@@ -56,7 +55,6 @@ export const lockBottom = async (req, res) => {
         }*/
         const address = 5;
         const value = 1;
-        runningTransaction.isRunning = false;
         //const log = await client.writeRegister(address,value);));
         pushPayloadData({id:idLockBottom,address:address,value:value});
 //        await new Promise(resolve => setTimeout(function () { return resolve(); }, 100

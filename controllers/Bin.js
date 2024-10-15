@@ -110,6 +110,7 @@ export const startTransaction = async (req,res)=>{
     const message =  isCollection ? "Buka Penutup Bawah" : "Buka Penutup Atas";
     pushPayloadData({id:1,address:lockId,value:1});
     runningTransaction.isRunning = true;
+    runningTransaction.type = isCollection ? 'Collection' : 'Dispose';
     io.emit('UpdateInstruksi',message);
     io.emit('GetType',bin.type);
     io.emit('Bin',bin);
@@ -125,6 +126,8 @@ export const endTransaction = async (req,res)=>{
 
     pushPayloadData({id:1,address:8,value: 0});    
     runningTransaction.isRunning = false;
+    runningTransaction.type = null;
+
     io.emit('Bin',bin);
     
     console.log('end-2-'+ new Date());
