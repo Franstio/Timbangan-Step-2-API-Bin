@@ -294,7 +294,7 @@ export const observeLock = async (_io,data)=>{
     if (runningTransaction.isRunning)
     {
         const [lockAddress,sensorAddress,triggerLockAddress]  = runningTransaction.type == 'Collection'? [6,1,5]  : [5,0,4];
-        console.log([lockAddress,sensorAddress,triggerLockAddress] )
+        console.log([lockAddress,sensorAddress,triggerLockAddress] );
         if (data[lockAddress] == 0 && data[sensorAddress] == 1)
         {
             _io.emit('reopen', {reopen:true});
