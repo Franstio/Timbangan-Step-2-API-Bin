@@ -170,7 +170,7 @@ const writeCmd = async (data) => {
     catch(err)
     {
         const check =err.message || err;
-        console.log(err.message || err);
+        console.log(`Err ${check} ` + new Date());
         if (check== 'Timed out' || check == 'CRC error')
         {
             await new Promise((resolve) => setTimeout(resolve,100));
@@ -233,16 +233,20 @@ const updateSensor = async (index,newData,_io) =>
 const readCmd =  async (address,val) =>
 {
     let _res=0;
+    console.log(`Start Read ${data.address} : ${data.value} ` + new Date());
     try
     {
         client.setTimeout(100);
         _res = await client.readHoldingRegisters(address, val);
+        
+    console.log(`End Read ${data.address} : ${data.value} ` + new Date());
         return _res;
     }
     catch(err)
     {
+        
         const check =err.message || err;
-        console.log(err.message || err);
+        console.log(`Err ${check} ` + new Date());
         await new Promise((resolve) => setTimeout(resolve,50));
         return await readCmd(address,val);
     }
