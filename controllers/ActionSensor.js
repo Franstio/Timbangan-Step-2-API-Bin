@@ -233,13 +233,13 @@ const updateSensor = async (index,newData,_io) =>
 const readCmd =  async (address,val) =>
 {
     let _res=0;
-    console.log(`Start Read ${data.address} : ${data.value} ` + new Date());
+    console.log(`Start Read ${address} : ${val} ` + new Date());
     try
     {
         client.setTimeout(100);
         _res = await client.readHoldingRegisters(address, val);
         
-    console.log(`End Read ${data.address} : ${data.value} ` + new Date());
+    console.log(`End Read ${address} : ${value} ` + new Date());
         return _res;
     }
     catch(err)
