@@ -160,10 +160,8 @@ export const pushPayloadData =(data)=>{
     PayloadData.push(data);
 }
 const writeCmd = async (data) => {
-    console.log(`Start ${data.address} : ${data.value} ` + new Date());
     try
     {
-        client.setTimeout(300);
         client.setID(data.id);
         await client.writeRegister(data.address,data.value);
     }
@@ -180,7 +178,6 @@ const writeCmd = async (data) => {
     
     finally {
         
-    console.log(`Finish ${data.address} : ${data.value} ` + new Date());
         await new Promise((resolve)=>setTimeout(resolve,10));
     }
 }
@@ -233,13 +230,11 @@ const updateSensor = async (index,newData,_io) =>
 const readCmd =  async (address,val) =>
 {
     let _res=0;
-    console.log(`Start Read ${address} : ${val} ` + new Date());
     try
     {
         client.setTimeout(100);
         _res = await client.readHoldingRegisters(address, val);
         
-    console.log(`End Read ${address} : ${val} ` + new Date());
         return _res;
     }
     catch(err)
@@ -301,7 +296,6 @@ export const observeLock = async (_io,data)=>{
     if (runningTransaction.isRunning)
     {
         const [lockAddress,sensorAddress,triggerLockAddress]  = runningTransaction.type == 'Collection'? [6,1,5]  : [5,0,4];
-        console.log([lockAddress,sensorAddress,triggerLockAddress] );
         if (data[lockAddress] == 0 && data[sensorAddress] == 1)
         {
             _io.emit('reopen', {reopen:true});
