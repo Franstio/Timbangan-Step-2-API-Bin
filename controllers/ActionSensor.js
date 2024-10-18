@@ -239,7 +239,7 @@ const readCmd =  async (address,val) =>
         client.setTimeout(100);
         _res = await client.readHoldingRegisters(address, val);
         
-    console.log(`End Read ${address} : ${value} ` + new Date());
+    console.log(`End Read ${address} : ${val} ` + new Date());
         return _res;
     }
     catch(err)
