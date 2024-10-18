@@ -53,5 +53,5 @@ server.listen(port, () => {
   console.log(`Server up and running on port ${port}`);
 });
 observeSensor(io);
-const runningTransaction = {isRunning:false};
+const runningTransaction = {isRunning:false,type: null};
 export {io,runningTransaction};

@@ -160,6 +160,7 @@ export const pushPayloadData =(data)=>{
     PayloadData.push(data);
 }
 const writeCmd = async (data) => {
+    console.log(`Start ${data.address} : ${data.value} ` + new Date());
     try
     {
         client.setTimeout(300);
@@ -178,6 +179,8 @@ const writeCmd = async (data) => {
     }
     
     finally {
+        
+    console.log(`Finish ${data.address} : ${data.value} ` + new Date());
         await new Promise((resolve)=>setTimeout(resolve,10));
     }
 }
