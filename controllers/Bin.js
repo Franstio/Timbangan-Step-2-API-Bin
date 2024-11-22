@@ -55,12 +55,15 @@ const WriteCmd = async (data) => {
         await new Promise((resolve)=>setTimeout(resolve,100));
     }
 }
+export const LAMP_STATUS = {
+    YELLOW: 0
+};
 export const triggerLampRed = async (bin)=>{
     const limit = (parseFloat(bin.max_weight) /100) * 90;
-    const greenStatus = await ReadCmd(8,1);
+//    const greenStatus = await ReadCmd(8,1);
     const overLimit = parseFloat(bin.weight) >= parseFloat(bin.max_weight); 
             console.log({weight:bin.weight,limit:limit,status: parseFloat(bin.weight) >= limit});
-    await switchLamp(bin.id, 'YELLOW', (greenStatus.data[0] == 0 &&  !overLimit)  );
+    await switchLamp(bin.id, 'YELLOW', (!runningTransaction.isRunning &&  !overLimit)  );
     await switchLamp(bin.id,'RED',parseFloat(bin.weight) >= limit);
 }
 export const checkLampRed = async (io) => {
