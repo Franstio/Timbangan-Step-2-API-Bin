@@ -232,7 +232,7 @@ const readCmd =  async (address,val) =>
     let _res=0;
     try
     {
-        client.setTimeout(100);
+        client.setTimeout(1000);
         _res = await client.readHoldingRegisters(address, val);
         
         return _res;
