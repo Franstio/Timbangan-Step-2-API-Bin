@@ -1,5 +1,5 @@
 import axios from 'axios';
-import client from './plcClient.js';
+import { client } from '../lib/PLCUtil.js';
 import os from 'os';
 import { io, runningTransaction } from '../index.js';
 import { pushPayloadData } from './ActionSensor.js';
@@ -20,42 +20,42 @@ export const switchLamp = async (id, lampType, isAlive) => {
     }
 //    await new Promise(resolve => setTimeout(function () { return resolve(); }, 10));
 };
-const ReadCmd =  async (address,val) =>
-{
-    let _res=0;
-    try
-    {
-        _res = await client.readHoldingRegisters(address, val);
-        return _res;
-    }
-    catch
-    {
-        await new Promise((resolve) => setTimeout(resolve,100));
-        return await ReadCmd(address,val);
-    }
-}
-const WriteCmd = async (data) => {
-    try
-    {
-        client.setTimeout(3000);
-        client.setID(data.id);
-        await client.writeRegister(data.address,data.value);
-        return;
-    }
-    catch(err)
-    {
-        const check =err.message || err;
-        console.log(err.message || err);
-        if (check== 'Timed out' || check == 'CRC error')
-        {
-            await new Promise((resolve) => setTimeout(resolve,100));
-            await WriteCmd(data);
-        }
-    }
-    finally {
-        await new Promise((resolve)=>setTimeout(resolve,100));
-    }
-}
+// const ReadCmd =  async (address,val) =>
+// {
+//     let _res=0;
+//     try
+//     {
+//         _res = await client.readHoldingRegisters(address, val);
+//         return _res;
+//     }
+//     catch
+//     {
+//         await new Promise((resolve) => setTimeout(resolve,100));
+//         return await ReadCmd(address,val);
+//     }
+// }
+// const WriteCmd = async (data) => {
+//     try
+//     {
+//         client.setTimeout(3000);
+//         client.setID(data.id);
+//         await client.writeRegister(data.address,data.value);
+//         return;
+//     }
+//     catch(err)
+//     {
+//         const check =err.message || err;
+//         console.log(err.message || err);
+//         if (check== 'Timed out' || check == 'CRC error')
+//         {
+//             await new Promise((resolve) => setTimeout(resolve,100));
+//             await WriteCmd(data);
+//         }
+//     }
+//     finally {
+//         await new Promise((resolve)=>setTimeout(resolve,100));
+//     }
+// }
 export const LAMP_STATUS = {
     YELLOW: 0
 };

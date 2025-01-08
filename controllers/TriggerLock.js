@@ -1,7 +1,7 @@
 
 import os,{networkInterfaces} from 'os';
 import { pushPayloadData } from './ActionSensor.js';
-import client from './plcClient.js';
+import { client } from '../lib/PLCUtil.js';
 import { runningTransaction } from '../index.js';
 
 export const lockTop = async (req, res) => {
