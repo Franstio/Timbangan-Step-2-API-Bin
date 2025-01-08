@@ -1,6 +1,8 @@
 import client from './plcClient.js';
 import { io, runningTransaction } from '../index.js';
 import { checkLampRed } from './Bin.js';
+import { QueuePLC } from '../lib/QueueUtil.js';
+import { readCmd } from '../lib/PLCUtil.js';
 client.setTimeout(1000);
 
 let bottomSensor=null;
@@ -157,47 +159,47 @@ export const observeTopSensorIndicator = async (req, res) => {
 */
 let PayloadData =[];
 export const pushPayloadData =(data)=>{
-    PayloadData.push(data);
+//    PayloadData.push(data);
+      QueuePLC.add(data,{removeOnFail:{age: 60*10,count:10},timeout:3000,removeOnComplete:{age:60,count:5}});
 }
-const writeCmd = async (data) => {
-    try
-    {
-        client.setID(data.id);
-        await client.writeRegister(data.address,data.value);
-    }
-    catch(err)
-    {
-        const check =err.message || err;
-        console.log(`Err ${check} ` + new Date());
-        if (check== 'Timed out' || check == 'CRC error')
-        {
-            await new Promise((resolve) => setTimeout(resolve,100));
-            await writeCmd(data);
-        }
-    }
+// const writeCmd = async (data) => {
+//     try
+//     {
+//         client.setID(data.id);
+//         await client.writeRegister(data.address,data.value);
+//     }
+//     catch(err)
+//     {
+//         const check =err.message || err;
+//         console.log(`Err ${check} ` + new Date());
+//         if (check== 'Timed out' || check == 'CRC error')
+//         {
+//             await new Promise((resolve) => setTimeout(resolve,100));
+//             await writeCmd(data);
+//         }
+//     }
     
-    finally {
+//     finally {
         
-        await new Promise((resolve)=>setTimeout(resolve,10));
-    }
-}
-const executePayload = async ()=>{
+//         await new Promise((resolve)=>setTimeout(resolve,10));
+//     }
+// }
+// const executePayload = async ()=>{
     
-    const s = [...PayloadData];
-    PayloadData = [];
-    if (s.length > 0)
-        console.log(s);
-    for (let i= 0;i<s.length;i++)
-    {
-        await writeCmd(s[i]);
-//            await new Promise((resolve)=>setTimeout(resolve,1));
-    }
-    client.setID(1);
-}
+//     const s = [...PayloadData];
+//     PayloadData = [];
+//     if (s.length > 0)
+//         console.log(s);
+//     for (let i= 0;i<s.length;i++)
+//     {
+//         await writeCmd(s[i]);
+// //            await new Promise((resolve)=>setTimeout(resolve,1));
+//     }
+//     client.setID(1);
+// }
 const dataSensor = [0,0,0,0,0,0,0];
-const updateSensor = async (index,newData,_io) =>
+export const updateSensor = async (index,newData,_io) =>
 {
-    await executePayload();
     if (index < 0 || index > dataSensor-1)
         return;
     dataSensor[index] = newData;
@@ -227,25 +229,25 @@ const updateSensor = async (index,newData,_io) =>
     }
     client.setID(1);
 }
-const readCmd =  async (address,val) =>
-{
-    let _res=0;
-    try
-    {
-        client.setTimeout(1000);
-        _res = await client.readHoldingRegisters(address, val);
+// const readCmd =  async (address,val) =>
+// {
+//     let _res=0;
+//     try
+//     {
+//         client.setTimeout(1000);
+//         _res = await client.readHoldingRegisters(address, val);
         
-        return _res;
-    }
-    catch(err)
-    {
+//         return _res;
+//     }
+//     catch(err)
+//     {
         
-        const check =err.message || err;
-        console.log(`Err ${check} ` + new Date());
-        await new Promise((resolve) => setTimeout(resolve,50));
-        return await readCmd(address,val);
-    }
-}
+//         const check =err.message || err;
+//         console.log(`Err ${check} ` + new Date());
+//         await new Promise((resolve) => setTimeout(resolve,50));
+//         return await readCmd(address,val);
+//     }
+// }
 export const observeSensor = async (_io)=>  {
 
     while(true)

@@ -3,6 +3,7 @@ import client from './plcClient.js';
 import os from 'os';
 import { io, runningTransaction } from '../index.js';
 import { pushPayloadData } from './ActionSensor.js';
+import { QueuePLC } from '../lib/QueueUtil.js';
 
 export const switchLamp = async (id, lampType, isAlive) => {
     const dict = {
@@ -13,7 +14,7 @@ export const switchLamp = async (id, lampType, isAlive) => {
     const address = dict[lampType];
 //    client.setID(1);
     try {
-        await WriteCmd({id:1,address:address,value: isAlive ? 1 : 0} );
+        await QueuePLC.add({id:1,address:address,value: isAlive ? 1 : 0},{removeOnFail:{age: 60*10,count:10},timeout:3000,removeOnComplete:{age:60,count:5}} );
     }
     catch (error) {
     }

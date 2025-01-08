@@ -11,6 +11,7 @@ import APIRoute from './routes/APIRoute.js';
 import { Server } from "socket.io";
 import { observeSensor } from "./controllers/ActionSensor.js";
 import { config } from "dotenv";
+import { SensorObserveQueue } from "./lib/QueueUtil.js";
 config()
 const app = express();
 const server = http.createServer(app);
@@ -50,8 +51,11 @@ app.use(LampRoute);
 app.use(SensorRoute);
 app.use(APIRoute);
 server.listen(port, () => {
+  SensorObserveQueue.add({type:'observe'},{
+    repeat: {every: 1000},removeOnFail:{age: 60*10,count:10},timeout:3000,removeOnComplete:{age:60,count:5}
+  });
   console.log(`Server up and running on port ${port}`);
 });
-observeSensor(io);
+//observeSensor(io);
 const runningTransaction = {isRunning:false,type: null};
 export {io,runningTransaction};
