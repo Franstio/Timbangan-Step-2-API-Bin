@@ -11,7 +11,7 @@ import APIRoute from './routes/APIRoute.js';
 import { Server } from "socket.io";
 import { observeSensor } from "./controllers/ActionSensor.js";
 import { config } from "dotenv";
-import { SensorObserveQueue } from "./lib/QueueUtil.js";
+import { SensorObserveQueue, serverAdapter } from "./lib/QueueUtil.js";
 config()
 const app = express();
 const server = http.createServer(app);
@@ -50,6 +50,8 @@ app.use(LockDoorRoute);
 app.use(LampRoute);
 app.use(SensorRoute);
 app.use(APIRoute);
+
+app.use('/queues',serverAdapter.getRouter());
 server.listen(port, () => {
   SensorObserveQueue.add({type:'observe'},{
     repeat: {every: 1000},removeOnFail:{age: 60*10,count:10},timeout:3000,removeOnComplete:{age:60,count:5}
