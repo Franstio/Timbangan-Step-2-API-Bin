@@ -1,4 +1,4 @@
-import client from './plcClient.js';
+import { client } from '../lib/PLCUtil.js';
 import { io, runningTransaction } from '../index.js';
 import { checkLampRed } from './Bin.js';
 import { QueuePLC } from '../lib/QueueUtil.js';
