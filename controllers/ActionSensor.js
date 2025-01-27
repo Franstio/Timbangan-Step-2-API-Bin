@@ -3,7 +3,7 @@ import { io, runningTransaction } from '../index.js';
 import { checkLampRed } from './Bin.js';
 import { QueuePLC } from '../lib/QueueUtil.js';
 import { readCmd } from '../lib/PLCUtil.js';
-client.setTimeout(1000);
+//client.setTimeout(1000);
 
 let bottomSensor=null;
 let topSensor=null;
