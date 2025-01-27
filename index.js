@@ -11,7 +11,7 @@ import APIRoute from './routes/APIRoute.js';
 import { Server } from "socket.io";
 import { observeSensor } from "./controllers/ActionSensor.js";
 import { config } from "dotenv";
-import { QueuePLC, QueuePLCConnection, SensorObserveQueue, serverAdapter } from "./lib/QueueUtil.js";
+import { QueuePLC, SensorObserveQueue, serverAdapter } from "./lib/QueueUtil.js";
 config()
 const app = express();
 const server = http.createServer(app);
