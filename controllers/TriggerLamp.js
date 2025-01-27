@@ -1,6 +1,6 @@
 import { pushPayloadData } from "./ActionSensor.js";
 import { client } from '../lib/PLCUtil.js';
-client.setTimeout(5000);
+//client.setTimeout(5000);
 
 export const REDLampOn = async (req, res) => {
   try {
