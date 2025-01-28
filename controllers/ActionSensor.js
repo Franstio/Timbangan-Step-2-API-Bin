@@ -295,14 +295,12 @@ export const observeSensor = async (_io)=>  {
 
 
 export const observeLock = async (_io,data)=>{
-    if (runningTransaction.isRunning)
-    {
+
         const [lockAddress,sensorAddress,triggerLockAddress]  = runningTransaction.type == 'Collection'? [6,1,5]  : [5,0,4];
         if (data[lockAddress] == 0 && data[sensorAddress] == 1)
         {
             _io.emit('reopen', {reopen:true});
             return;
         }      
-    }
     _io.emit('reopen',{ reopen:false})
 }
