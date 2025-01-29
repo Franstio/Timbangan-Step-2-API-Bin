@@ -5,7 +5,7 @@ import LampRoute from "./routes/LampRoute.js";
 import cors from  "cors";
 import http from 'http';
 import bodyParser from "body-parser";
-import { checkLampRed,checkLampYellow, triggerLampRed } from "./controllers/Bin.js";
+import { checkLampRed,checkLampYellow, loadTransaction, triggerLampRed } from "./controllers/Bin.js";
 import SensorRoute from "./routes/SensorRoute.js"
 import APIRoute from './routes/APIRoute.js';
 import { Server } from "socket.io";
@@ -53,6 +53,7 @@ app.use(APIRoute);
 
 app.use('/queues',serverAdapter.getRouter());
 server.listen(port,async () => {
+  loadTransaction();
   SensorObserveQueue.add({type:'observe'},{
     repeat: {every: 1000},removeOnFail:{count:10},timeout:3000,removeOnComplete:{count:5}
   });
@@ -60,4 +61,5 @@ server.listen(port,async () => {
 });
 //observeSensor(io);
 const runningTransaction = {isRunning:false,type: null};
+
 export {io,runningTransaction};

@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { client } from '../lib/PLCUtil.js';
-import os from 'os';
-import { io, runningTransaction } from '../index.js';
+import os, { type } from 'os';
+import { io, runningTransaction, saveTransaction } from '../index.js';
 import { pushPayloadData } from './ActionSensor.js';
 import { QueuePLC } from '../lib/QueueUtil.js';
+import { createClient } from 'redis';
 
 export const switchLamp = async (id, lampType, isAlive) => {
     const dict = {
@@ -115,6 +116,7 @@ export const startTransaction = async (req,res)=>{
     pushPayloadData({id:1,address:lockId,value:1});
     runningTransaction.isRunning = true;
     runningTransaction.type = isCollection ? 'Collection' : 'Dispose';
+    saveTransaction();
     io.emit('UpdateInstruksi',message);
     io.emit('GetType',bin.type);
     io.emit('Bin',bin);
@@ -131,7 +133,7 @@ export const endTransaction = async (req,res)=>{
     pushPayloadData({id:1,address:8,value: 0});    
     runningTransaction.isRunning = false;
     runningTransaction.type = null;
-
+    saveTransaction();
     io.emit('Bin',bin);
     
     console.log('end-2-'+ new Date());
@@ -161,4 +163,28 @@ export const receiveType = async (req,res) =>{
     const {type} = req.body ;
     io.emit('GetType', type);
     res.status(200).json({msg:'ok'});
+}
+export const saveTransaction = async ()=>{
+    const redisClient = createClient();  
+    redisClient.on('error', err => console.log('Redis Client Error', err));
+    await redisClient.connect();
+    await redisClient.hSet('BinState','running',runningTransaction);
+    await redisClient.disconnect();
+}
+export const loadTransaction = async ()=>{
+  const redisClient = createClient();  
+  redisClient.on('error', err => console.log('Redis Client Error', err));
+  await redisClient.connect();
+  const res = await redisClient.hGet('BinState','running');
+  if (runningTransaction != undefined)
+      runningTransaction = JSON.parse(res);
+  await redisClient.disconnect();
+}
+export const clearTransaction = async ()=>{
+  const redisClient = createClient();  
+  redisClient.on('error', err => console.log('Redis Client Error', err));
+  await redisClient.connect();
+  await redisClient.hDel('BinState','running');
+  runningTransaction = {type:null,isRunning:false};
+  await redisClient.disconnect();
 }
