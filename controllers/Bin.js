@@ -170,22 +170,21 @@ export const saveTransactionBin = async ()=>{
     const redisClient = createClient();  
     redisClient.on('error', err => console.log('Redis Client Error', err));
     await redisClient.connect();
-    await redisClient.hSet('Binstate:1','running',runningTransaction);
+    await redisClient.hSet('BinState',runningTransaction);
     await redisClient.disconnect();
 }
 export const loadTransactionBin = async ()=>{
   const redisClient = createClient();  
   redisClient.on('error', err => console.log('Redis Client Error', err));
   await redisClient.connect();
-  const res = await redisClient.hGet('Binstate:1','running');
+  const res = await redisClient.hGetAll('BinState');
   if (res != undefined)
     {
         
-       const temp=  JSON.parse(res);
-       runningTransaction.isRunning = temp.isRunning;
-       runningTransaction.type = temp.type;
-       runningTransaction.bottomSensor = temp.bottomSensor;
-       runningTransaction.topSensor = temp.topSensor;
+       runningTransaction.isRunning = res.isRunning;
+       runningTransaction.type = res.type;
+       runningTransaction.bottomSensor = res.bottomSensor;
+       runningTransaction.topSensor = res.topSensor;
     }
   await redisClient.disconnect();
 }
@@ -193,11 +192,10 @@ export const clearTransactionBin = async ()=>{
   const redisClient = createClient();  
   redisClient.on('error', err => console.log('Redis Client Error', err));
   await redisClient.connect();
-  await redisClient.hDel('Binstate:1','running');
-  const temp=  JSON.parse(res);
   runningTransaction.isRunning = false;
   runningTransaction.type = null;
   runningTransaction.bottomSensor = null;
   runningTransaction.topSensor = null;
+  await saveTransactionBin();
   await redisClient.disconnect();
 }
