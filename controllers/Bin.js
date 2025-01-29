@@ -170,7 +170,12 @@ export const saveTransactionBin = async ()=>{
     const redisClient = createClient();  
     redisClient.on('error', err => console.log('Redis Client Error', err));
     await redisClient.connect();
-    await redisClient.hSet('BinState',{...runningTransaction});
+    const payload = {...runningTransaction};
+    payload.bottomSensor = payload.bottomSensor == null ? "" : payload.bottomSensor;
+    payload.topSensor = payload.topSensor == null ? "" : payload.topSensor;
+    payload.type = payload.type == null ? "" : payload.type;
+    payload.isRunning = payload.isRunning ? 1: 0;
+    await redisClient.hSet('BinState',{...payload});
     await redisClient.disconnect();
 }
 export const loadTransactionBin = async ()=>{
@@ -181,10 +186,10 @@ export const loadTransactionBin = async ()=>{
   if (res != undefined)
     {
         
-       runningTransaction.isRunning = res.isRunning;
-       runningTransaction.type = res.type;
-       runningTransaction.bottomSensor = res.bottomSensor;
-       runningTransaction.topSensor = res.topSensor;
+       runningTransaction.isRunning = res.isRunning==1;
+       runningTransaction.type = res.type == "" ?  null : res.type;
+       runningTransaction.bottomSensor = res.bottomSensor== "" ? null : res.bottomSensor;
+       runningTransaction.topSensor = res.topSensor == "" ? null : res.topSensor;
     }
   await redisClient.disconnect();
 }
