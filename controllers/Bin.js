@@ -170,7 +170,7 @@ export const saveTransactionBin = async ()=>{
     const redisClient = createClient();  
     redisClient.on('error', err => console.log('Redis Client Error', err));
     await redisClient.connect();
-    await redisClient.hSet('BinState',runningTransaction);
+    await redisClient.hSet('BinState',{...runningTransaction});
     await redisClient.disconnect();
 }
 export const loadTransactionBin = async ()=>{
