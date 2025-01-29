@@ -5,6 +5,6 @@ const router = express.Router();
 
 router.post('/Start',startTransaction);
 router.post('/End',endTransaction);
-routes.get('/clear-bin',async (req,res)=>{await clearTransactionBin();return res.json({msg:"ok"});})
+router.get('/clear-bin',async (req,res)=>{await clearTransactionBin();return res.json({msg:"ok"});})
 
 export default router;
