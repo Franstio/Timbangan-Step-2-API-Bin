@@ -221,6 +221,7 @@ export const updateSensor = async (index,newData,_io) =>
         runningTransaction.topSensor= null;
 //            clearInterval(idInterval);
         _io.emit(target,true);
+        await saveTransactionBin();
     }
     if ( bottomSensor != null && bottomResValue == bottomSensor )
     {
@@ -228,8 +229,8 @@ export const updateSensor = async (index,newData,_io) =>
         runningTransaction.bottomSensor = null;
         console.log(newData);
         _io.emit(target,true);
+        await saveTransactionBin();
     }
-    await saveTransactionBin();
     client.setID(1);
 }
 // const readCmd =  async (address,val) =>
