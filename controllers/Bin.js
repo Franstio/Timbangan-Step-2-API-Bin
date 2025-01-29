@@ -176,8 +176,9 @@ export const loadTransactionBin = async ()=>{
   redisClient.on('error', err => console.log('Redis Client Error', err));
   await redisClient.connect();
   const res = await redisClient.hGet('BinState','running');
-  if (runningTransaction != undefined)
+  if (res != undefined)
     {
+        
        const temp=  JSON.parse(res);
        runningTransaction.isRunning = temp.isRunning;
        runningTransaction.type = temp.type;
