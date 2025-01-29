@@ -177,7 +177,11 @@ export const loadTransactionBin = async ()=>{
   await redisClient.connect();
   const res = await redisClient.hGet('BinState','running');
   if (runningTransaction != undefined)
-      runningTransaction = JSON.parse(res);
+    {
+       const temp=  JSON.parse(res);
+       runningTransaction.isRunning = temp.isRunning;
+       runningTransaction.type = temp.type;
+    }
   await redisClient.disconnect();
 }
 export const clearTransactionBin = async ()=>{
@@ -185,6 +189,8 @@ export const clearTransactionBin = async ()=>{
   redisClient.on('error', err => console.log('Redis Client Error', err));
   await redisClient.connect();
   await redisClient.hDel('BinState','running');
-  runningTransaction = {type:null,isRunning:false};
+  const temp=  JSON.parse(res);
+  runningTransaction.isRunning = false;
+  runningTransaction.type = null;
   await redisClient.disconnect();
 }
