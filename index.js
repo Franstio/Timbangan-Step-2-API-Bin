@@ -5,7 +5,7 @@ import LampRoute from "./routes/LampRoute.js";
 import cors from  "cors";
 import http from 'http';
 import bodyParser from "body-parser";
-import { checkLampRed,checkLampYellow, loadTransaction, triggerLampRed } from "./controllers/Bin.js";
+import { checkLampRed,checkLampYellow, loadTransactionBin, triggerLampRed } from "./controllers/Bin.js";
 import SensorRoute from "./routes/SensorRoute.js"
 import APIRoute from './routes/APIRoute.js';
 import { Server } from "socket.io";
