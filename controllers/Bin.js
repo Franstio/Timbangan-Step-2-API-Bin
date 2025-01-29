@@ -116,7 +116,7 @@ export const startTransaction = async (req,res)=>{
     pushPayloadData({id:1,address:lockId,value:1});
     runningTransaction.isRunning = true;
     runningTransaction.type = isCollection ? 'Collection' : 'Dispose';
-    saveTransactionBin();
+    await saveTransactionBin();
     io.emit('UpdateInstruksi',message);
     io.emit('GetType',bin.type);
     io.emit('Bin',bin);
@@ -133,7 +133,9 @@ export const endTransaction = async (req,res)=>{
     pushPayloadData({id:1,address:8,value: 0});    
     runningTransaction.isRunning = false;
     runningTransaction.type = null;
-    saveTransactionBin();
+    runningTransaction.bottomSensor = null;
+    runningTransaction.topSensor = null;
+    await saveTransactionBin();
     io.emit('Bin',bin);
     
     console.log('end-2-'+ new Date());
@@ -182,6 +184,8 @@ export const loadTransactionBin = async ()=>{
        const temp=  JSON.parse(res);
        runningTransaction.isRunning = temp.isRunning;
        runningTransaction.type = temp.type;
+       runningTransaction.bottomSensor = temp.bottomSensor;
+       runningTransaction.topSensor = temp.topSensor;
     }
   await redisClient.disconnect();
 }
@@ -193,5 +197,7 @@ export const clearTransactionBin = async ()=>{
   const temp=  JSON.parse(res);
   runningTransaction.isRunning = false;
   runningTransaction.type = null;
+  runningTransaction.bottomSensor = null;
+  runningTransaction.topSensor = null;
   await redisClient.disconnect();
 }

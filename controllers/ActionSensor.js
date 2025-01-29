@@ -1,12 +1,10 @@
 import { client } from '../lib/PLCUtil.js';
 import { io, runningTransaction } from '../index.js';
-import { checkLampRed } from './Bin.js';
+import { checkLampRed, saveTransactionBin } from './Bin.js';
 import { QueuePLC } from '../lib/QueueUtil.js';
 import { readCmd } from '../lib/PLCUtil.js';
 //client.setTimeout(1000);
 
-let bottomSensor=null;
-let topSensor=null;
 export const SensorTop = async (req, res) => {
     const { SensorTopId } = req.body;
     let receivedValue = null;
@@ -55,7 +53,8 @@ export const observeBottomSensor = async (req, res) => {
     const { readTarget } = req.body;
 /*    if (readTarget == undefined || readTarget==null)
         return res.status(200).json({msg: "Target not found"});*/
-    bottomSensor = readTarget;
+    runningTransaction.bottomSensor = readTarget;
+    await saveTransactionBin();
     /*client.setID(1);
      bottomIdInterval = setInterval(async () => {
         try {
@@ -90,7 +89,8 @@ export const observeTopSensor = async (req, res) => {
     const { readTargetTop } = req.body;
 /*    if (readTargetTop == undefined || readTargetTop==null)
         return res.status(200).json({msg: "Target not found"});*/
-    topSensor = readTargetTop;
+    runningTransaction.topSensor = readTargetTop;
+    await saveTransactionBin();
     /*client.setID(1);
      topIdInterval = setInterval(async () => {
         try {
@@ -202,6 +202,8 @@ export const updateSensor = async (index,newData,_io) =>
 {
     if (index < 0 || index > dataSensor-1)
         return;
+    const topSensor = runningTransaction.topSensor;
+    const bottomSensor = runningTransaction.bottomSensor;
     dataSensor[index] = newData;
     _io.emit("sensorUpdate",dataSensor);    
     let topResValue = dataSensor[0];
@@ -212,21 +214,22 @@ export const updateSensor = async (index,newData,_io) =>
         const target = 'target-top-'+topSensor;
         if (topSensor=="1" || topSensor==1)
         {
-            runningTransaction.isRunning  = false;
-            runningTransaction.type = null;
+            // runningTransaction.isRunning  = false;
+            // runningTransaction.type = null;
             console.log("Top Lock Ditutup - " + new Date().toLocaleString());
         }
-        topSensor= null;
+        runningTransaction.topSensor= null;
 //            clearInterval(idInterval);
         _io.emit(target,true);
     }
     if ( bottomSensor != null && bottomResValue == bottomSensor )
     {
         const target = 'target-'+bottomSensor;
-        bottomSensor = null;
+        runningTransaction.bottomSensor = null;
         console.log(newData);
         _io.emit(target,true);
     }
+    await saveTransactionBin();
     client.setID(1);
 }
 // const readCmd =  async (address,val) =>
