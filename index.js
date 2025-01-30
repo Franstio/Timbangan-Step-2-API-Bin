@@ -54,9 +54,6 @@ app.use(APIRoute);
 app.use('/queues',serverAdapter.getRouter());
 server.listen(port,async () => {
   loadTransactionBin();
-  SensorObserveQueue.add({type:'observe'},{
-    repeat: {every: 1000},removeOnFail:{count:10},timeout:3000,removeOnComplete:{count:5}
-  });
   console.log(`Server up and running on port ${port}`);
 });
 //observeSensor(io);
