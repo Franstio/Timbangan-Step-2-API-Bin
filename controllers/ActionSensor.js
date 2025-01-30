@@ -214,8 +214,8 @@ export const updateSensor = async (index,newData,_io) =>
         const target = 'target-top-'+topSensor;
         if (topSensor=="1" || topSensor==1)
         {
-            // runningTransaction.isRunning  = false;
-            // runningTransaction.type = null;
+            runningTransaction.isRunning  = false;
+            runningTransaction.type = null;
             console.log("Top Lock Ditutup - " + new Date().toLocaleString());
         }
         runningTransaction.topSensor= null;
