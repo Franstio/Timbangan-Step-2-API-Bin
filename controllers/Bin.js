@@ -207,4 +207,5 @@ export const clearTransactionBin = async ()=>{
   runningTransaction.isReady = true;
   await saveTransactionBin();
   await redisClient.disconnect();
+  io.emit('reload',{reload:true});
 }
