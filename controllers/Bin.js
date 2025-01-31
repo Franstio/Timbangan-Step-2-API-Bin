@@ -115,6 +115,7 @@ export const startTransaction = async (req,res)=>{
     const message =  isCollection ? "Buka Penutup Bawah" : "Buka Penutup Atas";
     pushPayloadData({id:1,address:lockId,value:1});
     runningTransaction.isRunning = true;
+    runningTransaction.isReady = false;
     runningTransaction.type = isCollection ? 'Collection' : 'Dispose';
     await saveTransactionBin();
     io.emit('UpdateInstruksi',message);
@@ -132,6 +133,7 @@ export const endTransaction = async (req,res)=>{
 
     pushPayloadData({id:1,address:8,value: 0});    
     runningTransaction.isRunning = false;
+    runningTransaction.isReady = true;
     runningTransaction.type = null;
     runningTransaction.bottomSensor = null;
     runningTransaction.topSensor = null;
@@ -175,6 +177,7 @@ export const saveTransactionBin = async ()=>{
     payload.topSensor = payload.topSensor == null ? "" : payload.topSensor;
     payload.type = payload.type == null ? "" : payload.type;
     payload.isRunning = payload.isRunning ? 1: 0;
+    payload.isReady = payload.isReady ? 1 : 0;
     await redisClient.hSet('BinState',{...payload});
     await redisClient.disconnect();
 }
@@ -185,7 +188,7 @@ export const loadTransactionBin = async ()=>{
   const res = await redisClient.hGetAll('BinState');
   if (res != undefined)
     {
-        
+       runningTransaction.isReady = res.isReady == 1;
        runningTransaction.isRunning = res.isRunning==1;
        runningTransaction.type = res.type == "" ?  null : res.type;
        runningTransaction.bottomSensor = res.bottomSensor== "" ? null : res.bottomSensor;
@@ -201,6 +204,7 @@ export const clearTransactionBin = async ()=>{
   runningTransaction.type = null;
   runningTransaction.bottomSensor = null;
   runningTransaction.topSensor = null;
+  runningTransaction.isReady = true;
   await saveTransactionBin();
   await redisClient.disconnect();
 }

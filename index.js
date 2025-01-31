@@ -60,6 +60,6 @@ server.listen(port,async () => {
   console.log(`Server up and running on port ${port}`);
 });
 //observeSensor(io);
-const runningTransaction = {isRunning:false,type: null,topSensor:null,bottomSensor:null};
+const runningTransaction = {isRunning:false,type: null,topSensor:null,bottomSensor:null,isReady:true};
 
 export {io,runningTransaction};
