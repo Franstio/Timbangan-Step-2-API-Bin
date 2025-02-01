@@ -123,7 +123,7 @@ export const startTransaction = async (req,res)=>{
     io.emit('Bin',bin);
     if (transactionInterval != null)
         clearInterval(transactionInterval);
-     setInterval(() => {
+    transactionInterval= setInterval(() => {
         runningTransaction.allowReopen = true;
         saveTransactionBin();
     }, 30*1000);
@@ -208,7 +208,7 @@ export const loadTransactionBin = async ()=>{
         {
             if (transactionInterval != null)
                 clearInterval(transactionInterval);
-            setInterval(() => {
+            transactionInterval =  setInterval(() => {
                 runningTransaction.allowReopen = true;
                 saveTransactionBin();
             }, 30*1000);
