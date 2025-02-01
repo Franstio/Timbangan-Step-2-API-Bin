@@ -144,8 +144,6 @@ export const endTransaction = async (req,res)=>{
     runningTransaction.type = null;
     runningTransaction.bottomSensor = null;
     runningTransaction.topSensor = null;
-    if (transactionInterval != null)
-        clearInterval(transactionInterval);
     runningTransaction.allowReopen = false;
     await saveTransactionBin();
     io.emit('Bin',bin);
@@ -189,8 +187,6 @@ export const saveTransactionBin = async ()=>{
     payload.isRunning = payload.isRunning ? 1: 0;
     payload.isReady = payload.isReady ? 1 : 0;
     payload.allowReopen = payload.allowReopen ? 1: 0;
-    if (!runningTransaction.allowReopen)
-        clearInterval(transactionInterval);
     await redisClient.hSet('BinState',{...payload});
     await redisClient.disconnect();
 }
@@ -227,8 +223,6 @@ export const clearTransactionBin = async ()=>{
   runningTransaction.bottomSensor = null;
   runningTransaction.topSensor = null;
   runningTransaction.isReady = true;
-  if (transactionInterval != null)
-      clearInterval(transactionInterval);
   runningTransaction.allowReopen = false;
   await saveTransactionBin();
   await redisClient.disconnect();
