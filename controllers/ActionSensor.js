@@ -299,7 +299,7 @@ export const observeSensor = async (_io)=>  {
 
 
 export const observeLock = async (_io,data)=>{
-    if (runningTransaction.isRunning)
+    if (!runningTransaction.isReady)
     {
         const [lockAddress,sensorAddress,triggerLockAddress]  = runningTransaction.type == 'Collection'? [6,1,5]  : [5,0,4];
         if (data[lockAddress] == 0 && data[sensorAddress] == 1)
