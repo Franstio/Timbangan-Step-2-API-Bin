@@ -103,7 +103,6 @@ export const checkLampYellow = async () => {
     }
 };
 
- let transactionInterval = null;
 export const startTransaction = async (req,res)=>{
     const {bin } = req.body;
     console.log('start-1-'+ new Date());
@@ -121,14 +120,18 @@ export const startTransaction = async (req,res)=>{
     io.emit('UpdateInstruksi',message);
     io.emit('GetType',bin.type);
     io.emit('Bin',bin);
-    if (transactionInterval != null)
-        clearInterval(transactionInterval);
-    transactionInterval= setInterval(() => {
+    setTimeout(() => {
         runningTransaction.allowReopen = true;
         saveTransactionBin();
     }, 30*1000);
     console.log('start-3-'+ new Date());
     return res.json({msg:"ok"});
+}
+export const startReopenSeq = ()=>{
+    setTimeout(() => {
+        runningTransaction.allowReopen = true;
+        saveTransactionBin();
+    }, 30*1000);
 }
 export const endTransaction = async (req,res)=>{
     const {bin} = req.body;
@@ -206,9 +209,7 @@ export const loadTransactionBin = async ()=>{
        runningTransaction.allowReopen = res.allowReopen == 1;
        if (runningTransaction.allowReopen)
         {
-            if (transactionInterval != null)
-                clearInterval(transactionInterval);
-            transactionInterval =  setInterval(() => {
+             setTimeout(() => {
                 runningTransaction.allowReopen = true;
                 saveTransactionBin();
             }, 30*1000);
