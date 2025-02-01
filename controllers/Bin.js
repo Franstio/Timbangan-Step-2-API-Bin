@@ -103,11 +103,11 @@ export const checkLampYellow = async () => {
     }
 };
 
+ const transactionInterval = null;
 export const startTransaction = async (req,res)=>{
     const {bin } = req.body;
     console.log('start-1-'+ new Date());
     pushPayloadData({id:1,address:7,value: 0});
-
     pushPayloadData({id:1,address:8,value: 1});    
     console.log('start-2-'+ new Date());
     const isCollection = bin.type == 'Collection';
@@ -121,7 +121,12 @@ export const startTransaction = async (req,res)=>{
     io.emit('UpdateInstruksi',message);
     io.emit('GetType',bin.type);
     io.emit('Bin',bin);
-    
+    if (transactionInterval != null)
+        clearInterval(transactionInterval);
+     setInterval(() => {
+        runningTransaction.allowReopen = true;
+        saveTransactionBin();
+    }, 30*1000);
     console.log('start-3-'+ new Date());
     return res.json({msg:"ok"});
 }
@@ -130,13 +135,15 @@ export const endTransaction = async (req,res)=>{
     
     console.log('end-1-'+ new Date());
     pushPayloadData({id:1,address:7,value: 1});
-
     pushPayloadData({id:1,address:8,value: 0});    
     runningTransaction.isRunning = false;
     runningTransaction.isReady = true;
     runningTransaction.type = null;
     runningTransaction.bottomSensor = null;
     runningTransaction.topSensor = null;
+    if (transactionInterval != null)
+        clearInterval(transactionInterval);
+    runningTransaction.allowReopen = false;
     await saveTransactionBin();
     io.emit('Bin',bin);
     
@@ -178,6 +185,9 @@ export const saveTransactionBin = async ()=>{
     payload.type = payload.type == null ? "" : payload.type;
     payload.isRunning = payload.isRunning ? 1: 0;
     payload.isReady = payload.isReady ? 1 : 0;
+    payload.allowReopen = payload.allowReopen ? 1: 0;
+    if (!runningTransaction.allowReopen)
+        clearInterval(transactionInterval);
     await redisClient.hSet('BinState',{...payload});
     await redisClient.disconnect();
 }
@@ -193,9 +203,20 @@ export const loadTransactionBin = async ()=>{
        runningTransaction.type = res.type == "" ?  null : res.type;
        runningTransaction.bottomSensor = res.bottomSensor== "" ? null : res.bottomSensor;
        runningTransaction.topSensor = res.topSensor == "" ? null : res.topSensor;
+       runningTransaction.allowReopen = res.allowReopen == 1;
+       if (runningTransaction.allowReopen)
+        {
+            if (transactionInterval != null)
+                clearInterval(transactionInterval);
+            setInterval(() => {
+                runningTransaction.allowReopen = true;
+                saveTransactionBin();
+            }, 30*1000);
+        }
     }
   await redisClient.disconnect();
 }
+
 export const clearTransactionBin = async ()=>{
   const redisClient = createClient();  
   redisClient.on('error', err => console.log('Redis Client Error', err));
@@ -205,6 +226,9 @@ export const clearTransactionBin = async ()=>{
   runningTransaction.bottomSensor = null;
   runningTransaction.topSensor = null;
   runningTransaction.isReady = true;
+  if (transactionInterval != null)
+      clearInterval(transactionInterval);
+  runningTransaction.allowReopen = false;
   await saveTransactionBin();
   await redisClient.disconnect();
   io.emit('reload',{reload:true});
