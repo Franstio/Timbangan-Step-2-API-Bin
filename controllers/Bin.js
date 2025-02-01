@@ -103,7 +103,7 @@ export const checkLampYellow = async () => {
     }
 };
 
- const transactionInterval = null;
+ let transactionInterval = null;
 export const startTransaction = async (req,res)=>{
     const {bin } = req.body;
     console.log('start-1-'+ new Date());
