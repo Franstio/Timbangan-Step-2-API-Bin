@@ -2,7 +2,7 @@
 import os,{networkInterfaces} from 'os';
 import { pushPayloadData } from './ActionSensor.js';
 import { client } from '../lib/PLCUtil.js';
-import { runningTransaction } from '../index.js';
+import { io, runningTransaction } from '../index.js';
 import { saveTransactionBin, startReopenSeq } from './Bin.js';
 
 export const lockTop = async (req, res) => {
@@ -23,6 +23,7 @@ export const lockTop = async (req, res) => {
         await saveTransactionBin();
         pushPayloadData({id:idLockTop,address:address,value:value});
         startReopenSeq();
+        io.emit('reopen',{ reopen:false});
         console.log("Top Lock Dibuka - " + new Date().toLocaleString());
 //        await new Promise(resolve => setTimeout(function () { return resolve(); }, 100));
 //        const data = await client.readHoldingRegisters(address, 8);
@@ -56,6 +57,7 @@ export const lockBottom = async (req, res) => {
         runningTransaction.allowReopen = false;
         await saveTransactionBin();
         startReopenSeq();
+        io.emit('reopen',{ reopen:false});
         //const log = await client.writeRegister(address,value);));
         pushPayloadData({id:idLockBottom,address:address,value:value});
 //        await new Promise(resolve => setTimeout(function () { return resolve(); }, 100
