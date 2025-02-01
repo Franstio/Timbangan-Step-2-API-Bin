@@ -8,7 +8,6 @@ import { saveTransactionBin, startReopenSeq } from './Bin.js';
 export const lockTop = async (req, res) => {
     let c = 0;
     let err = '';
-    do{
     try {
         const {idLockTop} = req.body;
 
@@ -36,19 +35,14 @@ export const lockTop = async (req, res) => {
 
     } catch (error) {
         err =  error;
-        c =c+1;
     }
-    }
-    while (c < 10);
     return res.status(500).json({ msg: err ,from: 'Lock Top'});
-    
 };
 
 export const lockBottom = async (req, res) => {
     let c= 0;
     let err='';
-    do
-    {
+
     try {
         const {idLockBottom} = req.body;
 
@@ -75,10 +69,7 @@ export const lockBottom = async (req, res) => {
 
     } catch (error) {
         err = error;
-        c = c+1;
     }
-    }
-    while (c < 10);
     return res.status(500).json({ msg: err,from: 'Lock Bottom' });
 };
 
