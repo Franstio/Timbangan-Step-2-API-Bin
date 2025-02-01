@@ -307,5 +307,5 @@ export const observeLock = async (_io,data)=>{
             return;
         }      
     }
-    _io.emit('reopen',{ reopen:false})
+    _io.emit('reopen',{ reopen:false});
 }

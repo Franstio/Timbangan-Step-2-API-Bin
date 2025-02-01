@@ -205,10 +205,10 @@ export const loadTransactionBin = async ()=>{
        runningTransaction.allowReopen = res.allowReopen == 1;
        if (runningTransaction.allowReopen)
         {
-             setTimeout(() => {
-                runningTransaction.allowReopen = true;
-                saveTransactionBin();
-            }, 30*1000);
+            //  setTimeout(() => {
+            //     runningTransaction.allowReopen = true;
+            //     saveTransactionBin();
+            // }, 30*1000);
         }
     }
   await redisClient.disconnect();
