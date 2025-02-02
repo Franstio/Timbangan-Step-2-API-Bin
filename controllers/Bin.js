@@ -120,15 +120,21 @@ export const startTransaction = async (req,res)=>{
     io.emit('UpdateInstruksi',message);
     io.emit('GetType',bin.type);
     io.emit('Bin',bin);
-    setTimeout(() => {
+    clearTimeout(transactionTimer);
+    transactionTimer = setTimeout(() => {
         runningTransaction.allowReopen = true;
         saveTransactionBin();
     }, 30*1000);
     console.log('start-3-'+ new Date());
     return res.json({msg:"ok"});
 }
+let transactionTimer=  null;
+export const stopReopenTimer = ()=>{
+    clearTimeout(transactionTimer);
+}
 export const startReopenSeq = ()=>{
-    setTimeout(() => {
+    clearTimeout(transactionTimer);
+    transactionTimer = setTimeout(() => {
         runningTransaction.allowReopen = true;
         saveTransactionBin();
     }, 30*1000);
@@ -144,7 +150,9 @@ export const endTransaction = async (req,res)=>{
     runningTransaction.type = null;
     runningTransaction.bottomSensor = null;
     runningTransaction.topSensor = null;
+    
     runningTransaction.allowReopen = false;
+    stopReopenTimer();
     await saveTransactionBin();
     io.emit('Bin',bin);
     
@@ -224,6 +232,7 @@ export const clearTransactionBin = async ()=>{
   runningTransaction.topSensor = null;
   runningTransaction.isReady = true;
   runningTransaction.allowReopen = false;
+  stopReopenTimer();
   await saveTransactionBin();
   await redisClient.disconnect();
   io.emit('reload',{reload:true});
