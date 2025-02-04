@@ -155,7 +155,7 @@ export const endTransaction = async (req,res)=>{
     stopReopenTimer();
     await saveTransactionBin();
     io.emit('Bin',bin);
-    
+    io.emit('reopen',{ reopen:false});
     console.log('end-2-'+ new Date());
     if (bin.type == "Dispose")
     {
