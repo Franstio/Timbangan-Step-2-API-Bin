@@ -22,7 +22,7 @@ export const lockTop = async (req, res) => {
         runningTransaction.allowReopen = false;
         await saveTransactionBin();
         pushPayloadData({id:idLockTop,address:address,value:value});
-        startReopenSeq();
+//        startReopenSeq();
         io.emit('reopen',{ reopen:false});
         console.log("Top Lock Dibuka - " + new Date().toLocaleString());
 //        await new Promise(resolve => setTimeout(function () { return resolve(); }, 100));
@@ -56,7 +56,7 @@ export const lockBottom = async (req, res) => {
         const value = 1;
         runningTransaction.allowReopen = false;
         await saveTransactionBin();
-        startReopenSeq();
+//        startReopenSeq();
         io.emit('reopen',{ reopen:false});
         //const log = await client.writeRegister(address,value);));
         pushPayloadData({id:idLockBottom,address:address,value:value});
