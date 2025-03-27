@@ -126,6 +126,10 @@ export const startTransaction = async (req,res)=>{
         saveTransactionBin();
     }, 30*1000);
     console.log('start-3-'+ new Date());
+    setTimeout( async ()=>{
+        const binname = process.env.HOSTNAME ?? os.hostname();
+        await axios.put(`http://${process.env.TIMBANGAN}:5000/status-bin/${binname}`,{status: runningTransaction.type});
+    },1);
     return res.json({msg:"ok"});
 }
 let transactionTimer=  null;
@@ -168,7 +172,10 @@ export const endTransaction = async (req,res)=>{
     {
         pushPayloadData({id:1,address:5,value:1});
     }
-    
+    setTimeout( async ()=>{
+        const binname = process.env.HOSTNAME ?? os.hostname();
+        await axios.put(`http://${process.env.TIMBANGAN}:5000/status-bin/${binname}`,{status: "Standby"});
+    },1);
     console.log('end-1-'+ new Date());
     return res.json({msg:"ok"});
 }
