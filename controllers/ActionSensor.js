@@ -200,6 +200,8 @@ export const pushPayloadData =(data)=>{
 const dataSensor = [0,0,0,0,0,0,0];
 export const updateSensor = async (index,newData,_io) =>
 {
+    try
+    {
     if (index < 0 || index > dataSensor-1)
         return;
     const topSensor = runningTransaction.topSensor;
@@ -231,6 +233,11 @@ export const updateSensor = async (index,newData,_io) =>
         await saveTransactionBin();
     }
     client.setID(1);
+    }
+    catch(er)
+    {
+        console.log(er);
+    }
 }
 // const readCmd =  async (address,val) =>
 // {
