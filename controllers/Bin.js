@@ -5,6 +5,7 @@ import { io, runningTransaction } from '../index.js';
 import { pushPayloadData } from './ActionSensor.js';
 import { QueuePLC } from '../lib/QueueUtil.js';
 import { createClient } from 'redis';
+import { execSync } from 'child_process';
 
 export const switchLamp = async (id, lampType, isAlive) => {
     const dict = {
@@ -235,5 +236,9 @@ export const clearTransactionBin = async ()=>{
   stopReopenTimer();
   await saveTransactionBin();
   await redisClient.disconnect();
+  setTimeout(()=>{
+    execSync('sudo systemctl restart backend-web');
+  },1000);
   io.emit('reload',{reload:true});
+  
 }
