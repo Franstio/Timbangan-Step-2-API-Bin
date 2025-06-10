@@ -1,7 +1,16 @@
 import { pushPayloadData } from "./ActionSensor.js";
 import { client } from '../lib/PLCUtil.js';
 //client.setTimeout(5000);
+export const LampSet  = async (req,res)=>{
+  try {
+    const { address,value } = req.query;
+    pushPayloadData({ id: 1, address: address, value: value });
 
+    res.status(200).json({ msg: `Ok` });
+  } catch (error) {
+    res.status(500).json({ msg: JSON.stringify(error) });
+  }  
+}
 export const REDLampOn = async (req, res) => {
   try {
     const { idLockTop } = req.body;
