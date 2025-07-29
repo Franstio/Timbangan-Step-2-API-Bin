@@ -131,7 +131,11 @@ export const startTransaction = async (req,res)=>{
 }
 let transactionTimer=  null;
 export const stopReopenTimer = ()=>{
+    try
+    {
     clearTimeout(transactionTimer);
+    }
+    catch{}
 }
 export const startReopenSeq = ()=>{
     clearTimeout(transactionTimer);
@@ -139,6 +143,18 @@ export const startReopenSeq = ()=>{
         runningTransaction.allowReopen = true;
         saveTransactionBin();
     }, 30*1000);
+}
+export const stopReopen = (req,res)=>{
+    try
+    {
+        clearTimeout(transactionTimer);
+        return res.json({msg:"ok"});
+    }
+    catch (ex)
+    {
+        console.log(ex);
+        return res.json({msg:"ok"});
+    }
 }
 export const endTransaction = async (req,res)=>{
     const {bin} = req.body;

@@ -1,6 +1,6 @@
 import { client } from '../lib/PLCUtil.js';
 import { io, runningTransaction } from '../index.js';
-import { checkLampRed, saveTransactionBin } from './Bin.js';
+import { checkLampRed, saveTransactionBin, stopReopenTimer } from './Bin.js';
 import { QueuePLC } from '../lib/QueueUtil.js';
 import { readCmd } from '../lib/PLCUtil.js';
 //client.setTimeout(1000);
@@ -217,6 +217,7 @@ export const updateSensor = async (index,newData,_io) =>
         if (topSensor=="1" || topSensor==1)
         {
             runningTransaction.isRunning  = false;
+            stopReopenTimer();
             console.log("Top Lock Ditutup - " + new Date().toLocaleString());
         }
         runningTransaction.topSensor= null;
