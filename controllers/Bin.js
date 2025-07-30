@@ -156,9 +156,11 @@ export const stopReopen = (req,res)=>{
         return res.json({msg:"ok"});
     }
 }
-export const endTransaction = async (req,res)=>{
-    const {bin} = req.body;
-    
+export const endTransactionAPI = async (req,res)=>{
+    await endTransaction(req.body.bin);
+    return res.json({msg:"ok"});
+}
+export const endTransaction = async (bin)=>{    
     console.log('end-1-'+ new Date());
     pushPayloadData({id:1,address:7,value: 1});
     pushPayloadData({id:1,address:8,value: 0});    
@@ -187,9 +189,7 @@ export const endTransaction = async (req,res)=>{
     }
     
     console.log('end-1-'+ new Date());
-    return res.json({msg:"ok"});
 }
-
 export const receiveInstruksi = async (req,res) =>{
     const {instruksi} = req.body ;
     io.emit('UpdateInstruksi', instruksi);

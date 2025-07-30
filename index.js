@@ -5,7 +5,7 @@ import LampRoute from "./routes/LampRoute.js";
 import cors from  "cors";
 import http from 'http';
 import bodyParser from "body-parser";
-import { checkLampRed,checkLampYellow, loadTransactionBin, triggerLampRed } from "./controllers/Bin.js";
+import { checkLampRed,checkLampYellow, endTransaction, loadTransactionBin, triggerLampRed } from "./controllers/Bin.js";
 import SensorRoute from "./routes/SensorRoute.js"
 import APIRoute from './routes/APIRoute.js';
 import { Server } from "socket.io";
@@ -35,7 +35,14 @@ io.on('connection',async (socket)=>{
     socket.on('TriggerWeight',async (bin)=>{
       console.log(bin);
       await triggerLampRed(bin);
-    })
+    });
+    socket.on('binInfo',async (bin)=>{
+      console.log({binInfo:bin});
+      if (runningTransaction.isRunning==true && runningTransaction.type == 'Dispose' && bin.dispose == false)
+      {
+          endTransaction(bin);
+      }
+    });
   
 });
 app.use(cors({
