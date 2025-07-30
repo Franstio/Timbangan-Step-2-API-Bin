@@ -104,8 +104,7 @@ export const checkLampYellow = async () => {
     }
 };
 
-export const startTransaction = async (req,res)=>{
-    const {bin } = req.body;
+export const startTransaction = async (bin)=>{
     console.log('start-1-'+ new Date());
     pushPayloadData({id:1,address:7,value: 0});
     pushPayloadData({id:1,address:8,value: 1});    
@@ -127,6 +126,9 @@ export const startTransaction = async (req,res)=>{
         saveTransactionBin();
     }, 30*1000);
     console.log('start-3-'+ new Date());
+}
+export const startTransactionAPI = async (req,res)=>{
+    await startTransaction(req.body.bin)
     return res.json({msg:"ok"});
 }
 let transactionTimer=  null;
