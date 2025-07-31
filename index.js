@@ -40,6 +40,7 @@ io.on('connection',async (socket)=>{
       console.log({binInfo:bin});
       if (runningTransaction.isRunning==false && runningTransaction.isReady == false && runningTransaction.isVerify==true && runningTransaction.type == 'Dispose' && bin.dispose == false)
       {
+          bin.type='Dispose';
           endTransaction(bin);
       }
       else if (runningTransaction.isRunning==false && runningTransaction.isReady==true && bin.dispose==true)
