@@ -38,7 +38,7 @@ io.on('connection',async (socket)=>{
     });
     socket.on('binInfo',async (bin)=>{
       console.log({binInfo:bin});
-      if (runningTransaction.isRunning==false && runningTransaction.isReady == true && runningTransaction.type == 'Dispose' && bin.dispose == false)
+      if (runningTransaction.isRunning==false && runningTransaction.isReady == false && runningTransaction.isVerify==true && runningTransaction.type == 'Dispose' && bin.dispose == false)
       {
           endTransaction(bin);
       }
@@ -72,6 +72,6 @@ server.listen(port,async () => {
   console.log(`Server up and running on port ${port}`);
 });
 //observeSensor(io);
-const runningTransaction = {isRunning:false,type: null,topSensor:null,bottomSensor:null,isReady:true,allowReopen:false};
+const runningTransaction = {isRunning:false,type: null,topSensor:null,bottomSensor:null,isReady:true,allowReopen:false,isVerify:false};
 
 export {io,runningTransaction};

@@ -115,6 +115,7 @@ export const startTransaction = async (bin)=>{
     pushPayloadData({id:1,address:lockId,value:1});
     runningTransaction.isRunning = true;
     runningTransaction.isReady = false;
+    runningTransaction.isVerify = false;
     runningTransaction.type = isCollection ? 'Collection' : 'Dispose';
     await saveTransactionBin();
     io.emit('UpdateInstruksi',message);
@@ -168,6 +169,7 @@ export const endTransaction = async (bin)=>{
     pushPayloadData({id:1,address:8,value: 0});    
     runningTransaction.isRunning = false;
     runningTransaction.isReady = true;
+    runningTransaction.isVerify = false;
     runningTransaction.type = null;
     runningTransaction.bottomSensor = null;
     runningTransaction.topSensor = null;
@@ -214,6 +216,7 @@ export const saveTransactionBin = async ()=>{
     payload.isRunning = payload.isRunning ? 1: 0;
     payload.isReady = payload.isReady ? 1 : 0;
     payload.allowReopen = payload.allowReopen ? 1: 0;
+    payload.isVerify = payload.isVerify ? 1 : 0;
     await redisClient.hSet('BinState',{...payload});
     await redisClient.disconnect();
 }
@@ -230,6 +233,7 @@ export const loadTransactionBin = async ()=>{
        runningTransaction.bottomSensor = res.bottomSensor== "" ? null : res.bottomSensor;
        runningTransaction.topSensor = res.topSensor == "" ? null : res.topSensor;
        runningTransaction.allowReopen = res.allowReopen == 1;
+       runningTransaction.isVerify = res.isVerify == 1;
        if (runningTransaction.allowReopen)
         {
             //  setTimeout(() => {
@@ -251,6 +255,7 @@ export const clearTransactionBin = async ()=>{
   runningTransaction.topSensor = null;
   runningTransaction.isReady = true;
   runningTransaction.allowReopen = false;
+  runningTransaction.isVerify = false;
   stopReopenTimer();
   await saveTransactionBin();
   await redisClient.disconnect();

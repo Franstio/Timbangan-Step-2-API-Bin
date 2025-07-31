@@ -217,6 +217,7 @@ export const updateSensor = async (index,newData,_io) =>
         if (topSensor=="1" || topSensor==1)
         {
             runningTransaction.isRunning  = false;
+            runningTransaction.isVerify = true;
             stopReopenTimer();
             console.log("Top Lock Ditutup - " + new Date().toLocaleString());
         }
