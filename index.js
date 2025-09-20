@@ -38,7 +38,7 @@ io.on('connection',async (socket)=>{
     });
     socket.on('binInfo',async (bin)=>{
       console.log({binInfo:bin});
-      if (runningTransaction.isRunning==false && runningTransaction.isReady == false && runningTransaction.isVerify==true && runningTransaction.type == 'Dispose')
+      if (runningTransaction.isRunning==false && runningTransaction.isReady == false && runningTransaction.isVerify==true && runningTransaction.type == 'Dispose' && bin.dispose == false)
       {
           bin.type='Dispose';
           endTransaction(bin);
