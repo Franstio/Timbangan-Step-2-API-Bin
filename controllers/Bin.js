@@ -3,7 +3,7 @@ import { client } from '../lib/PLCUtil.js';
 import os, { type } from 'os';
 import { io, runningTransaction } from '../index.js';
 import { pushPayloadData } from './ActionSensor.js';
-import { QueuePLC } from '../lib/QueueUtil.js';
+import { QueuePLC, SensorObserveQueue } from '../lib/QueueUtil.js';
 import { createClient } from 'redis';
 import { execSync } from 'child_process';
 
@@ -225,7 +225,7 @@ export const loadTransactionBin = async ()=>{
   redisClient.on('error', err => console.log('Redis Client Error', err));
   await redisClient.connect();
   const res = await redisClient.hGetAll('BinState');
-  if (res != undefined)
+  if (res.type)
     {
        runningTransaction.isReady = res.isReady == 1;
        runningTransaction.isRunning = res.isRunning==1;
@@ -247,7 +247,13 @@ export const loadTransactionBin = async ()=>{
 
 export const clearTransactionBin = async ()=>{
   const redisClient = createClient();  
+
   redisClient.on('error', err => console.log('Redis Client Error', err));
+  await QueuePLC.clean();
+  await SensorObserveQueue.clean();
+  await SensorObserveQueue.add({type:'observe'},{
+    removeOnFail:{count:10},timeout:3000,removeOnComplete:{count:5}
+  });
   await redisClient.connect();
   runningTransaction.isRunning = false;
   runningTransaction.type = null;

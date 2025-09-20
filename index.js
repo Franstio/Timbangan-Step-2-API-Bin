@@ -38,14 +38,18 @@ io.on('connection',async (socket)=>{
     });
     socket.on('binInfo',async (bin)=>{
       console.log({binInfo:bin});
-      if (runningTransaction.isRunning==false && runningTransaction.isReady == false && runningTransaction.isVerify==true && runningTransaction.type == 'Dispose' && bin.dispose == false)
+      if (runningTransaction.isRunning==false && runningTransaction.isReady == false && runningTransaction.isVerify==true && runningTransaction.type == 'Dispose')
       {
           bin.type='Dispose';
           endTransaction(bin);
       }
-      else if (runningTransaction.isRunning==false && runningTransaction.isReady==true && bin.dispose==true)
+      else if (runningTransaction.isRunning==false && runningTransaction.isReady==true && bin.dispose==true && bin.pending == false)
       {
         startTransaction(bin);
+      }
+      if (bin.pending)
+      {
+        io.emit('UpdateInstruksi','Bin Dalam Kondisi Pending');
       }
     });
   
@@ -67,7 +71,7 @@ app.use(APIRoute);
 app.use('/queues',serverAdapter.getRouter());
 server.listen(port,async () => {
   loadTransactionBin();
-  SensorObserveQueue.add({type:'observe'},{
+  await SensorObserveQueue.add({type:'observe'},{
     removeOnFail:{count:10},timeout:3000,removeOnComplete:{count:5}
   });
   console.log(`Server up and running on port ${port}`);
