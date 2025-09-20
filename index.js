@@ -43,7 +43,7 @@ io.on('connection',async (socket)=>{
           bin.type='Dispose';
           endTransaction(bin);
       }
-      else if (runningTransaction.isRunning==false && runningTransaction.isReady==true && bin.dispose==true && bin.pending == false)
+      else if (runningTransaction.isRunning==false && runningTransaction.isReady==true && bin.dispose==true )
       {
         startTransaction(bin);
       }
