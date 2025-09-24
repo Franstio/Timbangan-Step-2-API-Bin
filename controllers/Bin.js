@@ -249,8 +249,8 @@ export const clearTransactionBin = async ()=>{
   const redisClient = createClient();  
 
   redisClient.on('error', err => console.log('Redis Client Error', err));
-  await QueuePLC.clean(10 * 1000);
-  await SensorObserveQueue.clean(10 * 1000);
+  await QueuePLC.obliterate({force:true});
+  await SensorObserveQueue.obliterate({force:true});
   await SensorObserveQueue.add({type:'observe'},{
     removeOnFail:{count:10},timeout:3000,removeOnComplete:{count:5}
   });
