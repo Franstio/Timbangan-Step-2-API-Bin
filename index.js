@@ -38,6 +38,11 @@ io.on('connection',async (socket)=>{
     });
     socket.on('binInfo',async (bin)=>{
       console.log({binInfo:bin});
+      
+      if (bin.disabled == 1)
+      {
+        io.emit('UpdateInstruksi','Bin Dalam Kondisi Pending');
+      }
       if (runningTransaction.isRunning==false && runningTransaction.isReady == false && runningTransaction.isVerify==true && runningTransaction.type == 'Dispose' && bin.dispose == false)
       {
           bin.type='Dispose';
@@ -46,10 +51,6 @@ io.on('connection',async (socket)=>{
       else if (runningTransaction.isRunning==false && runningTransaction.isReady==true && bin.dispose==true )
       {
         startTransaction(bin);
-      }
-      if (bin.pending)
-      {
-        io.emit('UpdateInstruksi','Bin Dalam Kondisi Pending');
       }
     });
   
