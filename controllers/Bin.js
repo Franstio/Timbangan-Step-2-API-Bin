@@ -3,8 +3,9 @@ import { client } from '../lib/PLCUtil.js';
 import os, { type } from 'os';
 import { io, runningTransaction } from '../index.js';
 import { pushPayloadData } from './ActionSensor.js';
-import { QueuePLC } from '../lib/QueueUtil.js';
+import { QueuePLC, SensorObserveQueue } from '../lib/QueueUtil.js';
 import { createClient } from 'redis';
+import { execSync } from 'child_process';
 
 export const switchLamp = async (id, lampType, isAlive) => {
     const dict = {
@@ -103,8 +104,7 @@ export const checkLampYellow = async () => {
     }
 };
 
-export const startTransaction = async (req,res)=>{
-    const {bin } = req.body;
+export const startTransaction = async (bin)=>{
     console.log('start-1-'+ new Date());
     pushPayloadData({id:1,address:7,value: 0});
     pushPayloadData({id:1,address:8,value: 1});    
@@ -115,6 +115,7 @@ export const startTransaction = async (req,res)=>{
     pushPayloadData({id:1,address:lockId,value:1});
     runningTransaction.isRunning = true;
     runningTransaction.isReady = false;
+    runningTransaction.isVerify = false;
     runningTransaction.type = isCollection ? 'Collection' : 'Dispose';
     await saveTransactionBin();
     io.emit('UpdateInstruksi',message);
@@ -126,15 +127,18 @@ export const startTransaction = async (req,res)=>{
         saveTransactionBin();
     }, 30*1000);
     console.log('start-3-'+ new Date());
-    setTimeout( async ()=>{
-        const binname = process.env.HOSTNAME ?? os.hostname();
-        await axios.put(`http://${process.env.TIMBANGAN}:5000/status-bin/${binname}`,{status: runningTransaction.type});
-    },1);
+}
+export const startTransactionAPI = async (req,res)=>{
+    await startTransaction(req.body.bin)
     return res.json({msg:"ok"});
 }
 let transactionTimer=  null;
 export const stopReopenTimer = ()=>{
+    try
+    {
     clearTimeout(transactionTimer);
+    }
+    catch{}
 }
 export const startReopenSeq = ()=>{
     clearTimeout(transactionTimer);
@@ -143,14 +147,29 @@ export const startReopenSeq = ()=>{
         saveTransactionBin();
     }, 30*1000);
 }
-export const endTransaction = async (req,res)=>{
-    const {bin} = req.body;
-    
+export const stopReopen = (req,res)=>{
+    try
+    {
+        clearTimeout(transactionTimer);
+        return res.json({msg:"ok"});
+    }
+    catch (ex)
+    {
+        console.log(ex);
+        return res.json({msg:"ok"});
+    }
+}
+export const endTransactionAPI = async (req,res)=>{
+    await endTransaction(req.body.bin);
+    return res.json({msg:"ok"});
+}
+export const endTransaction = async (bin)=>{    
     console.log('end-1-'+ new Date());
     pushPayloadData({id:1,address:7,value: 1});
     pushPayloadData({id:1,address:8,value: 0});    
     runningTransaction.isRunning = false;
     runningTransaction.isReady = true;
+    runningTransaction.isVerify = false;
     runningTransaction.type = null;
     runningTransaction.bottomSensor = null;
     runningTransaction.topSensor = null;
@@ -177,9 +196,7 @@ export const endTransaction = async (req,res)=>{
         await axios.put(`http://${process.env.TIMBANGAN}:5000/status-bin/${binname}`,{status: "Standby"});
     },1);
     console.log('end-1-'+ new Date());
-    return res.json({msg:"ok"});
 }
-
 export const receiveInstruksi = async (req,res) =>{
     const {instruksi} = req.body ;
     io.emit('UpdateInstruksi', instruksi);
@@ -202,6 +219,7 @@ export const saveTransactionBin = async ()=>{
     payload.isRunning = payload.isRunning ? 1: 0;
     payload.isReady = payload.isReady ? 1 : 0;
     payload.allowReopen = payload.allowReopen ? 1: 0;
+    payload.isVerify = payload.isVerify ? 1 : 0;
     await redisClient.hSet('BinState',{...payload});
     await redisClient.disconnect();
 }
@@ -210,7 +228,7 @@ export const loadTransactionBin = async ()=>{
   redisClient.on('error', err => console.log('Redis Client Error', err));
   await redisClient.connect();
   const res = await redisClient.hGetAll('BinState');
-  if (res != undefined)
+  if (res.type)
     {
        runningTransaction.isReady = res.isReady == 1;
        runningTransaction.isRunning = res.isRunning==1;
@@ -218,6 +236,7 @@ export const loadTransactionBin = async ()=>{
        runningTransaction.bottomSensor = res.bottomSensor== "" ? null : res.bottomSensor;
        runningTransaction.topSensor = res.topSensor == "" ? null : res.topSensor;
        runningTransaction.allowReopen = res.allowReopen == 1;
+       runningTransaction.isVerify = res.isVerify == 1;
        if (runningTransaction.allowReopen)
         {
             //  setTimeout(() => {
@@ -231,7 +250,13 @@ export const loadTransactionBin = async ()=>{
 
 export const clearTransactionBin = async ()=>{
   const redisClient = createClient();  
+
   redisClient.on('error', err => console.log('Redis Client Error', err));
+  await QueuePLC.obliterate({force:true});
+  await SensorObserveQueue.obliterate({force:true});
+  await SensorObserveQueue.add({type:'observe'},{
+    removeOnFail:{count:10},timeout:3000,removeOnComplete:{count:5}
+  });
   await redisClient.connect();
   runningTransaction.isRunning = false;
   runningTransaction.type = null;
@@ -239,8 +264,13 @@ export const clearTransactionBin = async ()=>{
   runningTransaction.topSensor = null;
   runningTransaction.isReady = true;
   runningTransaction.allowReopen = false;
+  runningTransaction.isVerify = false;
   stopReopenTimer();
   await saveTransactionBin();
   await redisClient.disconnect();
+  setTimeout(()=>{
+    execSync('sudo systemctl restart backend-web');
+  },1000);
   io.emit('reload',{reload:true});
+  
 }

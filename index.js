@@ -5,7 +5,7 @@ import LampRoute from "./routes/LampRoute.js";
 import cors from  "cors";
 import http from 'http';
 import bodyParser from "body-parser";
-import { checkLampRed,checkLampYellow, loadTransactionBin, triggerLampRed } from "./controllers/Bin.js";
+import { checkLampRed,checkLampYellow, endTransaction, loadTransactionBin, startTransaction, triggerLampRed } from "./controllers/Bin.js";
 import SensorRoute from "./routes/SensorRoute.js"
 import APIRoute from './routes/APIRoute.js';
 import { Server } from "socket.io";
@@ -29,12 +29,30 @@ const io = new Server(server, {
   
 });
 
-io.on('connection',(socket)=>{
+io.on('connection',async (socket)=>{
     console.log("listening socket.io");
+    await checkLampRed(socket);
     socket.on('TriggerWeight',async (bin)=>{
       console.log(bin);
       await triggerLampRed(bin);
-    })
+    });
+    socket.on('binInfo',async (bin)=>{
+      console.log({binInfo:bin});
+      
+      if (bin.disabled == 1)
+      {
+        io.emit('UpdateInstruksi','Bin Dalam Kondisi Pending');
+      }
+      if (runningTransaction.isRunning==false && runningTransaction.isReady == false && runningTransaction.isVerify==true && runningTransaction.type == 'Dispose' && bin.dispose == false)
+      {
+          bin.type='Dispose';
+          endTransaction(bin);
+      }
+      else if (runningTransaction.isRunning==false && runningTransaction.isReady==true && bin.dispose==true )
+      {
+        startTransaction(bin);
+      }
+    });
   
 });
 app.use(cors({
@@ -54,12 +72,12 @@ app.use(APIRoute);
 app.use('/queues',serverAdapter.getRouter());
 server.listen(port,async () => {
   loadTransactionBin();
-  SensorObserveQueue.add({type:'observe'},{
+  await SensorObserveQueue.add({type:'observe'},{
     removeOnFail:{count:10},timeout:3000,removeOnComplete:{count:5}
   });
   console.log(`Server up and running on port ${port}`);
 });
 //observeSensor(io);
-const runningTransaction = {isRunning:false,type: null,topSensor:null,bottomSensor:null,isReady:true,allowReopen:false};
+const runningTransaction = {isRunning:false,type: null,topSensor:null,bottomSensor:null,isReady:true,allowReopen:false,isVerify:false};
 
 export {io,runningTransaction};
