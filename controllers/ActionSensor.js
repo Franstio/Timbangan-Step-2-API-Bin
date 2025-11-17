@@ -161,7 +161,13 @@ export const observeTopSensorIndicator = async (req, res) => {
 let PayloadData =[];
 export const pushPayloadData =(data)=>{
 //    PayloadData.push(data);
+try
+{
      return QueuePLC.add(data,{removeOnFail:{age: 60*10,count:10},timeout:3000,removeOnComplete:{age:60,count:5}});
+}
+catch{
+    return null;
+}
 }
 // const writeCmd = async (data) => {
 //     try
