@@ -61,6 +61,9 @@ app.use(cors({
 /*  allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers*/
   credentials:false 
 }));
+const  wait = (seconds) => {
+  return new Promise(resolve => setTimeout(resolve, seconds * 1000));
+}
 
 app.use(bodyParser.json());
 app.use(ScalesRoute);
@@ -68,13 +71,22 @@ app.use(LockDoorRoute);
 app.use(LampRoute);
 app.use(SensorRoute);
 app.use(APIRoute);
-
+const polling = ()=> {
+  try
+  {
+  SensorObserveQueue.add({type:'observe'},{
+  removeOnFail:{count:10},timeout:3000,removeOnComplete:{count:5}
+});
+  }
+  catch{}
+  setTimeout(() => {
+     polling();
+  }, 1000);
+};
 app.use('/queues',serverAdapter.getRouter());
 server.listen(port,async () => {
   loadTransactionBin();
-  await SensorObserveQueue.add({type:'observe'},{
-    removeOnFail:{count:10},timeout:3000,removeOnComplete:{count:5}
-  });
+  polling();
   console.log(`Server up and running on port ${port}`);
 });
 //observeSensor(io);

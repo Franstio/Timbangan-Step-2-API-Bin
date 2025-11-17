@@ -16,8 +16,8 @@ export const SensorTop = async (req, res) => {
         }
 
         const address = 0;
-
-        const response = await readCmd(address, 1);
+        const job = await QueuePLC.add({address:address,value:1,type:"READ"},{removeOnFail:{age: 60*10,count:10},timeout:3000,removeOnComplete:{age:60,count:5}});
+        const response = await job.finished();
         receivedValue = response.data[0];
 
         res.status(200).json({ sensorTop: receivedValue });
@@ -37,7 +37,8 @@ export const SensorBottom = async (req, res) => {
 
         const address = 1;
 
-        const response = await readCmd(address, 1);
+        const job = await QueuePLC.add({address:address,value:1,type:"READ"},{removeOnFail:{age: 60*10,count:10},timeout:3000,removeOnComplete:{age:60,count:5}});
+        const response = await job.finished();
         const receivedValue = response.data[0];
 
         res.status(200).json({ sensorBottom: receivedValue });
@@ -160,7 +161,7 @@ export const observeTopSensorIndicator = async (req, res) => {
 let PayloadData =[];
 export const pushPayloadData =(data)=>{
 //    PayloadData.push(data);
-      QueuePLC.add(data,{removeOnFail:{age: 60*10,count:10},timeout:3000,removeOnComplete:{age:60,count:5}});
+     return QueuePLC.add(data,{removeOnFail:{age: 60*10,count:10},timeout:3000,removeOnComplete:{age:60,count:5}});
 }
 // const writeCmd = async (data) => {
 //     try
