@@ -75,7 +75,7 @@ const polling = async ()=> {
   try
   {
   await SensorObserveQueue.add({type:'observe'},{
-  removeOnFail:{count:10},timeout:3000,removeOnComplete:{count:5}
+  removeOnFail:{count:10},timeout:10000,removeOnComplete:{count:5}
 });
   }
   catch{}
