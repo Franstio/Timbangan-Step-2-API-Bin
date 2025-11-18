@@ -191,10 +191,6 @@ export const endTransaction = async (bin)=>{
     {
         pushPayloadData({id:1,address:5,value:1});
     }
-    setTimeout( async ()=>{
-        const binname = process.env.HOSTNAME ?? os.hostname();
-        await axios.put(`http://${process.env.TIMBANGAN}:5000/status-bin/${binname}`,{status: "Standby"});
-    },1);
     console.log('end-1-'+ new Date());
 }
 export const receiveInstruksi = async (req,res) =>{
