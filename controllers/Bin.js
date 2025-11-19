@@ -268,9 +268,9 @@ export const clearTransactionBin = async ()=>{
   stopReopenTimer();
   await saveTransactionBin();
   await redisClient.disconnect();
-  setTimeout(()=>{
-    execSync('sudo systemctl restart backend-web');
-  },1000);
+//   setTimeout(()=>{
+//     execSync('sudo systemctl restart backend-web');
+//   },1000);
   io.emit('reload',{reload:true});
   
 }
