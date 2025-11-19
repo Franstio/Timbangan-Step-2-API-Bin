@@ -243,10 +243,14 @@ export const loadTransactionBin = async ()=>{
     }
   await redisClient.disconnect();
 }
-
+function wait(seconds) {
+    return new Promise(resolve => setTimeout(resolve, seconds * 1000));
+  }
 export const clearTransactionBin = async ()=>{
+    
+  execSync('sudo systemctl restart redis-server');
+  await wait(1);
   const redisClient = createClient();  
-
   redisClient.on('error', err => console.log('Redis Client Error', err));
   await QueuePLC.obliterate({force:true});
   await SensorObserveQueue.obliterate({force:true});
@@ -264,7 +268,6 @@ export const clearTransactionBin = async ()=>{
   stopReopenTimer();
   await saveTransactionBin();
   await redisClient.disconnect();
-  execSync('sudo systemctl restart redis-server');
   setTimeout(()=>{
     execSync('sudo systemctl restart backend-web');
   },1000);
