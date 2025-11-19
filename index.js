@@ -71,10 +71,10 @@ app.use(LockDoorRoute);
 app.use(LampRoute);
 app.use(SensorRoute);
 app.use(APIRoute);
-const polling = async ()=> {
+const polling =  ()=> {
   try
   {
-  await SensorObserveQueue.add({type:'observe'},{
+   SensorObserveQueue.add({type:'observe'},{
   removeOnFail:{count:10},timeout:10000,removeOnComplete:{count:5}
 });
   }
