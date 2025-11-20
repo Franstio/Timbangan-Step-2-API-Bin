@@ -12,6 +12,8 @@ import { Server } from "socket.io";
 import { observeSensor } from "./controllers/ActionSensor.js";
 import { config } from "dotenv";
 import { QueuePLC, SensorObserveQueue, serverAdapter } from "./lib/QueueUtil.js";
+import { execSync } from "child_process";
+execSync('sudo systemctl restart redis-server');
 config()
 const app = express();
 const server = http.createServer(app);
