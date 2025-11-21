@@ -88,7 +88,7 @@ await j.finished();
 };
 app.use('/queues',serverAdapter.getRouter());
 server.listen(port,async () => {
-  loadTransactionBin();
+  await loadTransactionBin();
   polling();
   console.log(`Server up and running on port ${port}`);
 });
